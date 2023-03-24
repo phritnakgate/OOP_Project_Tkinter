@@ -52,7 +52,7 @@ class CourseUI:
     def adminportal(self):
         AdminPortal()
     def register(self):
-        pass
+        Register()
 class LoginUI:
     def __init__(self):
         self.__font = 'Arial'
@@ -191,13 +191,14 @@ class CrudUser:
         cuser = user.register(self._username.get(), self._password.get(),
                                 self._fname.get(), self._lname.get(), self._user_type.get())
         print(cuser)
-        if self._username.get() == "" or self._password.get() == "" or self._fname.get() == "" or self._lname.get() == "" or self._user_type.get() == "":
-            tkinter.messagebox.showerror(title="ERROR", message="Please input all data")
+        if cuser == [] or self._username.get() == "" or self._password.get() == "" or self._fname.get() == "" or self._lname.get() == "" or self._user_type.get() == "":
+            tkinter.messagebox.showerror(title="ERROR", message="Username Exists / Have blank Data")
         else:
             user_db = UserDataBase()
             user_db.add_user_to_db(cuser)
             print(user_db.get_user_db())
             self.clear_input()
+            tkinter.messagebox.showinfo(title="Success", message="Registered!")
 
     def clear_input(self):
         self.__et1.delete(0, END)
@@ -215,3 +216,53 @@ class CrudUser:
             tkinter.messagebox.showinfo(title="Success", message="Deletion success!")
         else:
             tkinter.messagebox.showerror(title="ERROR", message="Username not Found!")
+class Register:
+    def __init__(self):
+        self.__font = 'Arial'
+        self.__normal_size = 16
+        self._window = Toplevel()
+        self._window.title("User Management")
+        self._window.geometry('400x400+0+0')
+        self._window.config(padx=20, pady=20)
+
+        Label(self._window, text="Create User", font=(self.__font, self.__normal_size, 'bold')).grid(row=0, column=0)
+        # --------------------------------- User Creation --------------------------------- #
+        Label(self._window, text="Username: ", font=(self.__font, self.__normal_size)).grid(row=1, column=0)
+        self._username = StringVar()
+        self.__et1 = Entry(self._window, textvariable= self._username)
+        self.__et1.grid(row=1, column=1)
+
+        Label(self._window, text="Password: ", font=(self.__font, self.__normal_size)).grid(row=2, column=0)
+        self._password = StringVar()
+        self.__et2 = Entry(self._window, textvariable= self._password)
+        self.__et2.grid(row=2, column=1)
+
+        Label(self._window, text="First Name: ", font=(self.__font, self.__normal_size)).grid(row=3, column=0)
+        self._fname = StringVar()
+        self.__et3 = Entry(self._window, textvariable= self._fname)
+        self.__et3.grid(row=3, column=1)
+
+        Label(self._window, text="Last Name: ", font=(self.__font, self.__normal_size)).grid(row=4, column=0)
+        self._lname = StringVar()
+        self.__et4 = Entry(self._window, textvariable= self._lname)
+        self.__et4.grid(row=4, column=1)
+
+
+        Button(self._window, text="Create", fg='white', bg='green', font=(self.__font, self.__normal_size),
+               command=self.register).grid(row=5, column=2)
+
+
+        self._window.mainloop()
+    def register(self):
+        user = User()
+        cuser = user.register(self._username.get(), self._password.get(),
+                                self._fname.get(), self._lname.get(), "User")
+        print(cuser)
+        if cuser == [] or self._username.get() == "" or self._password.get() == "" or self._fname.get() == "" or self._lname.get() == "":
+            tkinter.messagebox.showerror(title="ERROR", message="Username Exists / Have blank Data")
+        else:
+            user_db = UserDataBase()
+            user_db.add_user_to_db(cuser)
+            print(user_db.get_user_db())
+            tkinter.messagebox.showinfo(title="Success", message="Registered!")
+            self._window.destroy()
