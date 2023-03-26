@@ -6,39 +6,39 @@ from user import *
 
 class CourseUI:
     def __init__(self, username, user_type):
-        self.__username = username
-        self.__user_type = user_type
+        self._username = username
+        self._user_type = user_type
         self.__font = 'Helvetica'
-        self.__normal_size = 18
+        self.__normal_size = 16
         self._window = Tk()
         self._window.title("CE MOOC")
         self._window.geometry('600x600+0+0')
-        self._window.eval('tk::PlaceWindow . center')
         self.__is_cart_open = False
 
         # --------------------------------- Menu --------------------------------- #
         menu = Menu()
         menu_item = Menu()
-        if self.__user_type in ["User", "Teacher"]:
+        if self._user_type in ["User", "Teacher"]:
             menu_item.add_command(label='Edit Profile', command=self.editprofile)
             menu_item.add_command(label='My Course', command=self.mycourse)
-        if self.__user_type == "Admin":
+        if self._user_type == "Admin":
             menu_item.add_command(label='Admin Portal', command=self.adminportal)
-        if self.__user_type == "Guest":
+        if self._user_type == "Guest":
             menu_item.add_command(label='Register', command=self.register)
         menu_item.add_command(label='Logout', command=self.logout)
         self._window.config(menu=menu)
-        menu.add_cascade(label="Your account: "+self.__username, menu=menu_item)
+        menu.add_cascade(label="Your account: "+self._username, menu=menu_item)
         menu.add_cascade(label="About")
 
         # --------------------------------- Course List --------------------------------- #
-        Label(self._window, text="All Courses", font=(self.__font, self.__normal_size)).grid(row=0, column=1)
+        Label(self._window, text="All Courses", font=(self.__font, 18, 'bold')).grid(row=0, column=2)
         cl = CourseCatalog().get_course_catalog()
         for i in range(len(cl)):
-            Label(self._window, text= cl[i][0], font=(self.__font, self.__normal_size)).grid(row=i+1, column=1)
-            Button(self._window, text="View", font=(self.__font, self.__normal_size)).grid(row=i+1, column=3)
-            if self.__user_type not in ["Guest", "Admin"]:
-                Button(self._window, text="Enroll", font=(self.__font, self.__normal_size), command=self.cart).grid(row=i+1, column=2)
+            Label(self._window, text=cl[i][0]+": ", font=(self.__font, self.__normal_size)).grid(row=i+1, column=1)
+            Label(self._window, text=cl[i][1], font=(self.__font, self.__normal_size)).grid(row=i+1, column=2)
+            Button(self._window, text="View", font=(self.__font, self.__normal_size)).grid(row=i+1, column=4)
+            if self._user_type not in ["Guest", "Admin"]:
+                Button(self._window, text="Enroll", font=(self.__font, self.__normal_size), command=self.cart).grid(row=i+1, column=3)
 
         self._window.mainloop()
     def logout(self):
@@ -54,7 +54,8 @@ class CourseUI:
     def register(self):
         Register()
     def mycourse(self):
-        MyCourse()
+        self._window.destroy()
+        MyCourse(self._username, self._user_type)
     def editprofile(self):
         pass
 class LoginUI:
@@ -272,12 +273,35 @@ class Register:
             self._window.destroy()
 
 class MyCourse:
-    def __init__(self):
+    def __init__(self, username, user_type):
+        __user = User()
+        __course_catalog = CourseCatalog()
+        self._username = username
+        self._user_type = user_type
         self.__font = 'Arial'
         self.__normal_size = 16
-        self._window = Toplevel()
+        self._window = Tk()
         self._window.title("My Course")
-        self._window.geometry('400x400+0+0')
+        self._window.geometry('600x600+0+0')
         self._window.config(padx=20, pady=20)
+
+        menu = Menu()
+        menu_item = Menu()
+        menu_item.add_command(label='Edit Profile', command=self.edit_profile)
+        menu_item.add_command(label='Browse Course', command=self.browse_course)
+        menu_item.add_command(label='Logout', command=self.logout)
+        self._window.config(menu=menu)
+        menu.add_cascade(label="Your account: " + self._username, menu=menu_item)
+        menu.add_cascade(label="About")
         Label(self._window, text="My Course", font=(self.__font, self.__normal_size)).grid(row=0, column=0)
+
+
         self._window.mainloop()
+    def edit_profile(self):
+        pass
+    def browse_course(self):
+        self._window.destroy()
+        CourseUI(self._username, self._user_type)
+    def logout(self):
+        self._window.destroy()
+        LoginUI()
