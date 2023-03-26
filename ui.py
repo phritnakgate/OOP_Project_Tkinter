@@ -271,7 +271,9 @@ class Register:
             print(user_db.get_user_db())
             tkinter.messagebox.showinfo(title="Success", message="Registered!")
             self._window.destroy()
-
+class EditProfile:
+    def __init__(self):
+        pass
 class MyCourse:
     def __init__(self, username, user_type):
         __user = User()
