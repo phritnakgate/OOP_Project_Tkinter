@@ -5,7 +5,8 @@ class UserDataBase:
                           ['thana.h', '123456' , 'Thana', 'Hongsuwan', 'Teacher', [], ['OOP']],
                           ['thanunchi.t', '123456', 'Thanunchai', 'Treepak', 'Teacher', [], ['Discrete']],
                           ['admin', 'admin1234', '', '', 'Admin', [], []],
-                           ['del', 'del']
+                           ['del', 'del'], #For deletion testing
+                           ['user', 'user', 'User', 'User', 'User', ["SOFT001"]]
                             ]
 
     def add_user_to_db(self, created_user):

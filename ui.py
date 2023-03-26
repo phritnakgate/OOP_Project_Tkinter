@@ -20,8 +20,8 @@ class CourseUI:
         menu = Menu()
         menu_item = Menu()
         if self.__user_type in ["User", "Teacher"]:
-            menu_item.add_command(label='Edit Profile')
-            menu_item.add_command(label='My Course')
+            menu_item.add_command(label='Edit Profile', command=self.editprofile)
+            menu_item.add_command(label='My Course', command=self.mycourse)
         if self.__user_type == "Admin":
             menu_item.add_command(label='Admin Portal', command=self.adminportal)
         if self.__user_type == "Guest":
@@ -53,6 +53,10 @@ class CourseUI:
         AdminPortal()
     def register(self):
         Register()
+    def mycourse(self):
+        MyCourse()
+    def editprofile(self):
+        pass
 class LoginUI:
     def __init__(self):
         self.__font = 'Arial'
@@ -225,7 +229,7 @@ class Register:
         self._window.geometry('400x400+0+0')
         self._window.config(padx=20, pady=20)
 
-        Label(self._window, text="Create User", font=(self.__font, self.__normal_size, 'bold')).grid(row=0, column=0)
+        Label(self._window, text="Register", font=(self.__font, self.__normal_size, 'bold')).grid(row=0, column=0)
         # --------------------------------- User Creation --------------------------------- #
         Label(self._window, text="Username: ", font=(self.__font, self.__normal_size)).grid(row=1, column=0)
         self._username = StringVar()
@@ -266,3 +270,14 @@ class Register:
             print(user_db.get_user_db())
             tkinter.messagebox.showinfo(title="Success", message="Registered!")
             self._window.destroy()
+
+class MyCourse:
+    def __init__(self):
+        self.__font = 'Arial'
+        self.__normal_size = 16
+        self._window = Toplevel()
+        self._window.title("My Course")
+        self._window.geometry('400x400+0+0')
+        self._window.config(padx=20, pady=20)
+        Label(self._window, text="My Course", font=(self.__font, self.__normal_size)).grid(row=0, column=0)
+        self._window.mainloop()
