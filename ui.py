@@ -36,7 +36,8 @@ class CourseUI:
         for i in range(len(cl)):
             Label(self._window, text=cl[i][0]+": ", font=(self.__font, self.__normal_size)).grid(row=i+1, column=1)
             Label(self._window, text=cl[i][1], font=(self.__font, self.__normal_size)).grid(row=i+1, column=2)
-            Button(self._window, text="View", font=(self.__font, self.__normal_size)).grid(row=i+1, column=4)
+            Button(self._window, text="View", font=(self.__font, self.__normal_size),
+                   command=self.view_course).grid(row=i+1, column=4)
             if self._user_type not in ["Guest", "Admin"]:
                 Button(self._window, text="Enroll", font=(self.__font, self.__normal_size), command=self.cart).grid(row=i+1, column=3)
 
@@ -58,6 +59,8 @@ class CourseUI:
         MyCourse(self._username, self._user_type)
     def editprofile(self):
         pass
+    def view_course(self, course_data):
+        ViewCourse()
 class LoginUI:
     def __init__(self):
         self.__font = 'Arial'
@@ -307,3 +310,12 @@ class MyCourse:
     def logout(self):
         self._window.destroy()
         LoginUI()
+
+class ViewCourse:
+    def __init__(self, course_data):
+        self.__course_data = course_data
+        self.__font = "Arial"
+        self.__normal_size = 16
+        self._window = Toplevel()
+        self._window.geometry("500x500+0+0")
+        self._window.mainloop()
