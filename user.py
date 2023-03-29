@@ -5,7 +5,8 @@ class UserDataBase:
                           ['thana.h', '123456' , 'Thana', 'Hongsuwan', 'Teacher', [], ['OOP']],
                           ['thanunchi.t', '123456', 'Thanunchai', 'Treepak', 'Teacher', [], ['Discrete']],
                           ['admin', 'admin1234', '', '', 'Admin', [], []],
-                           ['del', 'del']
+                           ['del', 'del'], #For deletion testing
+                           ['user', 'user', 'User', 'User', 'User', ["SOFT001"]]
                             ]
 
     def add_user_to_db(self, created_user):
@@ -23,14 +24,18 @@ class User:
 
     # --------------------------------- User CRUD --------------------------------- #
     def register(self, username, password, first_name, last_name, user_type):
-        if user_type == "User":
+        username_list = []
+        for i in range(len(self._user_db)):
+            username_list.append(self._user_db[i][0])
+        if user_type == "User" and username not in username_list:
             return [username, password, first_name, last_name, user_type, self._enrolled_course]
-        elif user_type == "Teacher":
+        elif user_type == "Teacher" and username not in username_list:
             return [username, password, first_name, last_name, user_type, self._enrolled_course, self._teach]
-        elif user_type == "Admin":
+        elif user_type == "Admin" and username not in username_list:
             return [username, password, "admin", "admin", user_type, self._enrolled_course, self._teach]
-
-    def delete_user(self,username):
+        else:
+            return []
+    def delete_user(self, username):
         if self.check_valid_username(username) != -1:
             del self._user_db[self.check_valid_username(username)]
             print(self._user_db)
@@ -38,7 +43,7 @@ class User:
         else:
             return False
 
-    def modify_user(self):
+    def modify_user(self, username, password, first_name, last_name):
         pass
     # --------------------------------- Check Validity --------------------------------- #
     def check_valid(self, username, password):
