@@ -253,7 +253,7 @@ class Register:
         self.__et4.grid(row=4, column=1)
 
 
-        Button(self._window, text="Create", fg='white', bg='green', font=(self.__font, self.__normal_size),
+        Button(self._window, text="Register", fg='white', bg='green', font=(self.__font, self.__normal_size),
                command=self.register).grid(row=5, column=2)
 
 
