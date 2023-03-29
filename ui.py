@@ -5,6 +5,7 @@ from course import *
 from user import *
 from functools import partial
 
+
 class CourseUI:
     def __init__(self, username, user_type):
         self._username = username
@@ -20,10 +21,12 @@ class CourseUI:
         menu = Menu()
         menu_item = Menu()
         if self._user_type in ["User", "Teacher"]:
-            menu_item.add_command(label='Edit Profile', command=self.editprofile)
+            menu_item.add_command(label='Edit Profile',
+                                  command=self.editprofile)
             menu_item.add_command(label='My Course', command=self.mycourse)
         if self._user_type == "Admin":
-            menu_item.add_command(label='Admin Portal', command=self.adminportal)
+            menu_item.add_command(label='Admin Portal',
+                                  command=self.adminportal)
         if self._user_type == "Guest":
             menu_item.add_command(label='Register', command=self.register)
         menu_item.add_command(label='Logout', command=self.logout)
@@ -32,36 +35,49 @@ class CourseUI:
         menu.add_cascade(label="About")
 
         # --------------------------------- Course List --------------------------------- #
-        Label(self._window, text="All Courses", font=(self.__font, 18, 'bold')).grid(row=0, column=2)
+        Label(self._window, text="All Courses", font=(
+            self.__font, 18, 'bold')).grid(row=0, column=2)
         cl = CourseCatalog().get_course_catalog()
         for i in range(len(cl)):
-            Label(self._window, text=cl[i][0]+": ", font=(self.__font, self.__normal_size)).grid(row=i+1, column=1)
-            Label(self._window, text=cl[i][1], font=(self.__font, self.__normal_size)).grid(row=i+1, column=2)
+            Label(self._window, text=cl[i][0]+": ", font=(self.__font,
+                  self.__normal_size)).grid(row=i+1, column=1)
+            Label(self._window, text=cl[i][1], font=(
+                self.__font, self.__normal_size)).grid(row=i+1, column=2)
             Button(self._window, text="View", font=(self.__font, self.__normal_size),
                    command=self.view_course).grid(row=i+1, column=4)
             if self._user_type not in ["Guest", "Admin"]:
-                Button(self._window, text="Enroll", font=(self.__font, self.__normal_size), command=self.cart).grid(row=i+1, column=3)
+                Button(self._window, text="Enroll", font=(
+                    self.__font, self.__normal_size), command=self.cart).grid(row=i+1, column=3)
 
         self._window.mainloop()
+
     def logout(self):
         self._window.destroy()
         LoginUI()
+
     def cart(self):
         print(self.__is_cart_open)
         if not self.__is_cart_open:
             self.__is_cart_open = True
             CartUI()
+
     def adminportal(self):
         AdminPortal()
+
     def register(self):
         Register()
+
     def mycourse(self):
         self._window.destroy()
         MyCourse(self._username, self._user_type)
+
     def editprofile(self):
         pass
+
     def view_course(self, course_data):
         ViewCourse()
+
+
 class LoginUI:
     def __init__(self):
         self.__font = 'Arial'
@@ -75,14 +91,18 @@ class LoginUI:
         self._current_user = None
         self._current_user_type = None
 
-        Label(self.__window, text="Login", font=(self.__font, self.__normal_size, 'bold')).grid(row=0, column=1)
+        Label(self.__window, text="Login", font=(self.__font,
+              self.__normal_size, 'bold')).grid(row=0, column=1)
 
-        Label(self.__window, text="Username: ", font=(self.__font, self.__normal_size)).grid(row=1, column=1)
+        Label(self.__window, text="Username: ", font=(
+            self.__font, self.__normal_size)).grid(row=1, column=1)
         self._username = StringVar()
         Entry(self.__window, textvariable=self._username).grid(row=1, column=2)
-        Label(self.__window, text="Password: ", font=(self.__font, self.__normal_size)).grid(row=2, column=1)
+        Label(self.__window, text="Password: ", font=(
+            self.__font, self.__normal_size)).grid(row=2, column=1)
         self._password = StringVar()
-        Entry(self.__window, textvariable=self._password, show="*").grid(row=2, column=2)
+        Entry(self.__window, textvariable=self._password,
+              show="*").grid(row=2, column=2)
 
         Button(self.__window, text="Guest", font=(self.__font, self.__normal_size),
                command=self.guest_button).grid(row=3, column=1)
@@ -91,7 +111,7 @@ class LoginUI:
 
         self.__window.mainloop()
 
-    def get_user_type(self,current_user):
+    def get_user_type(self, current_user):
         usdb = UserDataBase()
         user_db = usdb.get_user_db()
         username_list = []
@@ -102,16 +122,20 @@ class LoginUI:
     def lg(self):
         login = Login(self._username.get(), self._password.get())
         if not login.login():
-            tkinter.messagebox.showerror(title="ERROR", message="User or Password not Match!")
+            tkinter.messagebox.showerror(
+                title="ERROR", message="User or Password not Match!")
         else:
-            tkinter.messagebox.showinfo(title="Success", message="Login Complete!")
+            tkinter.messagebox.showinfo(
+                title="Success", message="Login Complete!")
             self._current_user = self._username.get()
             self._current_user_type = self.get_user_type(self._current_user)
             self.__window.destroy()
             CourseUI(self._current_user, self._current_user_type)
+
     def guest_button(self):
         self.__window.destroy()
         CourseUI("Guest", "Guest")
+
 
 class CartUI:
     def __init__(self):
@@ -131,9 +155,9 @@ class CartUI:
         self.item_entry = Entry(self.window)
         self.item_entry.pack()
 
-
         # Create a button to add the item to the cart
-        add_button = Button(self.window, text="Add to Cart", command=self.add_to_cart)
+        add_button = Button(self.window, text="Add to Cart",
+                            command=self.add_to_cart)
         add_button.pack()
         # Create a button to enroll
         add_button2 = Button(self.window, text="Enroll")
@@ -154,9 +178,12 @@ class CartUI:
             course_name = course_name_db[ref_code_db.index(item_name)]
             self.cart_listbox.insert(END, f"{item_name}: "+course_name)
         else:
-            tkinter.messagebox.showerror(title="ERROR", message="Don't have this courseID!")
+            tkinter.messagebox.showerror(
+                title="ERROR", message="Don't have this courseID!")
+
     def enroll(self):
         pass
+
 
 class AdminPortal:
     def __init__(self):
@@ -168,13 +195,22 @@ class AdminPortal:
         self._window.config(padx=20, pady=20)
         self._window.resizable(width=False, height=False)
 
-        Label(self._window, text="Admin Portal", font=(self.__font, self.__normal_size, 'bold')).grid(row=0, column=1)
+        Label(self._window, text="Admin Portal", font=(
+            self.__font, self.__normal_size, 'bold')).grid(row=0, column=1)
         Button(self._window, text="User Management", font=(self.__font, self.__normal_size),
                command=self.crud_user).grid(row=1, column=0)
+        Button(self._window, text="Course Management", font=(self.__font, self.__normal_size),
+               command=self.crud_course).grid(row=1, column=1)
 
         self._window.mainloop()
+
     def crud_user(self):
         CrudUser()
+
+    def crud_course(self):
+        CrudCourse()
+
+
 class CrudUser:
     def __init__(self):
         self.__font = 'Arial'
@@ -184,31 +220,37 @@ class CrudUser:
         self._window.geometry('400x400+0+0')
         self._window.config(padx=20, pady=20)
 
-        Label(self._window, text="Create User", font=(self.__font, self.__normal_size, 'bold')).grid(row=0, column=0)
+        Label(self._window, text="Create User", font=(
+            self.__font, self.__normal_size, 'bold')).grid(row=0, column=0)
         # --------------------------------- User Creation --------------------------------- #
-        Label(self._window, text="Username: ", font=(self.__font, self.__normal_size)).grid(row=1, column=0)
+        Label(self._window, text="Username: ", font=(
+            self.__font, self.__normal_size)).grid(row=1, column=0)
         self._username = StringVar()
-        self.__et1 = Entry(self._window, textvariable= self._username)
+        self.__et1 = Entry(self._window, textvariable=self._username)
         self.__et1.grid(row=1, column=1)
 
-        Label(self._window, text="Password: ", font=(self.__font, self.__normal_size)).grid(row=2, column=0)
+        Label(self._window, text="Password: ", font=(
+            self.__font, self.__normal_size)).grid(row=2, column=0)
         self._password = StringVar()
-        self.__et2 = Entry(self._window, textvariable= self._password)
+        self.__et2 = Entry(self._window, textvariable=self._password)
         self.__et2.grid(row=2, column=1)
 
-        Label(self._window, text="First Name: ", font=(self.__font, self.__normal_size)).grid(row=3, column=0)
+        Label(self._window, text="First Name: ", font=(
+            self.__font, self.__normal_size)).grid(row=3, column=0)
         self._fname = StringVar()
-        self.__et3 = Entry(self._window, textvariable= self._fname)
+        self.__et3 = Entry(self._window, textvariable=self._fname)
         self.__et3.grid(row=3, column=1)
 
-        Label(self._window, text="Last Name: ", font=(self.__font, self.__normal_size)).grid(row=4, column=0)
+        Label(self._window, text="Last Name: ", font=(
+            self.__font, self.__normal_size)).grid(row=4, column=0)
         self._lname = StringVar()
-        self.__et4 = Entry(self._window, textvariable= self._lname)
+        self.__et4 = Entry(self._window, textvariable=self._lname)
         self.__et4.grid(row=4, column=1)
 
-        Label(self._window, text="User Type: ", font=(self.__font, self.__normal_size)).grid(row=5, column=0)
+        Label(self._window, text="User Type: ", font=(
+            self.__font, self.__normal_size)).grid(row=5, column=0)
         self._user_type = StringVar()
-        self.__et5 = Entry(self._window, textvariable= self._user_type)
+        self.__et5 = Entry(self._window, textvariable=self._user_type)
         self.__et5.grid(row=5, column=1)
 
         Button(self._window, text="Create", fg='white', bg='green', font=(self.__font, self.__normal_size),
@@ -216,8 +258,10 @@ class CrudUser:
 
         # --------------------------------- User Deletion --------------------------------- #
 
-        Label(self._window, text="Delete User", font=(self.__font, self.__normal_size, 'bold')).grid(row=6, column=0)
-        Label(self._window, text="Username: ", font=(self.__font, self.__normal_size)).grid(row=7, column=0)
+        Label(self._window, text="Delete User", font=(
+            self.__font, self.__normal_size, 'bold')).grid(row=6, column=0)
+        Label(self._window, text="Username: ", font=(
+            self.__font, self.__normal_size)).grid(row=7, column=0)
         self._user_deletion = StringVar()
         self.__et6 = Entry(self._window, textvariable=self._user_deletion)
         self.__et6.grid(row=7, column=1)
@@ -229,10 +273,11 @@ class CrudUser:
     def register(self):
         user = User()
         cuser = user.register(self._username.get(), self._password.get(),
-                                self._fname.get(), self._lname.get(), self._user_type.get())
+                              self._fname.get(), self._lname.get(), self._user_type.get())
         print(cuser)
         if cuser == [] or self._username.get() == "" or self._password.get() == "" or self._fname.get() == "" or self._lname.get() == "" or self._user_type.get() == "":
-            tkinter.messagebox.showerror(title="ERROR", message="Username Exists / Have blank Data")
+            tkinter.messagebox.showerror(
+                title="ERROR", message="Username Exists / Have blank Data")
         else:
             user_db = UserDataBase()
             user_db.add_user_to_db(cuser)
@@ -253,124 +298,68 @@ class CrudUser:
         is_deleted = user.delete_user(self._user_deletion.get())
         if is_deleted:
             self.__et6.delete(0, END)
-            tkinter.messagebox.showinfo(title="Success", message="Deletion success!")
+            tkinter.messagebox.showinfo(
+                title="Success", message="Deletion success!")
         else:
-            tkinter.messagebox.showerror(title="ERROR", message="Username not Found!")
-class Register:
+            tkinter.messagebox.showerror(
+                title="ERROR", message="Username not Found!")
+
+
+class CrudCourse:
     def __init__(self):
         self.__font = 'Arial'
         self.__normal_size = 16
         self._window = Toplevel()
-        self._window.title("User Management")
+        self._window.title("Course Management")
         self._window.geometry('400x400+0+0')
         self._window.config(padx=20, pady=20)
 
-        Label(self._window, text="Register", font=(self.__font, self.__normal_size, 'bold')).grid(row=0, column=0)
-        # --------------------------------- User Creation --------------------------------- #
-        Label(self._window, text="Username: ", font=(self.__font, self.__normal_size)).grid(row=1, column=0)
+        Label(self._window, text="Create Course", font=(
+            self.__font, self.__normal_size, 'bold')).grid(row=0, column=0)
+        # --------------------------------- Course Creation --------------------------------- #
+        Label(self._window, text="Refcode: ", font=(
+            self.__font, self.__normal_size)).grid(row=1, column=0)
         self._username = StringVar()
-        self.__et1 = Entry(self._window, textvariable= self._username)
+        self.__et1 = Entry(self._window, textvariable=self._username)
         self.__et1.grid(row=1, column=1)
 
-        Label(self._window, text="Password: ", font=(self.__font, self.__normal_size)).grid(row=2, column=0)
+        Label(self._window, text="Course name: ", font=(
+            self.__font, self.__normal_size)).grid(row=2, column=0)
         self._password = StringVar()
-        self.__et2 = Entry(self._window, textvariable= self._password)
+        self.__et2 = Entry(self._window, textvariable=self._password)
         self.__et2.grid(row=2, column=1)
 
-        Label(self._window, text="First Name: ", font=(self.__font, self.__normal_size)).grid(row=3, column=0)
+        Label(self._window, text="Teacher: ", font=(
+            self.__font, self.__normal_size)).grid(row=3, column=0)
         self._fname = StringVar()
-        self.__et3 = Entry(self._window, textvariable= self._fname)
+        self.__et3 = Entry(self._window, textvariable=self._fname)
         self.__et3.grid(row=3, column=1)
 
-        Label(self._window, text="Last Name: ", font=(self.__font, self.__normal_size)).grid(row=4, column=0)
+        Label(self._window, text="Course Category: ", font=(
+            self.__font, self.__normal_size)).grid(row=4, column=0)
         self._lname = StringVar()
-        self.__et4 = Entry(self._window, textvariable= self._lname)
+        self.__et4 = Entry(self._window, textvariable=self._lname)
         self.__et4.grid(row=4, column=1)
-
-
-        Button(self._window, text="Register", fg='white', bg='green', font=(self.__font, self.__normal_size),
+        Button(self._window, text="Create", fg='white', bg='green', font=(self.__font, self.__normal_size),
                command=self.register).grid(row=5, column=2)
 
+        # --------------------------------- Course Deletion --------------------------------- #
+
+        Label(self._window, text="Delete Course", font=(
+            self.__font, self.__normal_size, 'bold')).grid(row=6, column=0)
+
+        Label(self._window, text="Refcode: ", font=(
+            self.__font, self.__normal_size)).grid(row=7, column=0)
+        self._user_deletion = StringVar()
+        self.__et6 = Entry(self._window, textvariable=self._user_deletion)
+        self.__et6.grid(row=7, column=1)
+
+        Label(self._window, text="Course name: ", font=(
+            self.__font, self.__normal_size)).grid(row=7, column=0)
+        self._user_deletion = StringVar()
+        self.__et6 = Entry(self._window, textvariable=self._user_deletion)
+        self.__et6.grid(row=8, column=1)
+        Button(self._window, text="Delete", fg='white', bg='red', font=(self.__font, self.__normal_size),
+               command=self.delete_user).grid(row=7, column=2)
 
         self._window.mainloop()
-    def register(self):
-        user = User()
-        cuser = user.register(self._username.get(), self._password.get(),
-                                self._fname.get(), self._lname.get(), "User")
-        print(cuser)
-        if cuser == [] or self._username.get() == "" or self._password.get() == "" or self._fname.get() == "" or self._lname.get() == "":
-            tkinter.messagebox.showerror(title="ERROR", message="Username Exists / Have blank Data")
-        else:
-            user_db = UserDataBase()
-            user_db.add_user_to_db(cuser)
-            print(user_db.get_user_db())
-            tkinter.messagebox.showinfo(title="Success", message="Registered!")
-            self._window.destroy()
-class EditProfile:
-    def __init__(self):
-        pass
-class MyCourse:
-    def __init__(self, username, user_type):
-        __user = User()
-        __course_catalog = CourseCatalog()
-        self._username = username
-        self._user_type = user_type
-        self.__font = 'Arial'
-        self.__normal_size = 16
-        self._window = Tk()
-        self._window.title("My Course")
-        self._window.geometry('600x600+0+0')
-        self._window.config(padx=20, pady=20)
-
-        menu = Menu()
-        menu_item = Menu()
-        menu_item.add_command(label='Edit Profile', command=self.edit_profile)
-        menu_item.add_command(label='Browse Course', command=self.browse_course)
-        menu_item.add_command(label='Logout', command=self.logout)
-        self._window.config(menu=menu)
-        menu.add_cascade(label="Your account: " + self._username, menu=menu_item)
-        menu.add_cascade(label="About")
-        Label(self._window, text="My Course", font=(self.__font, self.__normal_size)).grid(row=0, column=0)
-
-        usdb = UserDataBase()
-        user_db = usdb.get_user_db()
-        username_list = []
-        for i in range(len(user_db)):
-            username_list.append(user_db[i][0])
-        for j in range(len(user_db[username_list.index(self._username)][5])):
-            print(user_db[username_list.index(self._username)][5])
-            Label(self._window, text=user_db[username_list.index(self._username)][5][j], font=(self.__font, self.__normal_size)).grid(row=j+1, column=0)
-            Button(self._window, text="Study", font=(self.__font, self.__normal_size),
-                   command=partial(self.study, user_db[username_list.index(self._username)][5][j])).grid(row=j+1, column=1)
-            Button(self._window, text="Exam", font=(self.__font, self.__normal_size)).grid(row=j+1, column=2)
-
-        self._window.mainloop()
-    def edit_profile(self):
-        pass
-    def browse_course(self):
-        self._window.destroy()
-        CourseUI(self._username, self._user_type)
-    def logout(self):
-        self._window.destroy()
-        LoginUI()
-    def study(self, refcode):
-        print(refcode)
-class ViewCourse:
-    def __init__(self, course_data):
-        self.__course_data = course_data
-        self.__font = "Arial"
-        self.__normal_size = 16
-        self._window = Toplevel()
-        self._window.geometry("500x500+0+0")
-        self._window.mainloop()
-
-class Study:
-    def __init__(self):
-        cl = CourseCatalog()
-        cl_db = cl.get_course_catalog()
-        self.__font = "Arial"
-        self.__normal_size = 16
-        self._window = Toplevel()
-        self._window.geometry("500x500+0+0")
-        self._window.mainloop()
-
