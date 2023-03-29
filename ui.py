@@ -3,6 +3,7 @@ from tkinter import *
 from login import *
 from course import *
 from user import *
+from functools import partial
 
 class CourseUI:
     def __init__(self, username, user_type):
@@ -114,17 +115,48 @@ class LoginUI:
 
 class CartUI:
     def __init__(self):
-        self.__font = 'Arial'
-        self.__normal_size = 16
-        self._window = Tk()
-        self._window.title("CE MOOC")
-        self._window.geometry('500x500+0+0')
-        self._window.config(padx=20, pady=20)
-        self._window.resizable(width=False, height=False)
+        self.window = Tk()
+        self.window.title("Cart")
+        # Create a label for the shopping cart
+        cart_label = Label(self.window, text="Cart")
+        cart_label.pack()
 
-        Label(self._window, text="Cart", font=(self.__font, self.__normal_size, 'bold')).grid(row=0, column=1)
+        # Create a listbox to display the items in the shopping cart
+        self.cart_listbox = Listbox(self.window, height=10, width=50)
+        self.cart_listbox.pack()
 
-        self._window.mainloop()
+        # Create a label and entry for entering the item name and price
+        item_label = Label(self.window, text="Item Name:")
+        item_label.pack()
+        self.item_entry = Entry(self.window)
+        self.item_entry.pack()
+
+
+        # Create a button to add the item to the cart
+        add_button = Button(self.window, text="Add to Cart", command=self.add_to_cart)
+        add_button.pack()
+        # Create a button to enroll
+        add_button2 = Button(self.window, text="Enroll")
+        add_button2.pack()
+
+        self.window.mainloop()
+
+    def add_to_cart(self):
+        cl = CourseCatalog().get_course_catalog()
+        ref_code_db = []
+        course_name_db = []
+        for i in range(len(cl)):
+            ref_code_db.append(cl[i][0])
+            course_name_db.append(cl[i][1])
+        print(ref_code_db)
+        item_name = self.item_entry.get()
+        if item_name in ref_code_db:
+            course_name = course_name_db[ref_code_db.index(item_name)]
+            self.cart_listbox.insert(END, f"{item_name}: "+course_name)
+        else:
+            tkinter.messagebox.showerror(title="ERROR", message="Don't have this courseID!")
+    def enroll(self):
+        pass
 
 class AdminPortal:
     def __init__(self):
@@ -300,6 +332,17 @@ class MyCourse:
         menu.add_cascade(label="About")
         Label(self._window, text="My Course", font=(self.__font, self.__normal_size)).grid(row=0, column=0)
 
+        usdb = UserDataBase()
+        user_db = usdb.get_user_db()
+        username_list = []
+        for i in range(len(user_db)):
+            username_list.append(user_db[i][0])
+        for j in range(len(user_db[username_list.index(self._username)][5])):
+            print(user_db[username_list.index(self._username)][5])
+            Label(self._window, text=user_db[username_list.index(self._username)][5][j], font=(self.__font, self.__normal_size)).grid(row=j+1, column=0)
+            Button(self._window, text="Study", font=(self.__font, self.__normal_size),
+                   command=partial(self.study, user_db[username_list.index(self._username)][5][j])).grid(row=j+1, column=1)
+            Button(self._window, text="Exam", font=(self.__font, self.__normal_size)).grid(row=j+1, column=2)
 
         self._window.mainloop()
     def edit_profile(self):
@@ -310,7 +353,8 @@ class MyCourse:
     def logout(self):
         self._window.destroy()
         LoginUI()
-
+    def study(self, refcode):
+        print(refcode)
 class ViewCourse:
     def __init__(self, course_data):
         self.__course_data = course_data
@@ -319,3 +363,14 @@ class ViewCourse:
         self._window = Toplevel()
         self._window.geometry("500x500+0+0")
         self._window.mainloop()
+
+class Study:
+    def __init__(self):
+        cl = CourseCatalog()
+        cl_db = cl.get_course_catalog()
+        self.__font = "Arial"
+        self.__normal_size = 16
+        self._window = Toplevel()
+        self._window.geometry("500x500+0+0")
+        self._window.mainloop()
+

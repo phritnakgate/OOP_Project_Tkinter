@@ -2,8 +2,11 @@ from fastapi import *
 import json
 
 
-f = open('userdata.json')
-user_db = json.load(f)
+user_file = open('userdata.json')
+user_db = json.load(user_file)
+
+course_file = open('coursedata.json')
+course_db = json.load()
 
 fapi = FastAPI()
 
