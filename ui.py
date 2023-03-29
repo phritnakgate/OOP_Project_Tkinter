@@ -131,10 +131,14 @@ class AdminPortal:
         Label(self._window, text="Admin Portal", font=(self.__font, self.__normal_size, 'bold')).grid(row=0, column=1)
         Button(self._window, text="User Management", font=(self.__font, self.__normal_size),
                command=self.crud_user).grid(row=1, column=0)
+        Button(self._window, text="Course Management", font=(self.__font, self.__normal_size),
+               command=self.crud_course).grid(row=1, column=1)
 
         self._window.mainloop()
     def crud_user(self):
         CrudUser()
+    def crud_course(self):
+        CrudCourse()
 class CrudUser:
     def __init__(self):
         self.__font = 'Arial'
@@ -215,3 +219,55 @@ class CrudUser:
             tkinter.messagebox.showinfo(title="Success", message="Deletion success!")
         else:
             tkinter.messagebox.showerror(title="ERROR", message="Username not Found!")
+
+class CrudCourse:
+    def __init__(self):
+        self.__font = 'Arial'
+        self.__normal_size = 16
+        self._window = Toplevel()
+        self._window.title("Course Management")
+        self._window.geometry('400x400+0+0')
+        self._window.config(padx=20, pady=20)
+
+        Label(self._window, text="Create Course", font=(self.__font, self.__normal_size, 'bold')).grid(row=0, column=0)
+        # --------------------------------- Course Creation --------------------------------- #
+        Label(self._window, text="Refcode: ", font=(self.__font, self.__normal_size)).grid(row=1, column=0)
+        self._username = StringVar()
+        self.__et1 = Entry(self._window, textvariable= self._username)
+        self.__et1.grid(row=1, column=1)
+
+        Label(self._window, text="Course name: ", font=(self.__font, self.__normal_size)).grid(row=2, column=0)
+        self._password = StringVar()
+        self.__et2 = Entry(self._window, textvariable= self._password)
+        self.__et2.grid(row=2, column=1)
+
+        Label(self._window, text="Teacher: ", font=(self.__font, self.__normal_size)).grid(row=3, column=0)
+        self._fname = StringVar()
+        self.__et3 = Entry(self._window, textvariable= self._fname)
+        self.__et3.grid(row=3, column=1)
+
+        Label(self._window, text="Course Category: ", font=(self.__font, self.__normal_size)).grid(row=4, column=0)
+        self._lname = StringVar()
+        self.__et4 = Entry(self._window, textvariable= self._lname)
+        self.__et4.grid(row=4, column=1)
+
+        Button(self._window, text="Create", fg='white', bg='green', font=(self.__font, self.__normal_size),
+               command=self.register).grid(row=5, column=2)
+
+        # --------------------------------- Course Deletion --------------------------------- #
+
+        Label(self._window, text="Delete Course", font=(self.__font, self.__normal_size, 'bold')).grid(row=6, column=0)
+
+        Label(self._window, text="Refcode: ", font=(self.__font, self.__normal_size)).grid(row=7, column=0)
+        self._user_deletion = StringVar()
+        self.__et6 = Entry(self._window, textvariable=self._user_deletion)
+        self.__et6.grid(row=7, column=1)
+        
+        Label(self._window, text="Course name: ", font=(self.__font, self.__normal_size)).grid(row=7, column=0)
+        self._user_deletion = StringVar()
+        self.__et6 = Entry(self._window, textvariable=self._user_deletion)
+        self.__et6.grid(row=8, column=1)
+        Button(self._window, text="Delete", fg='white', bg='red', font=(self.__font, self.__normal_size),
+               command=self.delete_user).grid(row=7, column=2)
+
+        self._window.mainloop()
