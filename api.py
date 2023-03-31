@@ -15,7 +15,9 @@ async def root():
 @app.post("/register", tags=['User CRUD'])
 async def register():
     pass
-
+@app.delete("/deluser", tags=['User CRUD'])
+async def deluser():
+    pass
 
 # --- Course API --- #
 @app.get("/courses", tags=['Course CRUD'])
@@ -31,7 +33,7 @@ async def create_course(refcode: str, title: str, desc: str, teacher: str, catg:
         Courses(refcode, title, desc, teacher, catg, target, objective, hour, recom_hour, datetime.datetime.now(), contact))
     return {'Status': 'Success'}
 
-@app.delete("/delete_course", tags=['Course CRUD'])
+@app.delete("/delcourse", tags=['Course CRUD'])
 async def delete_course(refcode: str):
     course_catalog.delete_course(refcode)
     return {'Status': 'Success'}

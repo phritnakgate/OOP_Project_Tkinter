@@ -4,7 +4,8 @@ class UserData:
 
     def get_user_db(self):
         return self.__user_data
-
+    def delete_user(self):
+        pass
 
 class User:
     def __init__(self, username, password, email, fname, lname, gender, birth_date, education, province, country,

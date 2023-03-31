@@ -13,6 +13,7 @@ course_cata.create_course(course)
 all = course_cata.get_course()
 print(all)
 print(all[0].get_refcode())
+print(all[0].get_title())
 
 # --- API Test --- #
 #r = requests.post('http://localhost:8000/create_course', data=course)

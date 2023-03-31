@@ -7,7 +7,8 @@ class CourseCatalog:
 
     def get_course(self):
         return self.__course_list
-
+    def modify_course(self):
+        pass
     def delete_course(self, refcode):
         pass
 
