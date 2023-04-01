@@ -67,8 +67,16 @@ class Student(User):
     def __init__(self, username, password, email, fname, lname, gender, birth_date, education, province, country):
         User.__init__(self, username, password, email, fname, lname, gender, birth_date, education, province, country,
                       user_type="Student")
-        self.__enrolled_course = []
+        self._enrolled_course = []
 
+    def get_enrolled_course(self):
+        return self._enrolled_course
+
+    def set_enrolled_course(self, request, will_enroll):
+        if request == 'enroll':
+            self._enrolled_course.append(will_enroll)
+        elif request == 'unenroll':
+            self._enrolled_course.remove(will_enroll)
 
 class Teacher(User):
     def __init__(self, username, password, email, fname, lname, gender, birth_date, education,
