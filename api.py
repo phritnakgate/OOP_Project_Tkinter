@@ -1,8 +1,11 @@
 import datetime
 from fastapi import *
 from courses import *
+from enroll import *
 
 course_catalog = CourseCatalog()
+cart = Cart()
+enroll = Enroll()
 app = FastAPI()
 
 
@@ -37,3 +40,12 @@ async def create_course(refcode: str, title: str, desc: str, teacher: str, catg:
 async def delete_course(refcode: str):
     course_catalog.delete_course(refcode)
     return {'Status': 'Success'}
+
+# --- Enroll API --- #
+@app.get("/cart", tags=["Enroll System"])
+async def cart():
+    cart_data = cart.get_cart()
+    return {"Cart": cart_data}
+@app.post("/enroll", tags=["Enroll System"])
+async def enroll():
+    pass
