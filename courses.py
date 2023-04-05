@@ -1,17 +1,27 @@
-class CourseCatalog:
+class CourseSystem:
     def __init__(self):
         self.__course_list = []
-
+        self.__user_list = []
+        
+    def add_user(self, user):
+        self.__user_list.append(user) 
+    def delete_user(self):
+        pass       
+        
+    def search_user(self, name):
+        for u in self.__user_list:
+            if u.name == name:
+                return u              
+             
     def create_course(self, created_course):
         self.__course_list.append(created_course)
-
     def get_course(self):
         return self.__course_list
     def modify_course(self):
         pass
     def delete_course(self, refcode):
         pass
-
+    
 
 # --- Course Object --- #
 class Courses:
@@ -27,6 +37,7 @@ class Courses:
         self.__recom_hour = recom_hour
         self.__release = release
         self.__contact = contact
+        
     def get_refcode(self):
         return self.__refcode
 
@@ -74,8 +85,16 @@ class CourseMaterial:
 
 
 class CourseExam:
-    pass
-
-
-class CourseProgression:
-    pass
+    def __init__(self,course_name,exam_list,ans_list):
+        self._course_name = course_name
+        self._exam_list = exam_list
+        self._ans_list = ans_list
+    def do_exam(self):
+        pass
+    def ans_check(self):
+        pass
+            
+            
+class CouseProgression:
+    def __init__(self):
+        pass

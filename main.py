@@ -3,6 +3,7 @@ from datetime import datetime
 from courses import *
 from user import *
 from enroll import *
+
 # --- Creation Test --- #
 teacher = Teacher("teach1", "123456", "teacher1@gmail.com", "tea", "cher", "Male", datetime(2003, 12, 4), "D.Eng",
                   "Bangkok", "Thailand", "KMITL")
@@ -16,15 +17,11 @@ course = Courses("SOFT001", "Object Oriented Programming", "Learn writing oop", 
 course2 = Courses("HARD001", "Basic Arduino", "Learn Basic Arduino", "teach1", "Hardware", "All Ages",
                  "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
 # --- Build Test --- #
-course_cata = CourseCatalog()
-userdb = UserData()
+course_system = CourseSystem()
 cart = Cart()
 
-course_cata.create_course(course)
-course_cata.create_course(course2)
-userdb.register(teacher)
-userdb.register(student)
-userdb.register(admin)
+course_system.create_course(course)
+course_system.create_course(course2)
 
 # --- Enroll Test --- #
 student.set_enrolled_course('enroll', course)
@@ -39,6 +36,7 @@ if enroll2.check_enroll() == True:
 print(cart.get_cart())
 cart.enrolled(student, cart.get_cart())
 print(student.get_enrolled_course())
+
 # --- Getter/Setter Test --- #
 # all = course_cata.get_course()
 # all_u = userdb.get_user_db()

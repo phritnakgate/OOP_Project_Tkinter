@@ -5,7 +5,7 @@ from enroll import *
 
 course_catalog = CourseCatalog()
 cart = Cart()
-enroll = Enroll()
+# enroll = Enroll()
 app = FastAPI()
 
 

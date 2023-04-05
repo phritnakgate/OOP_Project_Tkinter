@@ -15,7 +15,6 @@ class Cart:
         for i in cart:
             user.set_enrolled_course('enroll', i)
 
-
 class Enroll:
     def __init__(self, will_enrolled, enrolled):
         self.__will_enrolled = will_enrolled

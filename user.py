@@ -1,14 +1,3 @@
-class UserData:
-    def __init__(self):
-        self.__user_data = []
-
-    def get_user_db(self):
-        return self.__user_data
-    def register(self, created_user):
-        self.__user_data.append(created_user)
-    def delete_user(self):
-        pass
-
 class User:
     def __init__(self, username, password, email, fname, lname, gender, birth_date, education, province, country,
                  user_type):
@@ -23,7 +12,7 @@ class User:
         self.__province = province
         self.__country = country
         self.__user_type = user_type
-
+        
     def get_username(self):
         return self.__username
 
