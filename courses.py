@@ -78,7 +78,6 @@ class Courses:
 class CourseCatg:
     pass
 
-
 # --- Course Material --- #
 class CourseChapter:
     pass
