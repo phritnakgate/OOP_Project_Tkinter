@@ -26,9 +26,13 @@ c1 = Course("OOP", user2.first_name)
 c1_m = c1.create_course()
 cata.add_course_to_catalog(c1_m)
 
+<<<<<<< Updated upstream
 c2 = Course("Discrete", user3.first_name)
 c2_m = c2.create_course()
 cata.add_course_to_catalog(c2_m)
 
 # --------------------------------- Check --------------------------------- #
 """
+=======
+
+>>>>>>> Stashed changes
