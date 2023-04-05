@@ -13,6 +13,9 @@ class Courses:
         self.__release = release
         self.__contact = contact
 
+    def get_refcode(self):
+        return self.__refcode
+
 class CourseCatg:
     pass
 
