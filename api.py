@@ -3,7 +3,7 @@ from fastapi import *
 from courses import *
 from enroll import *
 
-course_catalog = CourseCatalog()
+course_catalog = CourseSystem()
 cart = Cart()
 # enroll = Enroll()
 app = FastAPI()
