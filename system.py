@@ -53,7 +53,7 @@ course7 = Courses("MATH003", "Discrete Structure", "Learn Discrete math", "teach
                  "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
 course8 = Courses("SCI001", "Cellular Respiration", "Learn Cellular Respiration", "teach1", "Science", "All Ages",
                  "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
-course9 = Courses("SCI002", "Photosynthesis", "Learn Discrete math", "teach1", "Science", "All Ages",
+course9 = Courses("SCI002", "Photosynthesis", "Learn Photosynthesis", "teach1", "Science", "All Ages",
                  "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
 course_system.create_course(course)
 course_system.create_course(course2)
