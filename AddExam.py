@@ -5,7 +5,6 @@ app = FastAPI()
 from datetime import datetime
 from courses import *
 from user import *
-from enroll import *
 from exam import *
 from dto import *
 
