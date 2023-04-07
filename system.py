@@ -90,4 +90,3 @@ course_system.create_course(course7)
 course_system.create_course(course8)
 course_system.create_course(course9)
 print(course_system.browse_course("Science"))
-
