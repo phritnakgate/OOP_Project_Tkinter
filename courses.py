@@ -13,12 +13,16 @@ class Courses:
         self.__release = release
         self.__contact = contact
 
+
+    def get_refcode(self):
+        return self.__refcode
     def get_catg(self):
         return self.__catg
-
     def get_title(self):
         return self.__title
-    
+
+class CourseCatg:
+    pass
 
 
 
