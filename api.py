@@ -77,8 +77,3 @@ async def add_cart(cart_item: dict) -> dict:
 @app.post("/enroll", tags=["Enrollment"])
 async def enroll(enrolled: dict) -> dict:
     pass
-
-
-
-
-
