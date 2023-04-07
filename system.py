@@ -1,3 +1,5 @@
+from courses import *
+from datetime import *
 class CourseSystem:
     def __init__(self):
         self.__course_list = []
