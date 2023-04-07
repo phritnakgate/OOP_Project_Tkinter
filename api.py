@@ -31,6 +31,7 @@ student.set_enrolled_course('enroll', course)  # Student has enrolled SOFT001.
 
 app = FastAPI()
 
+
 @app.get("/", tags=['root'])
 async def root():
     return {"Welcome": "Hello World"}
