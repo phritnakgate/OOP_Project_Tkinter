@@ -1,7 +1,3 @@
-import requests
-import json
-
-
 # --- Enroll Test --- #
 myenroll = {"username": "ffwatcharin", "refcode": "HARD001"}
 print(myenroll)
