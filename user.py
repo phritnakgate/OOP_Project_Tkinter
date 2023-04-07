@@ -48,7 +48,6 @@ class Teacher(User):
                       user_type="Teacher")
         self.__teacher_dept = teacher_dept
         self.__teached = []
-=======
 class User:
     def __init__(self, username, password, email, fname, lname, gender, birth_date, education, province, country,
                  user_type):
