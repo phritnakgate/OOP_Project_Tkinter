@@ -78,7 +78,7 @@ async def root():
     return {"Welcome": "Hello World"}
 
 
-# --- User API --- #
+# -------------------------------------------- User API -------------------------------------------- #
 @app.get("/login", tags=["User API"])
 async def login():
     pass
