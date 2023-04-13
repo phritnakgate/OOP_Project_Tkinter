@@ -1,3 +1,6 @@
+from courses import *
+
+
 class CourseSystem:
     def __init__(self):
         self.__course_list = []
@@ -35,12 +38,44 @@ class CourseSystem:
     def delete_course(self, refcode):
         pass
 
-    def search_course(self, name):
+    def search_course(self, refcode):
         course_l = []
         for c in self.__course_list:
             course_l.append(c.get_refcode())
-        if name in course_l:
-            return self.__course_list[course_l.index(name)]
+        if refcode in course_l:
+            return self.__course_list[course_l.index(refcode)]
+
+    # --- Study --- #
+    def get_course(self, user, refcode):
+        u = self.search_user(user)
+        ref = []
+        for i in u.get_enrolled_course():
+            ref.append(i.get_refcode())
+        if refcode in ref:
+            return u.get_enrolled_course()[ref.index(refcode)]
+        else:
+            return False
+
+    def add_chapter(self, refcode, title):
+        c = self.search_course(refcode)
+        chap = CourseChapter(title)
+        c.get_chapter().append(chap)
+
+    def get_chapter(self, user, refcode, chapter):
+        c = self.search_course(refcode)
+        try:
+            c.get_chapter()[int(chapter)]
+        except:
+            return {"ERROR": "Not found chapter"}
+        return c.get_chapter()[int(chapter)]
+
+    def get_material(self, refcode, chapter):
+        c = self.search_course(refcode)
+        return c.get_chapter()[int(chapter)].get_material()
+
+    def add_material(self, refcode, chapter, material):
+        c = self.search_course(refcode)
+        c.get_chapter()[int(chapter)].get_material().append(material)
 
     # --- Enroll --- #
     def get_cart(self):
