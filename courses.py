@@ -13,6 +13,7 @@ class Courses:
         self.__release = release
         self.__contact = contact
         self.__exam = None
+        self.__chapter = []
 
     def get_refcode(self):
         return self.__refcode
@@ -22,8 +23,15 @@ class Courses:
 
     def get_title(self):
         return self.__title
-    def set_exam(self,exam):
+
+    def set_exam(self, exam):
         self.__exam = exam
+
+    def set_chapter(self, chapter):
+        self.__chapter.append(chapter)
+
+    def get_chapter(self):
+        return self.__chapter
 
 
 class CourseCatg:
@@ -32,8 +40,17 @@ class CourseCatg:
 
 # --- Course Material --- #
 class CourseChapter:
-    pass
+    def __init__(self, title):
+        self.__title = title
+        self.__material = []
+
+    def get_material(self):
+        return self.__material
+
+    def set_material(self, material):
+        self.__material.append(material)
 
 
 class CourseMaterial:
-    pass
+    def __init__(self, material):
+        self.__material = material

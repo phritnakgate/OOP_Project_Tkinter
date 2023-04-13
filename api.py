@@ -73,6 +73,19 @@ print(course_system.get_user_db())
 
 student.set_enrolled_course('enroll', course)  # Student has enrolled SOFT001.
 
+# SOFT001 Chapter
+course_system.add_chapter('SOFT001', '01:Basic Python')
+chap1_mat = CourseMaterial("https://www.youtube.com/watch?v=N1fnq4MF3AE&list=PLltVQYLz1BMBwqJysYnoEKWXUvqusJpgN&ab_channel=KongRuksiam")
+course_system.add_material('SOFT001', 0, chap1_mat)
+
+course_system.add_chapter('SOFT001', '02:Intermediate Python')
+chap2_mat = CourseMaterial("https://www.youtube.com/watch?v=N1fnq4MF3AE&list=PLltVQYLz1BMBwqJysYnoEKWXUvqusJpgN&ab_channel=KongRuksiam")
+course_system.add_material('SOFT001', 1, chap2_mat)
+
+course_system.add_chapter('SOFT001', '03:OOP Principle')
+chap3_mat = CourseMaterial("https://www.youtube.com/watch?v=N1fnq4MF3AE&list=PLltVQYLz1BMBwqJysYnoEKWXUvqusJpgN&ab_channel=KongRuksiam")
+course_system.add_material('SOFT001', 2, chap3_mat)
+
 oop_exam = CourseExam(course.get_title)
 stu1doexam = CouseProgression(student.get_username, course.get_refcode)
 
@@ -102,6 +115,22 @@ async def enrolled(username: str):
 async def courses():
     pass
 
+
+# Course Categories API #
+@app.get("/coursescatg", tags=["Course Categories API"])
+async def course_catg(data: str):
+    print(course_system.browse_course(data))
+    return course_system.browse_course(data)
+
+@app.get("/courses/{user}/{refcode}", tags=["Course API"])
+async def get_course(user, refcode):
+    if course_system.get_course(user, refcode):
+        return course_system.get_course(user, refcode)
+    else:
+        return {"Error": "Not enrolled!"}
+@app.get("/courses/{user}/{refcode}/{chapter}", tags=["Course API"])
+async def get_chapter(user, refcode, chapter):
+    return course_system.get_chapter(user, refcode, chapter)
 
 # ------------------------------- Exam API --------------------------------#
 @app.post("/exam/question and answer", tags=["Exam API"])
@@ -134,14 +163,6 @@ async def get_progression():
 
 
 # -------------------------------- Enroll API ----------------------------- #
-# Course Categories API #
-@app.get("/coursescatg", tags=["Course Categories API"])
-async def course_catg(data: str):
-    print(course_system.browse_course(data))
-    return course_system.browse_course(data)
-
-
-# --- Enroll API --- #
 @app.get("/cart", tags=["Enrollment"])
 async def cart():
     return {"Cart": course_system.get_cart()}
