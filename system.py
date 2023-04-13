@@ -16,7 +16,7 @@ class CourseSystem:
         return self.__user_list
     def delete_user(self):
         pass
-
+    
     def search_user(self, name):
         username_l = []
         for u in self.__user_list:

@@ -17,7 +17,7 @@ class CourseExam:
           if(number <= len(self._exam_list)):
                self._exam_list[number-1].set_ques(body['question'])
                self._exam_list[number-1].set_ans(body['answer'])
-               return {'Updated'}
+               return {'Exam Updated'}
           else:         
                return {'Not found'}      
                              

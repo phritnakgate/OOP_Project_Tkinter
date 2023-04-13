@@ -62,8 +62,8 @@ async def add_question(data : Problems):
     return {"Question and Answer added successfully"}
 
 @app.put("/exam/edit", tags=["Exam API"])
-async def update_exams(question_number: int, body: dict):  
-    return oop_exam.edit_exam(question_number, body)
+async def update_exams(question_number: int, body: EditExam): 
+    return oop_exam.edit_exam(question_number, body.dict())
     
 
 @app.get("/exam", tags=["Exam API"])
