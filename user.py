@@ -1,7 +1,5 @@
 class User:
-    # def __init__(self, username, password, email, fname, lname, gender, birth_date, education, province, country,
-    #              user_type):
-    
+
     def __init__(self, username, password):
         self.__username = username
         self.__password = password
@@ -14,17 +12,19 @@ class User:
         # self.__province = province
         # self.__country = country
         # self.__user_type = user_type
-        
+
     def get_username(self):
         return self.__username
 
     def get_password(self):
         return self.__password
 
+
 class Admin(User):
     def __init__(self, username, password, email, fname, lname, gender, birth_date, education, province, country):
         User.__init__(self, username, password, email, fname, lname, gender, birth_date, education, province,
                       country, user_type="Admin")
+
 
 class Student(User):
     def __init__(self, username, password, email, fname, lname, gender, birth_date, education, province, country):
@@ -41,6 +41,7 @@ class Student(User):
         elif request == 'unenroll':
             self._enrolled_course.remove(will_enroll)
 
+
 class Teacher(User):
     def __init__(self, username, password, email, fname, lname, gender, birth_date, education,
                  province, country, teacher_dept):
@@ -48,7 +49,8 @@ class Teacher(User):
                       user_type="Teacher")
         self.__teacher_dept = teacher_dept
         self.__teached = []
-=======
+
+
 class User:
     def __init__(self, username, password, email, fname, lname, gender, birth_date, education, province, country,
                  user_type):

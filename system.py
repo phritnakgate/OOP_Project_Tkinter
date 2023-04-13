@@ -1,5 +1,7 @@
 from courses import *
 from datetime import *
+
+
 class CourseSystem:
     def __init__(self):
         self.__course_list = []
@@ -7,12 +9,13 @@ class CourseSystem:
         self.__cart = []
         self.__coursecatg_list = []
 
-
     # --- User --- #
     def add_user(self, user):
         self.__user_list.append(user)
+
     def get_user_db(self):
         return self.__user_list
+
     def delete_user(self):
         pass
 
@@ -35,21 +38,24 @@ class CourseSystem:
 
     def delete_course(self, refcode):
         pass
+
     def search_course(self, name):
         course_l = []
         for c in self.__course_list:
             course_l.append(c.get_refcode())
         if name in course_l:
             return self.__course_list[course_l.index(name)]
+
     # --- Enroll --- #
     def get_cart(self):
         return self.__cart
+
     def add_cart(self, will_enrolled, enrolled):
         if will_enrolled in enrolled:
             return False
         else:
             self.__cart.append(will_enrolled)
-            
+
     def enroll(self, user, cart):
         for i in cart:
             user.set_enrolled_course('enroll', i)
@@ -62,4 +68,3 @@ class CourseSystem:
                 self.__coursecatg_list.append(i)
 
         return self.__coursecatg_list
-    
