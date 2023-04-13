@@ -22,7 +22,7 @@ course2 = Courses("HARD001", "Basic Arduino", "Learn Basic Arduino", "teach1", "
 # --- Build Test --- #
 course_system = CourseSystem()
 
-course_system.create_course(course)
+course_system.create_course(course1)
 course_system.create_course(course2)
 
 course_system.add_user(teacher)
@@ -30,9 +30,10 @@ course_system.add_user(student)
 course_system.add_user(admin)
 print(course_system.get_user_db())
 
-student.set_enrolled_course('enroll', course)  # Student has enrolled SOFT001.
+student.set_enrolled_course('enroll', course1)  # Student has enrolled SOFT001.
 
-oop_exam = CourseExam(course1.get_title)  
+oop_exam = CourseExam(course1.get_title) 
+stu1doexam = CouseProgression(student.get_username, course1.get_refcode)
 
 #------------------------------- API -----------------------------------#
 app = FastAPI()
@@ -54,22 +55,30 @@ async def courses():
     pass
 
 # ------------------------------- Exam API --------------------------------#
-@app.post("/exam/question and answer")
+@app.post("/exam/question and answer", tags=["Exam API"])
 async def add_question(data : Problems):
-    q_list = []
-    for q , a in data.questions:
-        q_list.append(ExamItem(q, a))
-    oop_exam.add_question_ans(q_list)
-    return {"message": "Question and Answer added successfully"}
+    oop_exam.add_question_ans(data)
+    course1.set_exam(oop_exam)
+    return {"Question and Answer added successfully"}
 
-@app.get("/exam")
+@app.put("/exam/edit", tags=["Exam API"])
+async def update_exams(question_number: int, body: dict):  
+    return oop_exam.edit_exam(question_number, body)
+    
+
+@app.get("/exam", tags=["Exam API"])
 async def get_exam():
-    return oop_exam._exam_list
+    return oop_exam.get_exams()
 
-@app.post("/exam")
-async def take_exam(student_answers: list):
-    score = oop_exam.do_exam(student_answers)
-    return {"score": score}
+@app.post("/exam/do exam", tags=["Exam API"])
+async def do_exam(data : list):  
+    stu1doexam.set_exam(oop_exam.get_exams()) 
+    stu1doexam.do_exam(data)
+    return {"successfully"}
+
+@app.get("/exam/get progression", tags=["Exam API"])
+async def get_progression():
+    return {f'{stu1doexam.get_progress()} %'}
 
 # -------------------------------- Enroll API ----------------------------- #
 @app.get("/cart", tags=["Enrollment"])

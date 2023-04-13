@@ -8,4 +8,9 @@ class Problem(BaseModel):
 
 # Define the questions model
 class Problems(BaseModel):
-    questions: List[Problem]
+    questions: List[Problem] 
+    
+class EditExam(BaseModel) :
+    question: str
+    answer: str    
+    
