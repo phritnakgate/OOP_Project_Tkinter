@@ -51,10 +51,18 @@ class CourseSystem:
         return self.__cart
 
     def add_cart(self, will_enrolled, enrolled):
-        if will_enrolled in enrolled:
+        if (will_enrolled in enrolled) or (will_enrolled in self.__cart):
             return False
         else:
             self.__cart.append(will_enrolled)
+            return True
+
+    def remove_cart(self, will_remove):
+        if (will_remove in self.__cart) and (self.__cart != []):
+            self.__cart.remove(will_remove)
+            return True
+        else:
+            return False
 
     def enroll(self, user, cart):
         for i in cart:
