@@ -70,9 +70,9 @@ class CourseSystem:
         self.__cart = []
 
     def browse_course(self, catg):
+        self.__coursecatg_list = []
         for i in self.__course_list:
             if i.get_catg() == catg:
                 self.__coursecatg_list.append(i)
 
         return self.__coursecatg_list
-
