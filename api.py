@@ -3,6 +3,8 @@ from user import *
 from system import *
 from datetime import datetime
 from courses import *
+from exam import *
+from dto import *
 
 
 # --- Creation Test --- #
@@ -12,6 +14,8 @@ admin = Admin("admin", "admin1234", "admin1@gmail.com", "ad", "min", "Male", dat
               "Bangkok", "Thailand")
 student = Student("ffwatcharin", "firstbigdick", "ffwatcharin@gmail.com", "Watcharin", "Humthong", "Male",
                   datetime(2004, 1, 16), "Undergraduated", "Nonthaburi", "Thailand")
+
+# --- Build Test --- #
 
 course_system = CourseSystem()
 course = Courses("SOFT001", "Object Oriented Programming", "Learn writing oop", "teach1", "Software", "All Ages",
@@ -68,8 +72,12 @@ course_system.add_user(student)
 course_system.add_user(admin)
 print(course_system.get_user_db())
 
-student.set_enrolled_course('enroll', course)  # Student has enrolled SOFT001.
+student.set_enrolled_course('enroll', course1)  # Student has enrolled SOFT001.
 
+oop_exam = CourseExam(course1.get_title) 
+stu1doexam = CouseProgression(student.get_username, course1.get_refcode)
+
+#------------------------------- API -----------------------------------#
 app = FastAPI()
 
 
@@ -89,6 +97,33 @@ async def login():
 async def courses():
     pass
 
+# ------------------------------- Exam API --------------------------------#
+@app.post("/exam/question and answer", tags=["Exam API"])
+async def add_question(data : Problems):
+    oop_exam.add_question_ans(data)
+    course1.set_exam(oop_exam)
+    return {"Question and Answer added successfully"}
+
+@app.put("/exam/edit", tags=["Exam API"])
+async def update_exams(question_number: int, body: EditExam): 
+    return oop_exam.edit_exam(question_number, body.dict())
+    
+
+@app.get("/exam", tags=["Exam API"])
+async def get_exam():
+    return oop_exam.get_exams()
+
+@app.post("/exam/do exam", tags=["Exam API"])
+async def do_exam(data : list):  
+    stu1doexam.set_exam(oop_exam.get_exams()) 
+    stu1doexam.do_exam(data)
+    return {"successfully"}
+
+@app.get("/exam/get progression", tags=["Exam API"])
+async def get_progression():
+    return {f'{stu1doexam.get_progress()} %'}
+
+# -------------------------------- Enroll API ----------------------------- #
 # Course Categories API #
 @app.get("/coursescatg", tags=["Course Categories API"])
 async def course_catg(data : str):  
@@ -100,7 +135,6 @@ async def course_catg(data : str):
 @app.get("/cart", tags=["Enrollment"])
 async def cart():
     return {"Cart": course_system.get_cart()}
-
 
 @app.post("/addcart", tags=["Enrollment"])
 async def add_cart(cart_item: dict) -> dict:

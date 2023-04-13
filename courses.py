@@ -12,6 +12,7 @@ class Courses:
         self.__recom_hour = recom_hour
         self.__release = release
         self.__contact = contact
+        self.__exam = None
 
     def get_refcode(self):
         return self.__refcode
@@ -21,6 +22,8 @@ class Courses:
 
     def get_title(self):
         return self.__title
+    def set_exam(self,exam):
+        self.__exam = exam
 
 
 class CourseCatg:
@@ -34,21 +37,3 @@ class CourseChapter:
 
 class CourseMaterial:
     pass
-
-
-class CourseExam:
-    def __init__(self, course_name, exam_list, ans_list):
-        self._course_name = course_name
-        self._exam_list = exam_list
-        self._ans_list = ans_list
-
-    def do_exam(self):
-        pass
-
-    def ans_check(self):
-        pass
-
-
-class CouseProgression:
-    def __init__(self):
-        pass

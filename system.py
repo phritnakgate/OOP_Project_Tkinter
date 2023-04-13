@@ -1,7 +1,6 @@
 from courses import *
 from datetime import *
 
-
 class CourseSystem:
     def __init__(self):
         self.__course_list = []
@@ -18,7 +17,7 @@ class CourseSystem:
 
     def delete_user(self):
         pass
-
+    
     def search_user(self, name):
         username_l = []
         for u in self.__user_list:
