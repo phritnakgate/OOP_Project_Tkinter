@@ -6,7 +6,6 @@ from courses import *
 from exam import *
 from dto import *
 
-
 # --- Creation Test --- #
 teacher = Teacher("teach1", "123456", "teacher1@gmail.com", "tea", "cher", "Male", datetime(2003, 12, 4), "D.Eng",
                   "Bangkok", "Thailand", "KMITL")
@@ -37,18 +36,18 @@ course8 = Courses("SCI001", "Cellular Respiration", "Learn Cellular Respiration"
 course9 = Courses("SCI002", "Photosynthesis", "Learn Photosynthesis", "teach1", "Science", "All Ages",
                   "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
 course10 = Courses("MATH004", "Linear Algebra", "Learn Linear Algebra", "teach1", "Math", "All Ages",
-                 "To understanding Linear Algebra", "10", "10", datetime.now(), "teacher1@gmail.com")
-course11 = Courses("LAN001", "English for Communication", "Learn English for Communication", "teach1", "Language", "All Ages",
-                 "To understanding everyday English conversation", "10", "10", datetime.now(), "teacher1@gmail.com")
-course12= Courses("LAN002", "English for Business", "Learn English for Business", "teach1", "Language", "All Ages",
-                 "To understanding Basic Business in English", "10", "10", datetime.now(), "teacher1@gmail.com")
-course13= Courses("LAN003", "Fundamental Chinese", "Learn Fundamental Chinese", "teach1", "Language", "All Ages",
-                 "To understanding Basic Chinese", "10", "10", datetime.now(), "teacher1@gmail.com")
-course14= Courses("LAN004", "Fundamental Korean", "Learn Fundamental Korean", "teach1", "Language", "All Ages",
-                 "To understanding Basic Korean", "10", "10", datetime.now(), "teacher1@gmail.com")
-course15= Courses("LAN005", "English for Marketing", "Learn English for Marketing", "teach1", "Language", "All Ages",
-                 "To understanding Basic Marketing in English", "10", "10", datetime.now(), "teacher1@gmail.com")
-
+                   "To understanding Linear Algebra", "10", "10", datetime.now(), "teacher1@gmail.com")
+course11 = Courses("LAN001", "English for Communication", "Learn English for Communication", "teach1", "Language",
+                   "All Ages",
+                   "To understanding everyday English conversation", "10", "10", datetime.now(), "teacher1@gmail.com")
+course12 = Courses("LAN002", "English for Business", "Learn English for Business", "teach1", "Language", "All Ages",
+                   "To understanding Basic Business in English", "10", "10", datetime.now(), "teacher1@gmail.com")
+course13 = Courses("LAN003", "Fundamental Chinese", "Learn Fundamental Chinese", "teach1", "Language", "All Ages",
+                   "To understanding Basic Chinese", "10", "10", datetime.now(), "teacher1@gmail.com")
+course14 = Courses("LAN004", "Fundamental Korean", "Learn Fundamental Korean", "teach1", "Language", "All Ages",
+                   "To understanding Basic Korean", "10", "10", datetime.now(), "teacher1@gmail.com")
+course15 = Courses("LAN005", "English for Marketing", "Learn English for Marketing", "teach1", "Language", "All Ages",
+                   "To understanding Basic Marketing in English", "10", "10", datetime.now(), "teacher1@gmail.com")
 
 # --- Build Test --- #
 course_system.create_course(course)
@@ -72,12 +71,12 @@ course_system.add_user(student)
 course_system.add_user(admin)
 print(course_system.get_user_db())
 
-student.set_enrolled_course('enroll', course1)  # Student has enrolled SOFT001.
+student.set_enrolled_course('enroll', course)  # Student has enrolled SOFT001.
 
-oop_exam = CourseExam(course1.get_title) 
-stu1doexam = CouseProgression(student.get_username, course1.get_refcode)
+oop_exam = CourseExam(course.get_title)
+stu1doexam = CouseProgression(student.get_username, course.get_refcode)
 
-#------------------------------- API -----------------------------------#
+# ------------------------------- API -----------------------------------#
 app = FastAPI()
 
 
@@ -92,49 +91,61 @@ async def login():
     pass
 
 
+@app.get("/enrolled", tags=["User API"])
+async def enrolled(username: str):
+    u = course_system.search_user(username)
+    return u.get_enrolled_course()
+
+
 # ----------------------------------------- Course API ----------------------------------------- #
 @app.get("/courses", tags=["Course API"])
 async def courses():
     pass
 
+
 # ------------------------------- Exam API --------------------------------#
 @app.post("/exam/question and answer", tags=["Exam API"])
-async def add_question(data : Problems):
+async def add_question(data: Problems):
     oop_exam.add_question_ans(data)
-    course1.set_exam(oop_exam)
+    course.set_exam(oop_exam)
     return {"Question and Answer added successfully"}
 
+
 @app.put("/exam/edit", tags=["Exam API"])
-async def update_exams(question_number: int, body: EditExam): 
+async def update_exams(question_number: int, body: EditExam):
     return oop_exam.edit_exam(question_number, body.dict())
-    
+
 
 @app.get("/exam", tags=["Exam API"])
 async def get_exam():
     return oop_exam.get_exams()
 
+
 @app.post("/exam/do exam", tags=["Exam API"])
-async def do_exam(data : list):  
-    stu1doexam.set_exam(oop_exam.get_exams()) 
+async def do_exam(data: list):
+    stu1doexam.set_exam(oop_exam.get_exams())
     stu1doexam.do_exam(data)
     return {"successfully"}
+
 
 @app.get("/exam/get progression", tags=["Exam API"])
 async def get_progression():
     return {f'{stu1doexam.get_progress()} %'}
 
+
 # -------------------------------- Enroll API ----------------------------- #
 # Course Categories API #
 @app.get("/coursescatg", tags=["Course Categories API"])
-async def course_catg(data : str):  
+async def course_catg(data: str):
     print(course_system.browse_course(data))
-    return  course_system.browse_course(data)
+    return course_system.browse_course(data)
 
 
 # --- Enroll API --- #
 @app.get("/cart", tags=["Enrollment"])
 async def cart():
     return {"Cart": course_system.get_cart()}
+
 
 @app.post("/addcart", tags=["Enrollment"])
 async def add_cart(cart_item: dict) -> dict:
@@ -168,5 +179,21 @@ async def remove_cart(removal: dict) -> dict:
 
 
 @app.post("/enroll", tags=["Enrollment"])
-async def enroll(enrolled: dict) -> dict:
-    pass
+async def enroll(user: str):
+    u = course_system.search_user(user)
+    if course_system.enroll(u):
+        return {"Enroll": "Success"}
+    else:
+        return {"Enroll": "Cart is empty!"}
+
+
+@app.post("/unenroll", tags=["Enrollment"])
+async def unenroll(unenroll: dict) -> dict:
+    username = unenroll["username"]
+    refcode = unenroll["refcode"]
+    u = course_system.search_user(username)
+    c = course_system.search_course(refcode)
+    if course_system.unenroll(u, c):
+        return {"Unenroll": "Success"}
+    else:
+        return {"Unenroll": "Error"}

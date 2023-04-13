@@ -1,6 +1,3 @@
-from courses import *
-from datetime import *
-
 class CourseSystem:
     def __init__(self):
         self.__course_list = []
@@ -17,7 +14,7 @@ class CourseSystem:
 
     def delete_user(self):
         pass
-    
+
     def search_user(self, name):
         username_l = []
         for u in self.__user_list:
@@ -63,10 +60,22 @@ class CourseSystem:
         else:
             return False
 
-    def enroll(self, user, cart):
-        for i in cart:
-            user.set_enrolled_course('enroll', i)
-        self.__cart = []
+    def enroll(self, user):
+        if self.__cart:
+            for i in self.__cart:
+                user.set_enrolled_course('enroll', i)
+            self.__cart = []
+            return True
+        else:
+            return False
+
+    def unenroll(self, user, course):
+        er = user.get_enrolled_course()
+        if course in er:
+            er.remove(course)
+            return True
+        else:
+            return False
 
     def browse_course(self, catg):
         self.__coursecatg_list = []
