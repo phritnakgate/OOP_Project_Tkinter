@@ -69,10 +69,21 @@ async def add_cart(cart_item: dict) -> dict:
     print(u)
     print(c)
     if not course_system.add_cart(c, u.get_enrolled_course()):
-        return {"Error": "Already enrolled!"}
+        return {"Error": "Already enrolled! / Already in cart!"}
     else:
         course_system.add_cart(c, u.get_enrolled_course())
         return {"Cart": "Success"}
+
+
+@app.post("/removecart", tags=["Enrollment"])
+async def remove_cart(removal: dict) -> dict:
+    refcode = removal["refcode"]
+    print(refcode)
+    c = course_system.search_course(refcode)
+    if course_system.remove_cart(c):
+        return {"Success": "Remove complete"}
+    else:
+        return {"Error": "No"}
 
 
 @app.post("/enroll", tags=["Enrollment"])
