@@ -14,19 +14,20 @@ class Courses:
         self.__contact = contact
         self.__exam = None
 
-
     def get_refcode(self):
         return self.__refcode
+
     def get_catg(self):
         return self.__catg
+
     def get_title(self):
         return self.__title
     def set_exam(self,exam):
         self.__exam = exam
 
+
 class CourseCatg:
     pass
-
 
 
 # --- Course Material --- #
