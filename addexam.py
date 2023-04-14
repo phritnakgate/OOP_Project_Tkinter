@@ -7,6 +7,7 @@ from courses import *
 from user import *
 from exam import *
 from dto import *
+from system import *
 
 course_system = CourseSystem()
 
