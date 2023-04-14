@@ -54,8 +54,12 @@ async def login():
 async def courses():
     pass
 
+@app.get("/courses/search_by_name", tags=["Course API"])
+async def search_name(data : str):
+    return course_system.search_by_name(data)
+
 # ------------------------------- Exam API --------------------------------#
-@app.post("/exam/question and answer", tags=["Exam API"])
+@app.post("/exam/question_and_answer", tags=["Exam API"])
 async def add_question(data : Problems):
     oop_exam.add_question_ans(data)
     course1.set_exam(oop_exam)
@@ -70,7 +74,7 @@ async def update_exams(question_number: int, body: EditExam):
 async def get_exam():
     return oop_exam.get_exams()
 
-@app.post("/exam/do exam", tags=["Exam API"])
+@app.post("/exam/do_exam", tags=["Exam API"])
 async def do_exam(data : list):  
     stu1doexam.set_exam(oop_exam.get_exams()) 
     stu1doexam.do_exam(data)

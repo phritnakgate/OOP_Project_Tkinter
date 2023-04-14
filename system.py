@@ -16,7 +16,7 @@ class CourseSystem:
         return self.__user_list
     def delete_user(self):
         pass
-    
+   
     def search_user(self, name):
         username_l = []
         for u in self.__user_list:
@@ -42,6 +42,15 @@ class CourseSystem:
             course_l.append(c.get_refcode())
         if name in course_l:
             return self.__course_list[course_l.index(name)]
+        
+    def search_by_name(self,search_name):
+        result = []
+        for course in self.__course_list:
+            if search_name.lower() in course.get_title().lower():
+                result.append(course)
+        if result: return result  
+        else: return {'Course Not Found!!'}  
+    
     # --- Enroll --- #
     def get_cart(self):
         return self.__cart
