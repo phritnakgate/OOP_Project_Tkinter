@@ -33,7 +33,7 @@ app = FastAPI()
 
 @app.get("/", tags=['root'])
 async def root():
-    return {"Welcome": "Hello World"}
+    return {"Welcome": "Hello OOP"}
 
 
 # --- User API --- #
@@ -42,14 +42,27 @@ async def root():
 async def register(form_data: dict):
     username = form_data["username"]
     password = form_data["password"]
-    course_system.add_user(User(username=username, password=password))
+    email = form_data["email"]
+    fname = form_data["fname"]
+    lname = form_data["lname"]
+    gender = form_data["gender"]
+    birth_date = form_data["birth_date"]
+    education = form_data["education"]
+    province = form_data["province"]
+    country = form_data["country"]
+    user_type = form_data["user_type"]
+
+
+    course_system.add_user(User(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender, birth_date=birth_date, education=education, province=province,
+                                country=country, user_type=user_type))
     return {
         "messsage": "user created"
     }
+
 #check create users
-@app.get("/checkuser", tags=["User API"])
+@app.get("/users", tags=["User API"])
 async def read_users():
-    return course_system.get_users()
+    return course_system.get_user_db()
 
 @app.get("/login", tags=["User API"])
 async def login():
