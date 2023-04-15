@@ -7,8 +7,8 @@ from random import randint
 
 user = "ffwatcharin"
 
-
 def update_cart():
+    global response
     r = requests.get("http://localhost:8000/cart")
     data = json.loads(r.text)
     cart_item = data["Cart"]
@@ -17,12 +17,11 @@ def update_cart():
         for i in cart_item:
             cart_list = i['_Courses__refcode'] + ":" + i['_Courses__title']
             display.append(cart_list)
-        return display
+        response = display
     else:
-        return ['No course in cart']
+        response = ['No course in cart']
 
-
-response = update_cart()
+update_cart()
 print(response)
 
 
@@ -37,10 +36,28 @@ def enroll():
 
 
 def refresh():
-    response = update_cart()
+    update_cart()
     print(response)
+    cartui.update()
 
-
+def remove_cart():
+    ref = ent.get()
+    print(ref)
+    if ref != "" and response != ['No course in cart']:
+        req = {"refcode": str(ref)}
+        r = requests.post("http://localhost:8000/removecart", json=req)
+        res = r.text
+        print(res)
+        if res == "{\"Success\":\"Remove complete\"}":
+            ent.delete(0, END)
+            update_cart()
+            cartui.update()
+            tkinter.messagebox.showinfo(title="Success", message="Remove Success!")
+        else:
+            tkinter.messagebox.showerror(title="Error", message="Error!")
+    else:
+        tkinter.messagebox.showerror(title="Error", message="Input refcode!/No cart!")
+# --------------------- Create GUI ----------------------- #
 cartui = Tk()
 
 header_font = Font(family="Kanit", weight="bold", size=20)
@@ -58,17 +75,14 @@ cartui.config(menu=menuitem)
 
 Label(text="Cart", font=header_font).pack(anchor="center")
 Button(text="Refresh Cart", font=normal_font, command=refresh).pack(anchor="e")
-lbl = Label(cartui, font=normal_font)
-lbl.pack(anchor="center")
-
-
-def update():
-    for i in response:
-        lbl['text'] = i + "\n"
-    cartui.after(1000, update)  # run itself again after 1000 ms
-
+txtbox = Text(cartui, height=12, width=40, font=txtbox_font)
+txtbox.pack(anchor="center")
+for i in response:
+    txtbox.insert(END, i + "\n")
 
 Button(text="Enroll", font=normal_font, command=enroll).pack(anchor="center")
+ent = Entry(cartui, font=txtbox_font)
+ent.place(x=100, y=450)
+Button(text="Remove", font=normal_font, command=remove_cart).place(x=300, y=440)
 
-update()
 cartui.mainloop()
