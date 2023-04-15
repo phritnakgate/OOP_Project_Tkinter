@@ -1,6 +1,4 @@
 from courses import *
-from datetime import *
-from user import *
 
 class CourseSystem:
     def __init__(self):
@@ -9,12 +7,13 @@ class CourseSystem:
         self.__cart = []
         self.__coursecatg_list = []
 
-
     # --- User --- #
     def add_user(self, user):
         self.__user_list.append(user)
+
     def get_user_db(self):
         return self.__user_list
+
     def delete_user(self):
         pass
 
@@ -37,58 +36,93 @@ class CourseSystem:
 
     def delete_course(self, refcode):
         pass
-    def search_course(self, name):
+
+    def search_course(self, refcode):
         course_l = []
         for c in self.__course_list:
             course_l.append(c.get_refcode())
-        if name in course_l:
-            return self.__course_list[course_l.index(name)]
+        if refcode in course_l:
+            return self.__course_list[course_l.index(refcode)]
+        
+    #def search_by_name(self,search_name):
+        #result = []
+        #for course in self.__course_list:
+            #if search_name.lower() in course.get_title().lower():
+                #result.append(course)
+        #if result: return result  
+        #else: return {'Course Not Found!!'}  
+
+    # --- Study --- #
+    def get_course(self, user, refcode):
+        u = self.search_user(user)
+        ref = []
+        for i in u.get_enrolled_course():
+            ref.append(i.get_refcode())
+        if refcode in ref:
+            return u.get_enrolled_course()[ref.index(refcode)]
+        else:
+            return False
+
+    def add_chapter(self, refcode, title):
+        c = self.search_course(refcode)
+        chap = CourseChapter(title)
+        c.get_chapter().append(chap)
+
+    def get_chapter(self, user, refcode, chapter):
+        c = self.search_course(refcode)
+        try:
+            c.get_chapter()[int(chapter)]
+        except:
+            return {"ERROR": "Not found chapter"}
+        return c.get_chapter()[int(chapter)]
+
+    def get_material(self, refcode, chapter):
+        c = self.search_course(refcode)
+        return c.get_chapter()[int(chapter)].get_material()
+
+    def add_material(self, refcode, chapter, material):
+        c = self.search_course(refcode)
+        c.get_chapter()[int(chapter)].get_material().append(material)
+
     # --- Enroll --- #
     def get_cart(self):
         return self.__cart
+
     def add_cart(self, will_enrolled, enrolled):
-        if will_enrolled in enrolled:
+        if (will_enrolled in enrolled) or (will_enrolled in self.__cart):
             return False
         else:
             self.__cart.append(will_enrolled)
-    def enroll(self, user, cart):
-        for i in cart:
-            user.set_enrolled_course('enroll', i)
-        self.__cart = []
+            return True
+
+    def remove_cart(self, will_remove):
+        if (will_remove in self.__cart) and (self.__cart != []):
+            self.__cart.remove(will_remove)
+            return True
+        else:
+            return False
+
+    def enroll(self, user):
+        if self.__cart:
+            for i in self.__cart:
+                user.set_enrolled_course('enroll', i)
+            self.__cart = []
+            return True
+        else:
+            return False
+
+    def unenroll(self, user, course):
+        er = user.get_enrolled_course()
+        if course in er:
+            er.remove(course)
+            return True
+        else:
+            return False
 
     def browse_course(self, catg):
+        self.__coursecatg_list = []
         for i in self.__course_list:
             if i.get_catg() == catg:
                 self.__coursecatg_list.append(i)
 
         return self.__coursecatg_list
-    
-course_system = CourseSystem()
-course = Courses("SOFT001", "Object Oriented Programming", "Learn writing oop", "teach1", "Software", "All Ages",
-                 "To understanding OOP", "10", "10", datetime.now(), "teacher1@gmail.com")
-course2 = Courses("HARD001", "Basic Arduino", "Learn Basic Arduino", "teach1", "Hardware", "All Ages",
-                 "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
-course3 = Courses("HARD002", "Circuits and Electronics", "Learn Circuit Electronic", "teach1", "Hardware", "All Ages",
-                 "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
-course4 = Courses("SOFT002", "Programming Fundamentals", "Learn basic programming", "teach1", "Software", "All Ages",
-                 "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
-course5 = Courses("MATH001", "Calculus I", "Learn Calculus I", "teach1", "Math", "All Ages",
-                 "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
-course6 = Courses("MATH002", "Calculus II", "Learn Calculus II", "teach1", "Math", "All Ages",
-                 "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
-course7 = Courses("MATH003", "Discrete Structure", "Learn Discrete math", "teach1", "Math", "All Ages",
-                 "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
-course8 = Courses("SCI001", "Cellular Respiration", "Learn Cellular Respiration", "teach1", "Science", "All Ages",
-                 "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
-course9 = Courses("SCI002", "Photosynthesis", "Learn Photosynthesis", "teach1", "Science", "All Ages",
-                 "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
-course_system.create_course(course)
-course_system.create_course(course2)
-course_system.create_course(course3)
-course_system.create_course(course4)
-course_system.create_course(course5)
-course_system.create_course(course6)
-course_system.create_course(course7)
-course_system.create_course(course8)
-course_system.create_course(course9)
-print(course_system.browse_course("Science"))

@@ -12,42 +12,45 @@ class Courses:
         self.__recom_hour = recom_hour
         self.__release = release
         self.__contact = contact
-
+        self.__exam = None
+        self.__chapter = []
 
     def get_refcode(self):
         return self.__refcode
+
     def get_catg(self):
         return self.__catg
+
     def get_title(self):
         return self.__title
+
+    def set_exam(self, exam):
+        self.__exam = exam
+
+    def set_chapter(self, chapter):
+        self.__chapter.append(chapter)
+
+    def get_chapter(self):
+        return self.__chapter
+
 
 class CourseCatg:
     pass
 
 
-
 # --- Course Material --- #
 class CourseChapter:
-    pass
+    def __init__(self, title):
+        self.__title = title
+        self.__material = []
+
+    def get_material(self):
+        return self.__material
+
+    def set_material(self, material):
+        self.__material.append(material)
 
 
 class CourseMaterial:
-    pass
-
-
-class CourseExam:
-    def __init__(self, course_name, exam_list, ans_list):
-        self._course_name = course_name
-        self._exam_list = exam_list
-        self._ans_list = ans_list
-
-    def do_exam(self):
-        pass
-
-    def ans_check(self):
-        pass
-
-
-class CouseProgression:
-    def __init__(self):
-        pass
+    def __init__(self, material):
+        self.__material = material
