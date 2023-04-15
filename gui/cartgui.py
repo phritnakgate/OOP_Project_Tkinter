@@ -3,7 +3,6 @@ from tkinter.font import *
 import tkinter.messagebox
 import requests
 import json
-from random import randint
 
 user = "ffwatcharin"
 
