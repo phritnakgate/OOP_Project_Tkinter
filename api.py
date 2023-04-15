@@ -72,10 +72,10 @@ course_system.add_user(student)
 course_system.add_user(admin)
 print(course_system.get_user_db())
 
-student.set_enrolled_course('enroll', course1)  # Student has enrolled SOFT001.
+student.set_enrolled_course('enroll', course)  # Student has enrolled SOFT001.
 
-oop_exam = CourseExam(course1.get_title) 
-stu1doexam = CouseProgression(student.get_username, course1.get_refcode)
+oop_exam = CourseExam(course.get_title) 
+stu1doexam = CouseProgression(student.get_username, course.get_refcode)
 
 #------------------------------- API -----------------------------------#
 app = FastAPI()
@@ -105,7 +105,7 @@ async def search_name(data : str):
 @app.post("/exam/question_and_answer", tags=["Exam API"])
 async def add_question(data : Problems):
     oop_exam.add_question_ans(data)
-    course1.set_exam(oop_exam)
+    course.set_exam(oop_exam)
     return {"Question and Answer added successfully"}
 
 @app.put("/exam/edit", tags=["Exam API"])
