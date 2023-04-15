@@ -44,6 +44,14 @@ class CourseSystem:
             course_l.append(c.get_refcode())
         if refcode in course_l:
             return self.__course_list[course_l.index(refcode)]
+        
+    #def search_by_name(self,search_name):
+        #result = []
+        #for course in self.__course_list:
+            #if search_name.lower() in course.get_title().lower():
+                #result.append(course)
+        #if result: return result  
+        #else: return {'Course Not Found!!'}  
 
     # --- Study --- #
     def get_course(self, user, refcode):
