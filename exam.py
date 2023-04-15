@@ -4,7 +4,7 @@ class CourseExam:
         self._exam_list = []
         self._score = None
 
-    def add_question_ans(self, questionlist):
+     def add_question_ans(self, questionlist):
         q_list = []
         for q , a in questionlist.questions:
             q_list.append(ExamItem(q[1], a[1]))
@@ -24,10 +24,10 @@ class CourseExam:
                 score += 1
         return score
 
-    def get_exams(self):
+     def get_exams(self):
         return self._exam_list
      
-    def edit_exam(self, number, body:dict):
+     def edit_exam(self, number, body:dict):
           if(number <= len(self._exam_list)):
                self._exam_list[number-1].set_ques(body['question'])
                self._exam_list[number-1].set_ans(body['answer'])
