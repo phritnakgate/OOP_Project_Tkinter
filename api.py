@@ -83,7 +83,7 @@ chap2_mat = CourseMaterial("https://www.youtube.com/watch?v=N1fnq4MF3AE&list=PLl
 course_system.add_material('SOFT001', 1, chap2_mat)
 
 course_system.add_chapter('SOFT001', '03:OOP Principle')
-chap3_mat = CourseMaterial("https://www.youtube.com/watch?v=N1fnq4MF3AE&list=PLltVQYLz1BMBwqJysYnoEKWXUvqusJpgN&ab_channel=KongRuksiam")
+chap3_mat = CourseMaterial("OOP is Object Oriented Programming")
 course_system.add_material('SOFT001', 2, chap3_mat)
 
 oop_exam = CourseExam(course.get_title)
