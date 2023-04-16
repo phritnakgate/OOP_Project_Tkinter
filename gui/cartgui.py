@@ -37,8 +37,11 @@ def enroll():
 def refresh():
     update_cart()
     print(response)
-    cartui.update()
-
+    txtbox.config(state="normal")
+    txtbox.delete("1.0", "end-1c")
+    for j in response:
+        txtbox.insert(END, j + "\n")
+    txtbox.config(state="disabled")
 def remove_cart():
     ref = ent.get()
     print(ref)
@@ -76,8 +79,10 @@ Label(text="Cart", font=header_font).pack(anchor="center")
 Button(text="Refresh Cart", font=normal_font, command=refresh).pack(anchor="e")
 txtbox = Text(cartui, height=12, width=40, font=txtbox_font)
 txtbox.pack(anchor="center")
-for i in response:
-    txtbox.insert(END, i + "\n")
+if txtbox.get("1.0", "end-1c") == "":
+    for i in response:
+        txtbox.insert(END, i + "\n")
+    txtbox.config(state="disabled")
 
 Button(text="Enroll", font=normal_font, command=enroll).pack(anchor="center")
 ent = Entry(cartui, font=txtbox_font)
