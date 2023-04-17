@@ -3,6 +3,8 @@ from tkinter.font import *
 import tkinter.messagebox
 import requests
 import json
+from studygui import Study
+from functools import partial
 
 user = "ffwatcharin"
 
@@ -31,7 +33,14 @@ def unenroll(username, refcode):
     r = requests.post("http://localhost:8000/unenroll", json=param)
     res = r.text
     print(res)
-    tkinter.messagebox.showinfo(title="Success", message="Unenroll Success!")
+    tkinter.messagebox.showinfo(title="Success", message="Unenroll Success! Please reopen this window")
+
+def study(username, refcode):
+    colonindex = refcode.index(":")
+    refcode = refcode[:colonindex]
+    mycourse.destroy()
+    Study(username, refcode)
+
 
 get_enrolled_course(user)
 # --------------------- Create GUI ----------------------- #
@@ -55,7 +64,7 @@ posy = 50
 for i in response:
     lbl = Label(text=i, font=txtbox_font)
     lbl.place(x=50, y=posy)
-    Button(text="Study", font=txtbox_font).place(x=500, y=posy)
-    Button(text="Unenroll", font=txtbox_font, command=lambda: unenroll(user, lbl.cget("text"))).place(x=570, y=posy)
+    Button(text="Study", font=txtbox_font, command=partial(study, user, lbl.cget("text"))).place(x=500, y=posy)
+    Button(text="Unenroll", font=txtbox_font, command=partial(unenroll, user, lbl.cget("text"))).place(x=570, y=posy)
     posy += 50
 mycourse.mainloop()

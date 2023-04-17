@@ -2,9 +2,8 @@ from tkinter import *
 from tkinter.font import *
 import tkinter as tk
 from tkinter import ttk
-from tkcalendar import Calendar, DateEntry
+from tkcalendar import DateEntry
 import tkinter.messagebox
-
 import requests
 import json
 
@@ -16,30 +15,30 @@ class RegisterGUI:
         self.__normal_font = Font(family="Kanit", weight="normal", size=16)
         self.__txtbox_font = Font(family="Kanit", weight="normal", size=12)
         self.__register.title("Register")
-        self.__register.geometry("400x600")
+        self.__register.geometry("400x500")
         self.__register.resizable(width=False, height=False)
 
         Label(text="Register", font=self.__header_font).pack()
 
         Label(text="Username :", font=self.__normal_font).place(x=25, y=50)
         self.__username_entry = Entry(self.__register, font=self.__txtbox_font)
-        self.__username_entry.place(x=140, y=50)
+        self.__username_entry.place(x=140, y=55)
 
         Label(text="Password :", font=self.__normal_font).place(x=25, y=80)
         self.__pwd_entry = Entry(self.__register, font=self.__txtbox_font)
-        self.__pwd_entry.place(x=140, y=80)
+        self.__pwd_entry.place(x=140, y=85)
 
         Label(text="Email :", font=self.__normal_font).place(x=25, y=110)
         self.__email_entry = Entry(self.__register, font=self.__txtbox_font)
-        self.__email_entry.place(x=140, y=110)
+        self.__email_entry.place(x=140, y=115)
 
         Label(text="Name :", font=self.__normal_font).place(x=25, y=140)
         self.__name_entry = Entry(self.__register, font=self.__txtbox_font)
-        self.__name_entry.place(x=140, y=140)
+        self.__name_entry.place(x=140, y=145)
 
         Label(text="Surname :", font=self.__normal_font).place(x=25, y=170)
         self.__surname_entry = Entry(self.__register, font=self.__txtbox_font)
-        self.__surname_entry.place(x=140, y=170)
+        self.__surname_entry.place(x=140, y=175)
 
         Label(text="Gender :", font=self.__normal_font).place(x=25, y=200)
         n = tk.StringVar()
@@ -55,15 +54,15 @@ class RegisterGUI:
 
         Label(text="Education :", font=self.__normal_font).place(x=25, y=260)
         self.__educate_entry = Entry(self.__register, font=self.__txtbox_font)
-        self.__educate_entry.place(x=140, y=260)
+        self.__educate_entry.place(x=140, y=265)
 
         Label(text="Province :", font=self.__normal_font).place(x=25, y=290)
         self.__prov_entry = Entry(self.__register, font=self.__txtbox_font)
-        self.__prov_entry.place(x=140, y=290)
+        self.__prov_entry.place(x=140, y=295)
 
         Label(text="Country :", font=self.__normal_font).place(x=25, y=320)
         self.__country_entry = Entry(self.__register, font=self.__txtbox_font)
-        self.__country_entry.place(x=140, y=320)
+        self.__country_entry.place(x=140, y=325)
 
         Label(text="UserType :", font=self.__normal_font).place(x=25, y=350)
         i = tk.StringVar()
@@ -79,6 +78,7 @@ class RegisterGUI:
     def register(self):
         if self.__username_entry.get() == "" or self.__pwd_entry.get() == "" or (self.__userTypeChoose.get()not in ['Teacher','Student']) :
             tkinter.messagebox.showerror(message="Kuay",title="Heetad")
+            tkinter.messagebox.showerror(message="Please enter a Username, Password and UserType",title="Error")
         else:
 
             data = {
@@ -98,7 +98,7 @@ class RegisterGUI:
             res = json.loads(r.text)
             print(data)
             print(res)
-            tkinter.messagebox.showinfo(message="Yeahhhhh", title="InaaHEee")
+            tkinter.messagebox.showinfo(message="Success", title="Successfully")
             self.__register.destroy()
 
 RegisterGUI()
