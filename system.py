@@ -23,12 +23,21 @@ class CourseSystem:
             username_l.append(u.get_username())
         if name in username_l:
             return self.__user_list[username_l.index(name)]
+    def login(self, username, password):
+        try:
+            user = self.search_user(username)
+            if password == user.get_password():
+                return True
+            else:
+                return False
+        except:
+            return False
 
     # --- Course --- #
     def create_course(self, created_course):
         self.__course_list.append(created_course)
 
-    def get_course(self):
+    def get_all_course(self):
         return self.__course_list
 
     def modify_course(self):

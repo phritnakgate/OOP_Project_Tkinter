@@ -50,7 +50,7 @@ class CourseChapter:
     def set_material(self, material):
         self.__material.append(material)
 
-
 class CourseMaterial:
     def __init__(self, material):
         self.__material = material
+
