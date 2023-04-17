@@ -125,10 +125,14 @@ async def register(form_data: dict):
 async def read_users():
     return course_system.get_user_db()
 
-@app.get("/login", tags=["User API"])
-async def login():
-    pass
-
+@app.post("/login", tags=["User API"])
+async def login(username: str, password: str):
+    if course_system.login(username, password):
+        return {"Status": "Login Success!",
+                "username": username,
+                "password": password}
+    else:
+        return {"Status": "Username/Password Incorrect!!"}
 
 @app.get("/enrolled", tags=["User API"])
 async def enrolled(username: str):
@@ -139,7 +143,7 @@ async def enrolled(username: str):
 # ----------------------------------------- Course API ----------------------------------------- #
 @app.get("/courses", tags=["Course API"])
 async def courses():
-    pass
+    return course_system.get_all_course()
 
 @app.get("/courses/search_by_name", tags=["Course API"])
 async def search_name(data : str):
