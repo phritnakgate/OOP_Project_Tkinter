@@ -98,7 +98,7 @@ class RegisterGUI:
             res = json.loads(r.text)
             print(data)
             print(res)
-            tkinter.messagebox.showinfo(message="Yeahhhhh", title="InaaHEee")
+            tkinter.messagebox.showinfo(message="huhasudhh", title="InaaHEee")
             self.__register.destroy()
 
 RegisterGUI()
