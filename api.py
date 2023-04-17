@@ -126,12 +126,7 @@ async def register(form_data: dict):
                                 country=country))
         return {"messsage": "admin created"}
 
-    
-#check create users
-@app.get("/users", tags=["User API"])
-async def read_users():
-    return course_system.get_user_db()
-
+#login
 @app.post("/login", tags=["User API"])
 async def login(username: str, password: str):
     if course_system.login(username, password):
@@ -140,6 +135,17 @@ async def login(username: str, password: str):
                 "password": password}
     else:
         return {"Status": "Username/Password Incorrect!!"}
+
+#delete user
+@app.delete("/delete_user", tags=["User API"])
+async def delete_user(username: str):
+    course_system.delete_user(username)
+    return {"messsage": "Username has been deleted"}
+
+#check create users
+@app.get("/check_users", tags=["User API"])
+async def read_users():
+    return course_system.get_user_db()
 
 @app.get("/enrolled", tags=["User API"])
 async def enrolled(username: str):

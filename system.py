@@ -14,8 +14,14 @@ class CourseSystem:
     def get_user_db(self):
         return self.__user_list
 
-    def delete_user(self):
-        pass
+    def delete_user(self,username):
+        deluser_l = []
+        for i in self.__user_list:
+            deluser_l.append(i.get_username())
+        try:
+            del self.__user_list[deluser_l.index(username)]
+        except:
+            return False
 
     def search_user(self, name):
         username_l = []
