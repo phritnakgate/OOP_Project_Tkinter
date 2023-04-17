@@ -52,13 +52,20 @@ async def register(form_data: dict):
     country = form_data["country"]
     user_type = form_data["user_type"]
 
+    if user_type == "Teacher":
+        course_system.add_user(Teacher(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender, birth_date=birth_date, education=education, province=province,
+                                country=country))
+        return {"messsage": "teacher created"}
+    elif user_type == "Student":
+        course_system.add_user(Student(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender, birth_date=birth_date, education=education, province=province,
+                                country=country))
+        return {"messsage": "student created"}
+    elif user_type == "Admin":
+        course_system.add_user(Admin(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender, birth_date=birth_date, education=education, province=province,
+                                country=country))
+        return {"messsage": "admin created"}
 
-    course_system.add_user(User(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender, birth_date=birth_date, education=education, province=province,
-                                country=country, user_type=user_type))
-    return {
-        "messsage": "user created"
-    }
-
+    
 #check create users
 @app.get("/users", tags=["User API"])
 async def read_users():
@@ -67,7 +74,6 @@ async def read_users():
 @app.get("/login", tags=["User API"])
 async def login():
     pass
-
 
 # --- Course API --- #
 @app.get("/courses", tags=["Course API"])
