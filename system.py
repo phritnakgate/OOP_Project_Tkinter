@@ -35,7 +35,13 @@ class CourseSystem:
         pass
 
     def delete_course(self, refcode):
-        pass
+        ref_l = []
+        for i in self.__course_list:
+            ref_l.append(i.get_refcode())
+            
+        try:
+            del self.__course_list[ref_l.index(refcode)]
+        except: return False 
 
     def search_course(self, refcode):
         course_l = []
@@ -44,13 +50,13 @@ class CourseSystem:
         if refcode in course_l:
             return self.__course_list[course_l.index(refcode)]
         
-    #def search_by_name(self,search_name):
-        #result = []
-        #for course in self.__course_list:
-            #if search_name.lower() in course.get_title().lower():
-                #result.append(course)
-        #if result: return result  
-        #else: return {'Course Not Found!!'}  
+    def search_by_name(self,search_name):
+        result = []
+        for course in self.__course_list:
+            if search_name.lower() in course.get_title().lower():
+                result.append(course)
+        if result: return result  
+        else: return {'Course Not Found!!'}  
 
     # --- Study --- #
     def get_course(self, user, refcode):
