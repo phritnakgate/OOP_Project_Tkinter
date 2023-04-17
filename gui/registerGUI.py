@@ -77,6 +77,7 @@ class RegisterGUI:
 
     def register(self):
         if self.__username_entry.get() == "" or self.__pwd_entry.get() == "" or (self.__userTypeChoose.get()not in ['Teacher','Student']) :
+            tkinter.messagebox.showerror(message="Kuay",title="Heetad")
             tkinter.messagebox.showerror(message="Please enter a Username, Password and UserType",title="Error")
         else:
 
