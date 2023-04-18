@@ -7,7 +7,7 @@ from exam import *
 from dto import *
 
 # --- Creation Test --- #
-teacher = Teacher("teach1", "123456", "teacher1@gmail.com", "tea", "cher", "Male", datetime(2003, 12, 4), "D.Eng",
+teacher1 = Teacher("teach1", "123456", "teacher1@gmail.com", "tea", "cher", "Male", datetime(2003, 12, 4), "D.Eng",
                   "Bangkok", "Thailand", "KMITL")
 admin = Admin("admin", "admin1234", "admin1@gmail.com", "ad", "min", "Male", datetime(2003, 12, 4), "",
               "Bangkok", "Thailand")
@@ -66,7 +66,7 @@ course_system.create_course(course13)
 course_system.create_course(course14)
 course_system.create_course(course15)
 
-course_system.add_user(teacher)
+course_system.add_user(teacher1)
 course_system.add_user(student)
 course_system.add_user(admin)
 print(course_system.get_user_db())
@@ -75,19 +75,21 @@ student.set_enrolled_course('enroll', course)  # Student has enrolled SOFT001.
 
 # SOFT001 Chapter
 course_system.add_chapter('SOFT001', '01:Basic Python')
-chap1_mat = CourseMaterial("https://www.youtube.com/watch?v=N1fnq4MF3AE&list=PLltVQYLz1BMBwqJysYnoEKWXUvqusJpgN&ab_channel=KongRuksiam")
+chap1_mat = CourseMaterial(
+    "https://www.youtube.com/watch?v=N1fnq4MF3AE&list=PLltVQYLz1BMBwqJysYnoEKWXUvqusJpgN&ab_channel=KongRuksiam")
 course_system.add_material('SOFT001', 0, chap1_mat)
 
 course_system.add_chapter('SOFT001', '02:Intermediate Python')
-chap2_mat = CourseMaterial("https://www.youtube.com/watch?v=N1fnq4MF3AE&list=PLltVQYLz1BMBwqJysYnoEKWXUvqusJpgN&ab_channel=KongRuksiam")
+chap2_mat = CourseMaterial(
+    "https://www.youtube.com/watch?v=N1fnq4MF3AE&list=PLltVQYLz1BMBwqJysYnoEKWXUvqusJpgN&ab_channel=KongRuksiam")
 course_system.add_material('SOFT001', 1, chap2_mat)
 
 course_system.add_chapter('SOFT001', '03:OOP Principle')
-chap3_mat = CourseMaterial("https://www.youtube.com/watch?v=N1fnq4MF3AE&list=PLltVQYLz1BMBwqJysYnoEKWXUvqusJpgN&ab_channel=KongRuksiam")
+chap3_mat = CourseMaterial("OOP is Object Oriented Programming")
 course_system.add_material('SOFT001', 2, chap3_mat)
 
 oop_exam = CourseExam(course.get_title)
-stu1doexam = CouseProgression(student.get_username, course.get_refcode)
+stu1doexam = CourseProgression(student.get_username, course.get_refcode)
 
 # ------------------------------- API -----------------------------------#
 app = FastAPI()
@@ -95,13 +97,71 @@ app = FastAPI()
 
 @app.get("/", tags=['root'])
 async def root():
-    return {"Welcome": "Hello World"}
+    return {"Welcome": "Hello OOP"}
 
 
 # -------------------------------------------- User API -------------------------------------------- #
-@app.get("/login", tags=["User API"])
-async def login():
-    pass
+# register
+@app.post("/register", tags=["User API"])
+async def register(form_data: dict):
+    username = form_data["username"]
+    password = form_data["password"]
+    email = form_data["email"]
+    fname = form_data["fname"]
+    lname = form_data["lname"]
+    gender = form_data["gender"]
+    birth_date = form_data["birth_date"]
+    education = form_data["education"]
+    province = form_data["province"]
+    country = form_data["country"]
+    user_type = form_data["user_type"]
+
+    if user_type == "Teacher":
+        teacher_dept = form_data["teacher_dept"]
+
+    if user_type == "Teacher":
+        course_system.add_user(
+            Teacher(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender,
+                    birth_date=birth_date, education=education, province=province,
+                    country=country, teacher_dept=teacher_dept))
+        return {"message": "teacher created"}
+    elif user_type == "Student":
+        course_system.add_user(
+            Student(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender,
+                    birth_date=birth_date, education=education, province=province,
+                    country=country))
+        return {"message": "student created"}
+    elif user_type == "Admin":
+        course_system.add_user(
+            Admin(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender,
+                  birth_date=birth_date, education=education, province=province,
+                  country=country))
+        return {"message": "admin created"}
+
+
+# login
+@app.post("/login", tags=["User API"])
+async def login(username: str, password: str):
+    if course_system.login(username, password):
+        return {"Status": "Login Success!",
+                "username": username,
+                "password": password,
+                "user_type": course_system.search_user(username).get_user_type()}
+    else:
+        return {"Status": "Username/Password Incorrect!!"}
+
+
+# delete user
+@app.delete("/delete_user", tags=["User API"])
+async def delete_user(username: str):
+    course_system.delete_user(username)
+    return {"messsage": "Username has been deleted"}
+
+
+# check create users
+@app.get("/check_users", tags=["User API"])
+async def read_users():
+    return course_system.get_user_db()
 
 
 @app.get("/enrolled", tags=["User API"])
@@ -113,11 +173,40 @@ async def enrolled(username: str):
 # ----------------------------------------- Course API ----------------------------------------- #
 @app.get("/courses", tags=["Course API"])
 async def courses():
-    pass
+    return course_system.get_all_course()
+
+@app.post("/create_course", tags=["Course API"])
+async def create_course(course_info : dict):
+    refcode = course_info["refcode"]
+    title = course_info["title"]
+    desc = course_info["desc"]
+    teacher = course_info["teacher"]
+    catg = course_info["catg"]
+    target = course_info["target"]
+    objective = course_info["objective"]
+    hour = course_info["hour"]
+    recom_hour = course_info["recom_hour"]
+    release = datetime.now()
+    contact = course_info["contact"]
+
+    course_system.create_course(Courses(refcode=refcode, title=title, desc=desc, teacher=teacher, catg=catg, target=target, 
+                                        objective=objective, hour=hour, recom_hour=recom_hour, release=release, contact=contact))
+
+    return {
+        "message" : "course created"
+    }
+
+#@app.put("/courses/", tags=["Modify Course API"])
+
+@app.delete("/delete_course", tags=["Course API"])
+async def delete_course(willdel : str):
+    course_system.delete_course(willdel)
+
 
 @app.get("/courses/search_by_name", tags=["Course API"])
-async def search_name(data : str):
+async def search_name(data: str):
     return course_system.search_by_name(data)
+
 
 # Course Categories API #
 @app.get("/coursescatg", tags=["Course Categories API"])
@@ -125,19 +214,23 @@ async def course_catg(data: str):
     print(course_system.browse_course(data))
     return course_system.browse_course(data)
 
+
 @app.get("/courses/{user}/{refcode}", tags=["Course API"])
 async def get_course(user, refcode):
     if course_system.get_course(user, refcode):
         return course_system.get_course(user, refcode)
     else:
         return {"Error": "Not enrolled!"}
+
+
 @app.get("/courses/{user}/{refcode}/{chapter}", tags=["Course API"])
 async def get_chapter(user, refcode, chapter):
     return course_system.get_chapter(user, refcode, chapter)
 
+
 # ------------------------------- Exam API --------------------------------#
 @app.post("/exam/question_and_answer", tags=["Exam API"])
-async def add_question(data : Problems):
+async def add_question(data: Problems):
     oop_exam.add_question_ans(data)
     course.set_exam(oop_exam)
     return {"Question and Answer added successfully"}
@@ -152,9 +245,10 @@ async def update_exams(question_number: int, body: EditExam):
 async def get_exam():
     return oop_exam.get_exams()
 
+
 @app.post("/exam/do_exam", tags=["Exam API"])
-async def do_exam(data : list):  
-    stu1doexam.set_exam(oop_exam.get_exams()) 
+async def do_exam(data: list):
+    stu1doexam.set_exam(oop_exam.get_exams())
     stu1doexam.do_exam(data)
     return {"successfully"}
 

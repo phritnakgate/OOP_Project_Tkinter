@@ -1,6 +1,5 @@
 from courses import *
 
-
 class CourseSystem:
     def __init__(self):
         self.__course_list = []
@@ -15,8 +14,14 @@ class CourseSystem:
     def get_user_db(self):
         return self.__user_list
 
-    def delete_user(self):
-        pass
+    def delete_user(self,username):
+        deluser_l = []
+        for i in self.__user_list:
+            deluser_l.append(i.get_username())
+        try:
+            del self.__user_list[deluser_l.index(username)]
+        except:
+            return False
 
     def search_user(self, name):
         username_l = []
@@ -24,19 +29,34 @@ class CourseSystem:
             username_l.append(u.get_username())
         if name in username_l:
             return self.__user_list[username_l.index(name)]
+    def login(self, username, password):
+        try:
+            user = self.search_user(username)
+            if password == user.get_password():
+                return True
+            else:
+                return False
+        except:
+            return False
 
     # --- Course --- #
     def create_course(self, created_course):
         self.__course_list.append(created_course)
 
-    def get_course(self):
+    def get_all_course(self):
         return self.__course_list
 
     def modify_course(self):
         pass
 
     def delete_course(self, refcode):
-        pass
+        ref_l = []
+        for i in self.__course_list:
+            ref_l.append(i.get_refcode())
+            
+        try:
+            del self.__course_list[ref_l.index(refcode)]
+        except: return False 
 
     def search_course(self, refcode):
         course_l = []
@@ -45,13 +65,13 @@ class CourseSystem:
         if refcode in course_l:
             return self.__course_list[course_l.index(refcode)]
         
-    #def search_by_name(self,search_name):
-        #result = []
-        #for course in self.__course_list:
-            #if search_name.lower() in course.get_title().lower():
-                #result.append(course)
-        #if result: return result  
-        #else: return {'Course Not Found!!'}  
+    def search_by_name(self,search_name):
+        result = []
+        for course in self.__course_list:
+            if search_name.lower() in course.get_title().lower():
+                result.append(course)
+        if result: return result  
+        else: return {'Course Not Found!!'}  
 
     # --- Study --- #
     def get_course(self, user, refcode):

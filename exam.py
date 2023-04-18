@@ -1,5 +1,5 @@
 class CourseExam:
-     def __init__(self, course_name):
+    def __init__(self, course_name):
         self._course_name = course_name
         self._exam_list = []
         self._score = None
@@ -12,16 +12,8 @@ class CourseExam:
              q_list.append(ExamItem(q[1], a[1]))
         self._exam_list.extend(q_list)
 
-     def get_exams(self):
-        return self._exam_list
-     
-     def edit_exam(self, number, body:dict):
-          if(number <= len(self._exam_list)):
-               self._exam_list[number-1].set_ques(body['question'])
-               self._exam_list[number-1].set_ans(body['answer'])
-               return {'Exam Updated'}
-          else:         
-               return {'Not found'}      
+    def get_exams(self):
+        return self._exam_list   
                              
 class ExamItem:
      def __init__(self,question,answer):
@@ -40,7 +32,7 @@ class ExamItem:
      def set_ans(self, a):
           self.__answer = a   
           
-class CouseProgression:
+class CourseProgression:
      def __init__(self,username,course):
         self.__username = username
         self.__course = course
