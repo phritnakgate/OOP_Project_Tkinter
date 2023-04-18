@@ -17,12 +17,36 @@ class Courses:
 
     def get_refcode(self):
         return self.__refcode
-
-    def get_catg(self):
-        return self.__catg
-
+    
     def get_title(self):
         return self.__title
+    
+    def get_desc(self):
+        return self.__desc
+    
+    def get_teacher(self):
+        return self.__teacher
+    
+    def get_catg(self):
+        return self.__catg
+    
+    def get_target(self):
+        return self.__target
+    
+    def get_objective(self):
+        return self.__objective
+    
+    def get_hour(self):
+        return self.__hour
+    
+    def get_recom_hour(self):
+        return self.__recom_hour
+    
+    def get_release(self):
+        return self.__release
+    
+    def get_contact(self):
+        return self.__contact
 
     def set_exam(self, exam):
         self.__exam = exam
@@ -53,4 +77,3 @@ class CourseChapter:
 class CourseMaterial:
     def __init__(self, material):
         self.__material = material
-

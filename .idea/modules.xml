@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/OOP_Project_Tkinter.iml" filepath="$PROJECT_DIR$/.idea/OOP_Project_Tkinter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/cemooc_tkinter_git.iml" filepath="$PROJECT_DIR$/.idea/cemooc_tkinter_git.iml" />
     </modules>
   </component>
 </project>

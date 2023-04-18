@@ -52,7 +52,7 @@ class ExamItem:
      def set_ans(self, a):
           self.__answer = a   
           
-class CouseProgression:
+class CourseProgression:
      def __init__(self,username,course):
         self.__username = username
         self.__course = course

@@ -7,7 +7,7 @@ from exam import *
 from dto import *
 
 # --- Creation Test --- #
-teacher = Teacher("teach1", "123456", "teacher1@gmail.com", "tea", "cher", "Male", datetime(2003, 12, 4), "D.Eng",
+teacher1 = Teacher("teach1", "123456", "teacher1@gmail.com", "tea", "cher", "Male", datetime(2003, 12, 4), "D.Eng",
                   "Bangkok", "Thailand", "KMITL")
 admin = Admin("admin", "admin1234", "admin1@gmail.com", "ad", "min", "Male", datetime(2003, 12, 4), "",
               "Bangkok", "Thailand")
@@ -66,7 +66,7 @@ course_system.create_course(course13)
 course_system.create_course(course14)
 course_system.create_course(course15)
 
-course_system.add_user(teacher)
+course_system.add_user(teacher1)
 course_system.add_user(student)
 course_system.add_user(admin)
 print(course_system.get_user_db())
@@ -89,7 +89,7 @@ chap3_mat = CourseMaterial("OOP is Object Oriented Programming")
 course_system.add_material('SOFT001', 2, chap3_mat)
 
 oop_exam = CourseExam(course.get_title)
-stu1doexam = CouseProgression(student.get_username, course.get_refcode)
+stu1doexam = CourseProgression(student.get_username, course.get_refcode)
 
 # ------------------------------- API -----------------------------------#
 app = FastAPI()
@@ -145,7 +145,8 @@ async def login(username: str, password: str):
     if course_system.login(username, password):
         return {"Status": "Login Success!",
                 "username": username,
-                "password": password}
+                "password": password,
+                "user_type": course_system.search_user(username).get_user_type()}
     else:
         return {"Status": "Username/Password Incorrect!!"}
 
@@ -173,6 +174,33 @@ async def enrolled(username: str):
 @app.get("/courses", tags=["Course API"])
 async def courses():
     return course_system.get_all_course()
+
+@app.post("/create_course", tags=["Course API"])
+async def create_course(course_info : dict):
+    refcode = course_info["refcode"]
+    title = course_info["title"]
+    desc = course_info["desc"]
+    teacher = course_info["teacher"]
+    catg = course_info["catg"]
+    target = course_info["target"]
+    objective = course_info["objective"]
+    hour = course_info["hour"]
+    recom_hour = course_info["recom_hour"]
+    release = datetime.now()
+    contact = course_info["contact"]
+
+    course_system.create_course(Courses(refcode=refcode, title=title, desc=desc, teacher=teacher, catg=catg, target=target, 
+                                        objective=objective, hour=hour, recom_hour=recom_hour, release=release, contact=contact))
+
+    return {
+        "message" : "course created"
+    }
+
+#@app.put("/courses/", tags=["Modify Course API"])
+
+@app.delete("/delete_course", tags=["Course API"])
+async def delete_course(willdel : str):
+    course_system.delete_course(willdel)
 
 
 @app.get("/courses/search_by_name", tags=["Course API"])
