@@ -14,5 +14,4 @@ class Problems(BaseModel):
     
 class EditExam(BaseModel) :
     question: str
-    answer: str    
-    questions: List[Problem]
+    answer: str
