@@ -7,7 +7,6 @@ class Problem(BaseModel):
     question: str
     answer: str
 
-
 # Define the questions model
 class Problems(BaseModel):
     questions: List[Problem] 

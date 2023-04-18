@@ -25,7 +25,7 @@ root = tk.Tk()
 root.title("Exam Management")
 root.configure(bg="#ffffff")
 
-# Add Question
+# Add Questions
 font1 = Font(family="Kanit", weight="bold", size=20)
 font2 = Font(family="Kanit", weight="bold", size=12)
 question_label = tk.Label(root, text="Question:", font=font1, bg="#ffffff", fg="#0066b2")

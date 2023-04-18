@@ -57,7 +57,7 @@ class CouseProgression:
           self._indices = [i for i in range(len(student_answers)) if student_answers[i] == list_q[i]]
 
      def get_progress(self):
-          # Calculate the percentage of correct answers
+          # Calculate the percentage of correct answerss
           percent_correct = (len(self._indices) / len(self.__exam)) * 100 if len(self._indices) > 0 else 0
           self.__progression = percent_correct
           return self.__progression
