@@ -132,7 +132,8 @@ async def login(username: str, password: str):
     if course_system.login(username, password):
         return {"Status": "Login Success!",
                 "username": username,
-                "password": password}
+                "password": password,
+                "user_type": course_system.search_user(username).get_user_type()}
     else:
         return {"Status": "Username/Password Incorrect!!"}
 
