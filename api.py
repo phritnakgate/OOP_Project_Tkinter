@@ -75,11 +75,13 @@ student.set_enrolled_course('enroll', course)  # Student has enrolled SOFT001.
 
 # SOFT001 Chapter
 course_system.add_chapter('SOFT001', '01:Basic Python')
-chap1_mat = CourseMaterial("https://www.youtube.com/watch?v=N1fnq4MF3AE&list=PLltVQYLz1BMBwqJysYnoEKWXUvqusJpgN&ab_channel=KongRuksiam")
+chap1_mat = CourseMaterial(
+    "https://www.youtube.com/watch?v=N1fnq4MF3AE&list=PLltVQYLz1BMBwqJysYnoEKWXUvqusJpgN&ab_channel=KongRuksiam")
 course_system.add_material('SOFT001', 0, chap1_mat)
 
 course_system.add_chapter('SOFT001', '02:Intermediate Python')
-chap2_mat = CourseMaterial("https://www.youtube.com/watch?v=N1fnq4MF3AE&list=PLltVQYLz1BMBwqJysYnoEKWXUvqusJpgN&ab_channel=KongRuksiam")
+chap2_mat = CourseMaterial(
+    "https://www.youtube.com/watch?v=N1fnq4MF3AE&list=PLltVQYLz1BMBwqJysYnoEKWXUvqusJpgN&ab_channel=KongRuksiam")
 course_system.add_material('SOFT001', 1, chap2_mat)
 
 course_system.add_chapter('SOFT001', '03:OOP Principle')
@@ -97,9 +99,10 @@ app = FastAPI()
 async def root():
     return {"Welcome": "Hello OOP"}
 
+
 # -------------------------------------------- User API -------------------------------------------- #
-#register
-@app.post("/register" , tags=["User API"])
+# register
+@app.post("/register", tags=["User API"])
 async def register(form_data: dict):
     username = form_data["username"]
     password = form_data["password"]
@@ -114,19 +117,29 @@ async def register(form_data: dict):
     user_type = form_data["user_type"]
 
     if user_type == "Teacher":
-        course_system.add_user(Teacher(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender, birth_date=birth_date, education=education, province=province,
-                                country=country))
-        return {"messsage": "teacher created"}
-    elif user_type == "Student":
-        course_system.add_user(Student(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender, birth_date=birth_date, education=education, province=province,
-                                country=country))
-        return {"messsage": "student created"}
-    elif user_type == "Admin":
-        course_system.add_user(Admin(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender, birth_date=birth_date, education=education, province=province,
-                                country=country))
-        return {"messsage": "admin created"}
+        teacher_dept = form_data["teacher_dept"]
 
-#login
+    if user_type == "Teacher":
+        course_system.add_user(
+            Teacher(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender,
+                    birth_date=birth_date, education=education, province=province,
+                    country=country, teacher_dept=teacher_dept))
+        return {"message": "teacher created"}
+    elif user_type == "Student":
+        course_system.add_user(
+            Student(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender,
+                    birth_date=birth_date, education=education, province=province,
+                    country=country))
+        return {"message": "student created"}
+    elif user_type == "Admin":
+        course_system.add_user(
+            Admin(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender,
+                  birth_date=birth_date, education=education, province=province,
+                  country=country))
+        return {"message": "admin created"}
+
+
+# login
 @app.post("/login", tags=["User API"])
 async def login(username: str, password: str):
     if course_system.login(username, password):
@@ -136,16 +149,19 @@ async def login(username: str, password: str):
     else:
         return {"Status": "Username/Password Incorrect!!"}
 
-#delete user
+
+# delete user
 @app.delete("/delete_user", tags=["User API"])
 async def delete_user(username: str):
     course_system.delete_user(username)
     return {"messsage": "Username has been deleted"}
 
-#check create users
+
+# check create users
 @app.get("/check_users", tags=["User API"])
 async def read_users():
     return course_system.get_user_db()
+
 
 @app.get("/enrolled", tags=["User API"])
 async def enrolled(username: str):
@@ -158,9 +174,11 @@ async def enrolled(username: str):
 async def courses():
     return course_system.get_all_course()
 
+
 @app.get("/courses/search_by_name", tags=["Course API"])
-async def search_name(data : str):
+async def search_name(data: str):
     return course_system.search_by_name(data)
+
 
 # Course Categories API #
 @app.get("/coursescatg", tags=["Course Categories API"])
@@ -168,19 +186,23 @@ async def course_catg(data: str):
     print(course_system.browse_course(data))
     return course_system.browse_course(data)
 
+
 @app.get("/courses/{user}/{refcode}", tags=["Course API"])
 async def get_course(user, refcode):
     if course_system.get_course(user, refcode):
         return course_system.get_course(user, refcode)
     else:
         return {"Error": "Not enrolled!"}
+
+
 @app.get("/courses/{user}/{refcode}/{chapter}", tags=["Course API"])
 async def get_chapter(user, refcode, chapter):
     return course_system.get_chapter(user, refcode, chapter)
 
+
 # ------------------------------- Exam API --------------------------------#
 @app.post("/exam/question_and_answer", tags=["Exam API"])
-async def add_question(data : Problems):
+async def add_question(data: Problems):
     oop_exam.add_question_ans(data)
     course.set_exam(oop_exam)
     return {"Question and Answer added successfully"}
@@ -195,9 +217,10 @@ async def update_exams(question_number: int, body: EditExam):
 async def get_exam():
     return oop_exam.get_exams()
 
+
 @app.post("/exam/do_exam", tags=["Exam API"])
-async def do_exam(data : list):  
-    stu1doexam.set_exam(oop_exam.get_exams()) 
+async def do_exam(data: list):
+    stu1doexam.set_exam(oop_exam.get_exams())
     stu1doexam.do_exam(data)
     return {"successfully"}
 
