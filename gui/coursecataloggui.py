@@ -1,8 +1,10 @@
 from tkinter import *
 from tkinter.font import *
 import tkinter.messagebox
+from tkinter.messagebox import showinfo
 from tkinter import ttk
 from tkcalendar import DateEntry
+from tkinter.simpledialog import askstring
 import requests
 import json
 
@@ -185,7 +187,7 @@ class RegisterGUI:
         self.__username_entry.place(x=140, y=55)
 
         Label(text="Password :", font=self.__normal_font).place(x=25, y=80)
-        self.__pwd_entry = Entry(self.__register, font=self.__txtbox_font)
+        self.__pwd_entry = Entry(self.__register, font=self.__txtbox_font, show="*")
         self.__pwd_entry.place(x=140, y=85)
 
         Label(text="Email :", font=self.__normal_font).place(x=25, y=110)
@@ -253,6 +255,15 @@ class RegisterGUI:
                 "country": self.__country_entry.get(),
                 "user_type": self.__userTypeChoose.get()
             }
+            if self.__userTypeChoose.get() == 'Teacher':
+                self.__show_dept = askstring('Department', 'Enter your Department?')
+                showinfo('Your Department', 'Your Department is {}'.format(self.__show_dept))
+                if self.__show_dept is not None:  # user pressed OK
+                    print(self.__show_dept)
+                    data['teacher_dept'] = self.__show_dept
+                else:  # user pressed Cancel
+                    print("User cancelled")
+                    data['teacher_dept'] = ""
             r = requests.post("http://127.0.0.1:8000/register", json=data)
             res = json.loads(r.text)
             print(data)
