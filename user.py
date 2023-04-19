@@ -19,6 +19,9 @@ class User:
     def get_password(self):
         return self.__password
 
+    def get_user_type(self):
+        return self.__user_type
+
 
 class Admin(User):
     def __init__(self, username, password, email, fname, lname, gender, birth_date, education, province, country):

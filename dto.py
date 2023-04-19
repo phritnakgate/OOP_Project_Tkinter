@@ -7,7 +7,6 @@ class Problem(BaseModel):
     question: str
     answer: str
 
-
 # Define the questions model
 class Problems(BaseModel):
     questions: List[Problem] 
@@ -15,9 +14,9 @@ class Problems(BaseModel):
 class EditExam(BaseModel) :
     question: str
     answer: str    
-    questions: List[Problem]
 
 class AddReview(BaseModel):
     score : int 
     comment : str
     refcode : str
+
