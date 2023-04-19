@@ -118,8 +118,6 @@ async def register(form_data: dict):
 
     if user_type == "Teacher":
         teacher_dept = form_data["teacher_dept"]
-
-    if user_type == "Teacher":
         course_system.add_user(
             Teacher(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender,
                     birth_date=birth_date, education=education, province=province,
@@ -155,7 +153,7 @@ async def login(username: str, password: str):
 @app.delete("/delete_user", tags=["User API"])
 async def delete_user(username: str):
     course_system.delete_user(username)
-    return {"messsage": "Username has been deleted"}
+    return {"message": "Username has been deleted"}
 
 
 # check create users
