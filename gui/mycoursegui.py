@@ -6,6 +6,7 @@ import json
 from gui.studygui import Study
 from functools import partial
 
+
 class MyCourseGUI:
     def __init__(self, username):
         self.__user = username
