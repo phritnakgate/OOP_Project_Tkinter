@@ -162,7 +162,7 @@ async def create_course(course_info : dict):
         "message" : "course created"
     }
 
-@app.put("/courses/", tags=["Modify Course API"])
+@app.put("/courses/", tags=["Course API"])
 
 @app.delete("/delete_course", tags=["Course API"])
 async def delete_course(willdel : str):
@@ -188,6 +188,19 @@ async def get_course(user, refcode):
 @app.get("/courses/{user}/{refcode}/{chapter}", tags=["Course API"])
 async def get_chapter(user, refcode, chapter):
     return course_system.get_chapter(user, refcode, chapter)
+
+@app.post("/add_review" ,tags=["Course API"])
+async def add_review(data:AddReview):
+    courses=course_system.search_course(data.refcode)
+    courses.set_review(Review(data.score,data.comment))
+    return {"status":"Add Success"}
+
+@app.get("/{refcode}/reviews", tags=["Course API"])
+async def get_review(refcode):
+    all_rev = []
+    c = course_system.search_course(refcode)
+    all_rev.append(c.get_review())
+    return {"Review":all_rev}
 
 # ------------------------------- Exam API --------------------------------#
 @app.post("/exam/question_and_answer", tags=["Exam API"])

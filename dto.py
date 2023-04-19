@@ -16,3 +16,8 @@ class EditExam(BaseModel) :
     question: str
     answer: str    
     questions: List[Problem]
+
+class AddReview(BaseModel):
+    score : int 
+    comment : str
+    refcode : str
