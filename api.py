@@ -194,7 +194,9 @@ async def create_course(course_info : dict):
         "message" : "course created"
     }
 
-@app.put("/courses/", tags=["Course API"])
+@app.put("/{refcode}/edit", tags=["Course API"])
+async def edit_course(refcode):
+    pass
 
 @app.delete("/delete_course", tags=["Course API"])
 async def delete_course(willdel : str):
