@@ -19,6 +19,8 @@ student = Student("ffwatcharin", "firstbigdick", "ffwatcharin@gmail.com", "Watch
 course_system = CourseSystem()
 course = Courses("SOFT001", "Object Oriented Programming", "Learn writing oop", "teach1", "Software", "All Ages",
                  "To understanding OOP", "10", "10", datetime.now(), "teacher1@gmail.com")
+course.set_exam(CourseExam(course.get_title))
+
 course2 = Courses("HARD001", "Basic Arduino", "Learn Basic Arduino", "teach1", "Hardware", "All Ages",
                   "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
 course3 = Courses("HARD002", "Circuits and Electronics", "Learn Circuit Electronic", "teach1", "Hardware", "All Ages",
@@ -87,9 +89,6 @@ course_system.add_material('SOFT001', 1, chap2_mat)
 course_system.add_chapter('SOFT001', '03:OOP Principle')
 chap3_mat = CourseMaterial("OOP is Object Oriented Programming")
 course_system.add_material('SOFT001', 2, chap3_mat)
-
-oop_exam = CourseExam(course.get_title)
-stu1doexam = CourseProgression(student.get_username, course.get_refcode)
 
 # ------------------------------- API -----------------------------------#
 app = FastAPI()
@@ -187,8 +186,11 @@ async def create_course(course_info : dict):
     release = datetime.now()
     contact = course_info["contact"]
 
-    course_system.create_course(Courses(refcode=refcode, title=title, desc=desc, teacher=teacher, catg=catg, target=target, 
-                                        objective=objective, hour=hour, recom_hour=recom_hour, release=release, contact=contact))
+    ccourse = Courses(refcode=refcode, title=title, desc=desc, teacher=teacher, catg=catg, target=target,
+                                        objective=objective, hour=hour, recom_hour=recom_hour, release=release, contact=contact)
+    course_system.create_course(ccourse)
+    ccourse.set_exam(CourseExam(title))
+
 
     return {
         "message" : "course created"
@@ -243,33 +245,42 @@ async def get_review(refcode):
 
 # ------------------------------- Exam API --------------------------------#
 @app.post("/exam/question_and_answer", tags=["Exam API"])
-async def add_question(data: Problems):
-    oop_exam.add_question_ans(data)
-    course.set_exam(oop_exam)
+async def add_question(refcode:str ,data: Problems):
+    c = course_system.search_course(refcode)
+    e = c.get_exam()
+    e.add_question_ans(data)
     return {"Question and Answer added successfully"}
 
 
 @app.put("/exam/edit", tags=["Exam API"])
-async def update_exams(question_number: int, body: EditExam):
-    return oop_exam.edit_exam(question_number, body.dict())
+async def update_exams(refcode:str,question_number: int, body: EditExam):
+    c = course_system.search_course(refcode)
+    e = c.get_exam()
+    return e.edit_exam(question_number, body.dict())
 
 
 @app.get("/exam", tags=["Exam API"])
-async def get_exam():
-    return oop_exam.get_exams()
+async def get_exam(refcode:str):
+    c = course_system.search_course(refcode)
+    e = c.get_exam()
+    return e.get_exams()
 
 
-@app.post("/exam/do_exam", tags=["Exam API"])
-async def do_exam(data: list):
-    stu1doexam.set_exam(oop_exam.get_exams())
-    stu1doexam.do_exam(data)
-    return {"successfully"}
+@app.post("/courses/{user}/{refcode}/exam/do_exam", tags=["Exam API"])
+async def do_exam(refcode,user,data: list):
+    c = course_system.search_course(refcode)
+    e = c.get_exam()
+    studoexam = CourseProgression(user, refcode)
+    studoexam.set_exam(e.get_exams())
+    studoexam.do_exam(data)
+    u = course_system.search_user(user)
+    u.set_progression(studoexam)
+    return {"successfully",f'{studoexam.get_progress()} %'}
 
-
-@app.get("/exam/get progression", tags=["Exam API"])
-async def get_progression():
-    return {f'{stu1doexam.get_progress()} %'}
-
+@app.get("/{user}/get_all_grogression", tags=["Exam API"])
+async def get_all_progression(user):
+    u = course_system.search_user(user)
+    return u.get_progression()
 
 # -------------------------------- Enroll API ----------------------------- #
 @app.get("/cart", tags=["Enrollment"])
