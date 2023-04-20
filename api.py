@@ -117,8 +117,6 @@ async def register(form_data: dict):
 
     if user_type == "Teacher":
         teacher_dept = form_data["teacher_dept"]
-
-    if user_type == "Teacher":
         course_system.add_user(
             Teacher(username=username, password=password, email=email, fname=fname, lname=lname, gender=gender,
                     birth_date=birth_date, education=education, province=province,
@@ -154,7 +152,7 @@ async def login(username: str, password: str):
 @app.delete("/delete_user", tags=["User API"])
 async def delete_user(username: str):
     course_system.delete_user(username)
-    return {"messsage": "Username has been deleted"}
+    return {"message": "Username has been deleted"}
 
 
 # check create users
@@ -228,6 +226,19 @@ async def get_course(user, refcode):
 async def get_chapter(user, refcode, chapter):
     return course_system.get_chapter(user, refcode, chapter)
 
+
+@app.post("/add_review" ,tags=["Course API"])
+async def add_review(data:AddReview):
+    courses=course_system.search_course(data.refcode)
+    courses.set_review(Review(data.score,data.comment))
+    return {"status":"Add Success"}
+
+@app.get("/{refcode}/reviews", tags=["Course API"])
+async def get_review(refcode):
+    all_rev = []
+    c = course_system.search_course(refcode)
+    all_rev.append(c.get_review())
+    return {"Review":all_rev}
 
 # ------------------------------- Exam API --------------------------------#
 @app.post("/exam/question_and_answer", tags=["Exam API"])

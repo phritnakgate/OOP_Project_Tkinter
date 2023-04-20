@@ -20,26 +20,27 @@ class CourseExam:
                return {'Exam Updated'}
           else:         
                return {'Not found'}     
-                             
+
 class ExamItem:
-     def __init__(self,question,answer):
-          self.__question = question
-          self.__answer = answer
-     
-     def get_ques(self):
-          return self.__question 
-     
-     def get_ans(self):
-          return self.__answer
-     
-     def set_ques(self, q):
-          self.__question = q
-          
-     def set_ans(self, a):
-          self.__answer = a   
-          
+    def __init__(self, question, answer):
+        self.__question = question
+        self.__answer = answer
+
+    def get_ques(self):
+        return self.__question
+
+    def get_ans(self):
+        return self.__answer
+
+    def set_ques(self, q):
+        self.__question = q
+
+    def set_ans(self, a):
+        self.__answer = a
+
+
 class CourseProgression:
-     def __init__(self,username,refcode):
+    def __init__(self, username, course):
         self.__username = username
         self.__refcode = refcode
         self.__progression = None

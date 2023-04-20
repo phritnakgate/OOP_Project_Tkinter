@@ -13,4 +13,10 @@ class Problems(BaseModel):
     
 class EditExam(BaseModel) :
     question: str
-    answer: str
+    answer: str    
+
+class AddReview(BaseModel):
+    score : int 
+    comment : str
+    refcode : str
+

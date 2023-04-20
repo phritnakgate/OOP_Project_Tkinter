@@ -1,3 +1,4 @@
+from review import Review
 # --- Course Object --- #
 class Courses:
     def __init__(self, refcode, title, desc, teacher, catg, target, objective, hour, recom_hour, release, contact):
@@ -14,6 +15,8 @@ class Courses:
         self.__contact = contact
         self.__exam = None
         self.__chapter = []
+        self.__review = []
+        self.__review_score = 0
 
     def get_refcode(self):
         return self.__refcode
@@ -59,6 +62,16 @@ class Courses:
 
     def get_chapter(self):
         return self.__chapter
+    
+    def get_review(self):
+        return self.__review
+    
+    def get_review_score(self):
+        return self.__review_score
+    
+    def set_review(self, review:Review):
+        self.__review.append(review)
+        self.__review_score = sum([i.get_write_review () for i in self.__review])/len(self.__review)
 
 
 class CourseCatg:
