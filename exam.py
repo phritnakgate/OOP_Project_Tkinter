@@ -4,16 +4,22 @@ class CourseExam:
         self._exam_list = []
         self._score = None
 
-     def add_question_ans(self, questionlist):
+    def add_question_ans(self, questionlist):
         q_list = []
         for q , a in questionlist.questions:
-             print(q)
-             print(a)
              q_list.append(ExamItem(q[1], a[1]))
         self._exam_list.extend(q_list)
 
     def get_exams(self):
         return self._exam_list   
+   
+    def edit_exam(self, number, body:dict):
+          if(number <= len(self._exam_list)):
+               self._exam_list[number-1].set_ques(body['question'])
+               self._exam_list[number-1].set_ans(body['answer'])
+               return {'Exam Updated'}
+          else:         
+               return {'Not found'}     
                              
 class ExamItem:
      def __init__(self,question,answer):
@@ -33,12 +39,11 @@ class ExamItem:
           self.__answer = a   
           
 class CourseProgression:
-     def __init__(self,username,course):
+     def __init__(self,username,refcode):
         self.__username = username
-        self.__course = course
+        self.__refcode = refcode
         self.__progression = None
         self.__exam = None
-        self._indices = None
         
      def set_exam(self, exam):
           self.__exam = exam   
@@ -46,10 +51,12 @@ class CourseProgression:
      def do_exam(self, student_answers):
           list_q = [q.get_ans() for q in self.__exam]
           # Check the index of each element in student_ans
-          self._indices = [i for i in range(len(student_answers)) if student_answers[i] == list_q[i]]
-
-     def get_progress(self):
-          # Calculate the percentage of correct answerss
-          percent_correct = (len(self._indices) / len(self.__exam)) * 100 if len(self._indices) > 0 else 0
+          x = [i for i in range(len(student_answers)) if student_answers[i] == list_q[i]]
+          percent_correct = (len(x) / len(self.__exam)) * 100 if len(x) > 0 else 0
           self.__progression = percent_correct
+          
+     def get_progress(self): 
           return self.__progression
+     
+     def get_refcode(self):
+          return self.__refcode

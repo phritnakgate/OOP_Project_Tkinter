@@ -29,6 +29,7 @@ class CourseSystem:
             username_l.append(u.get_username())
         if name in username_l:
             return self.__user_list[username_l.index(name)]
+        
     def login(self, username, password):
         try:
             user = self.search_user(username)

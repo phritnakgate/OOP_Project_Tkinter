@@ -50,6 +50,9 @@ class Courses:
 
     def set_exam(self, exam):
         self.__exam = exam
+        
+    def get_exam(self):
+        return self.__exam    
 
     def set_chapter(self, chapter):
         self.__chapter.append(chapter)
