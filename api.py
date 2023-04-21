@@ -172,6 +172,10 @@ async def enrolled(username: str):
 async def courses():
     return course_system.get_all_course()
 
+@app.get("/courses/{refcode}", tags=["Course API"])
+async def get_by_refcode(refcode):
+    return course_system.search_course(refcode)
+
 @app.post("/create_course", tags=["Course API"])
 async def create_course(course_info : dict):
     refcode = course_info["refcode"]
@@ -186,7 +190,7 @@ async def create_course(course_info : dict):
     release = datetime.now()
     contact = course_info["contact"]
 
-    ccourse = Courses(refcode=refcode, title=title, desc=desc, teacher=teacher, catg=catg, target=target, 
+    ccourse = Courses(refcode=refcode, title=title, desc=desc, teacher=teacher, catg=catg, target=target,
                                         objective=objective, hour=hour, recom_hour=recom_hour, release=release, contact=contact)
     ccourse.set_exam(CourseExam(title))
     course_system.create_course(ccourse)
@@ -196,6 +200,9 @@ async def create_course(course_info : dict):
         "message" : "course created"
     }
 
+@app.put("/{refcode}/edit", tags=["Course API"])
+async def edit_course(refcode):
+    pass
 
 @app.delete("/delete_course", tags=["Course API"])
 async def delete_course(willdel : str):
@@ -258,18 +265,18 @@ async def update_exams(refcode:str,question_number: int, body: EditExamDTO):
 
 @app.get("/exam", tags=["Exam API"])
 async def get_exam(refcode:str):
-    c = course_system.search_course(refcode)  
-    e = c.get_exam() 
+    c = course_system.search_course(refcode)
+    e = c.get_exam()
     return e.get_exams()
 
 
 @app.post("/courses/{user}/{refcode}/exam/do_exam", tags=["Exam API"])
 async def do_exam(refcode,user,data: list):
-    c = course_system.search_course(refcode)  
-    e = c.get_exam() 
+    c = course_system.search_course(refcode)
+    e = c.get_exam()
     studoexam = CourseProgression(user, refcode)
     studoexam.set_exam(e.get_exams())
-    studoexam.do_exam(data)    
+    studoexam.do_exam(data)
     u = course_system.search_user(user)
     u.set_progression(studoexam)
     return {"successfully",f'{studoexam.get_progress()} %'}

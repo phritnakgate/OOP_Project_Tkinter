@@ -7,8 +7,11 @@ from tkcalendar import DateEntry
 from tkinter.simpledialog import askstring
 import requests
 import json
+from functools import partial
 
 from gui.mycoursegui import MyCourseGUI
+from gui.coursedetailgui import CourseDetail
+from gui.cartgui import CartGUI
 
 
 # ------------------ CourseCatalog ------------------ #
@@ -34,6 +37,7 @@ class CourseCatalog:
 
         self.__studentaccountmenu = Menu()
         self.__studentaccountmenu.add_command(label="My Courses", command=self.my_course)
+        self.__studentaccountmenu.add_command(label="My Cart", command=self.cart)
         self.__studentaccountmenu.add_command(label="Edit Profile")
         self.__studentaccountmenu.add_command(label="Logout & Close Program", command=self.logout)
 
@@ -78,7 +82,7 @@ class CourseCatalog:
                         row=self.__row_base, column=j)
                     Label(text=self.__all_course[i + j]['_Courses__title'], font=self.__normal_font).grid(
                         row=self.__row_base + 1, column=j)
-                self.__row_base += 2
+                self.__row_base += 3
             Label(text=self.__all_course[i + j + 1]['_Courses__refcode'], font=self.__normal_font).grid(
                 row=self.__row_base, column=0)
             Label(text=self.__all_course[i + j + 1]['_Courses__title'], font=self.__normal_font).grid(
@@ -90,7 +94,7 @@ class CourseCatalog:
                         row=self.__row_base, column=j)
                     Label(text=self.__all_course[i + j]['_Courses__title'], font=self.__normal_font).grid(
                         row=self.__row_base + 1, column=j)
-                self.__row_base += 2
+                self.__row_base += 3
             for k in range(2):
                 Label(text=self.__all_course[i + j + k + 1]['_Courses__refcode'], font=self.__normal_font).grid(
                     row=self.__row_base, column=k)
@@ -103,7 +107,10 @@ class CourseCatalog:
                         row=self.__row_base, column=j)
                     Label(text=self.__all_course[i + j]['_Courses__title'], font=self.__normal_font).grid(
                         row=self.__row_base + 1, column=j)
-                self.__row_base += 2
+                    Button(text='Detail', font=self.__txtbox_font,
+                           command=partial(self.detail, str(self.__all_course[i + j]['_Courses__refcode']))).grid(
+                        row=self.__row_base + 2, column=j)
+                self.__row_base += 3
         self.__catalog.mainloop()
 
     def get_all_course(self):
@@ -129,6 +136,12 @@ class CourseCatalog:
     def my_course(self):
         self.__catalog.destroy()
         MyCourseGUI(self.__username)
+
+    def detail(self, ref):
+        CourseDetail(self.__username, ref, self.__user_type)
+
+    def cart(self):
+        CartGUI(self.__username)
 
 
 # ------------------ Login ------------------ #
