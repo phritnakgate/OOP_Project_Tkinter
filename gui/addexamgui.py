@@ -4,15 +4,17 @@ from tkinter.font import Font
 import requests
 
 class ExamUI:
-    def __init__(self):
+    def __init__(self, refcode):
+        self.__refcode = refcode
         self.root = tk.Tk()
         self.root.title("Exam Management")
         self.root.configure(bg="#ffffff")
         self.font1 = Font(family="Kanit", weight="bold", size=20)
         self.font2 = Font(family="Kanit", weight="bold", size=12)
         self.create_widgets()
+        self.root.mainloop()
     
-    def create_widgets(self):
+    def create_widgets(self):       
         # Add Questions
         question_label = tk.Label(self.root, text="Question:", font=self.font1, bg="#ffffff", fg="#0066b2")
         question_label.grid(row=0, column=0)
@@ -41,28 +43,22 @@ class ExamUI:
         get_button.grid(row=6, columnspan=2)
 
     def add_question(self):
-        data = {
-                "questions": [
-                        {
-                            "question": self.question_entry.get(),
-                            "answer": self.answer_entry.get()
-                        }
-                    ]
+        data = {  
+            "questions": [
+                {
+                    "question": self.question_entry.get(),
+                    "answer": self.answer_entry.get()
                 }
-        response = requests.post("http://127.0.0.1:8000/exam/question_and_answer", json=data)
-        print(response.text)
+            ]
+        }
+        response = requests.post("http://127.0.0.1:8000/exam/question_and_answer?refcode="+str(self.__refcode), json=data)
         self.result_label.config(text=response.text)
+        self.get_exam_questions()
 
     def get_exam_questions(self):
-        response = requests.get("http://127.0.0.1:8000/exam")
-        print(response.text)
+        response = requests.get("http://127.0.0.1:8000/exam?refcode="+str(self.__refcode))
         self.exam_questions.delete(1.0, tk.END)
         for q in response.json():
             self.exam_questions.insert(tk.END, f"Question : {q['_ExamItem__question']}, Answer : {q['_ExamItem__answer']}\n")
-
-    def start(self):
-        self.root.mainloop()
-
-if __name__ == '__main__':
-    ui = ExamUI()
-    ui.start()
+ 
+ExamUI("SOFT001") # เปลี่ยน refcode ตรงนี้ถ้าเอาไปเชื่อมกับระบบอื่น

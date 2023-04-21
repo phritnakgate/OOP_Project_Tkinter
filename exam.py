@@ -2,7 +2,6 @@ class CourseExam:
     def __init__(self, course_name):
         self._course_name = course_name
         self._exam_list = []
-        self._score = None
 
     def add_question_ans(self, questionlist):
         q_list = []
@@ -41,7 +40,7 @@ class ExamItem:
 
 
 class CourseProgression:
-    def __init__(self, username, refcode):
+     def __init__(self, username, refcode):
         self.__username = username
         self.__refcode = refcode
         self.__progression = None
