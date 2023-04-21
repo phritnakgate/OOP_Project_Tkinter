@@ -19,7 +19,7 @@ student = Student("ffwatcharin", "firstbigdick", "ffwatcharin@gmail.com", "Watch
 course_system = CourseSystem()
 course = Courses("SOFT001", "Object Oriented Programming", "Learn writing oop", "teach1", "Software", "All Ages",
                  "To understanding OOP", "10", "10", datetime.now(), "teacher1@gmail.com")
-course.set_exam(CourseExam(course.get_title))
+course.set_exam(CourseExam(course.get_refcode()))
 
 course2 = Courses("HARD001", "Basic Arduino", "Learn Basic Arduino", "teach1", "Hardware", "All Ages",
                   "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
@@ -188,9 +188,9 @@ async def create_course(course_info : dict):
 
     ccourse = Courses(refcode=refcode, title=title, desc=desc, teacher=teacher, catg=catg, target=target, 
                                         objective=objective, hour=hour, recom_hour=recom_hour, release=release, contact=contact)
-    course_system.create_course(ccourse)
     ccourse.set_exam(CourseExam(title))
-
+    course_system.create_course(ccourse)
+    
 
     return {
         "message" : "course created"
@@ -228,7 +228,7 @@ async def get_chapter(user, refcode, chapter):
 
 
 @app.post("/add_review" ,tags=["Course API"])
-async def add_review(data:AddReview):
+async def add_review(data:AddReviewDTO):
     courses=course_system.search_course(data.refcode)
     courses.set_review(Review(data.score,data.comment))
     return {"status":"Add Success"}
@@ -242,15 +242,15 @@ async def get_review(refcode):
 
 # ------------------------------- Exam API --------------------------------#
 @app.post("/exam/question_and_answer", tags=["Exam API"])
-async def add_question(refcode:str ,data: Problems):   
+async def add_question(refcode:str ,data: QuestListDTO):  
     c = course_system.search_course(refcode)  
     e = c.get_exam()   
     e.add_question_ans(data) 
-    return {"Question and Answer added successfully"}
+    return {"add successfully"}
 
 
 @app.put("/exam/edit", tags=["Exam API"])
-async def update_exams(refcode:str,question_number: int, body: EditExam):
+async def update_exams(refcode:str,question_number: int, body: EditExamDTO):
     c = course_system.search_course(refcode)  
     e = c.get_exam() 
     return e.edit_exam(question_number, body.dict())
