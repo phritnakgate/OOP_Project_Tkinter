@@ -1,3 +1,3 @@
 from gui.coursecataloggui import CourseCatalog
 
-CourseCatalog("Guest", "Guest")
+CourseCatalog("ffwatcharin", "Student")

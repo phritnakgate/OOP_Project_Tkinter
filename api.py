@@ -172,6 +172,10 @@ async def enrolled(username: str):
 async def courses():
     return course_system.get_all_course()
 
+@app.get("/courses/{refcode}", tags=["Course API"])
+async def get_by_refcode(refcode):
+    return course_system.search_course(refcode)
+
 @app.post("/create_course", tags=["Course API"])
 async def create_course(course_info : dict):
     refcode = course_info["refcode"]
