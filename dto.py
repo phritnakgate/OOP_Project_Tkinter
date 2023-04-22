@@ -3,20 +3,21 @@ from pydantic import BaseModel
 
 
 # Define the question model
-class Problem(BaseModel):
+class AddQuesDTO(BaseModel):
     question: str
     answer: str
 
 # Define the questions model
-class Problems(BaseModel):
-    questions: List[Problem] 
+class QuestListDTO(BaseModel):
+    questions: List[AddQuesDTO] 
     
-class EditExam(BaseModel) :
+class EditExamDTO(BaseModel) :
     question: str
     answer: str    
 
-class AddReview(BaseModel):
-    score : int 
+class AddReviewDTO(BaseModel):
+    user : str
+    score : int
     comment : str
     refcode : str
 
