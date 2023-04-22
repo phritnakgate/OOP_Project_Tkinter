@@ -40,7 +40,7 @@ class ExamItem:
 
 
 class CourseProgression:
-     def __init__(self, username, refcode):
+    def __init__(self, username, refcode):
         self.__username = username
         self.__refcode = refcode
         self.__progression = None
