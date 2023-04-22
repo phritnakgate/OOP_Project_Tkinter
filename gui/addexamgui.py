@@ -18,12 +18,12 @@ class ExamUI:
         # Add Questions
         question_label = tk.Label(self.root, text="Question:", font=self.font1, bg="#ffffff", fg="#0066b2")
         question_label.grid(row=0, column=0)
-        self.question_entry = ctk.CTkEntry(self.root, bg="#ffffff", fg="#0066b2", insertbackground="#0066b2")
+        self.question_entry = ctk.CTkEntry(self.root)
         self.question_entry.grid(row=0, column=1)
 
         answer_label = tk.Label(self.root, text="Answer:", font=self.font1, bg="#ffffff", fg="#0066b2")
         answer_label.grid(row=1, column=0)
-        self.answer_entry = ctk.CTkEntry(self.root, bg="#ffffff", fg="#0066b2", insertbackground="#0066b2")
+        self.answer_entry = ctk.CTkEntry(self.root)
         self.answer_entry.grid(row=1, column=1)
 
         add_button = ctk.CTkButton(self.root, text="Add Question", command=self.add_question)
