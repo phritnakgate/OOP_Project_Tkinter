@@ -6,7 +6,7 @@ import json
 
 from gui.cartgui import CartGUI
 from gui.reviewgui import ReviewGUI
-customtkinter.set_appearance_mode("System")
+customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue")
 
 class CourseDetail:
