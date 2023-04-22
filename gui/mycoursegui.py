@@ -86,4 +86,5 @@ class MyCourseGUI:
         answer = tkinter.messagebox.askyesno(title='Confirmation', message='Are you sure that you want to quit?')
         if answer:
             self.__mycourse.destroy()
-#MyCourseGUI("ffwatcharin")
+
+# MyCourseGUI("ffwatcharin")
