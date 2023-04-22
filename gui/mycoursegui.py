@@ -30,12 +30,15 @@ class MyCourseGUI:
         Label(text="My Course", font=self.__header_font).pack(anchor="center")
         posy = 50
         self.get_enrolled_course()
-        for i in self.__response:
-            lbl = Label(text=i, font=self.__txtbox_font)
-            lbl.place(x=50, y=posy)
-            Button(text="Study", font=self.__txtbox_font, command=partial(self.study, lbl.cget("text"))).place(x=500, y=posy)
-            Button(text="Unenroll", font=self.__txtbox_font, command=partial(self.unenroll, lbl.cget("text"))).place(x=570, y=posy)
-            posy += 50
+        if self.__response == ['No course enrolled!']:
+            Label(text='No course enrolled!', font=self.__txtbox_font)
+        else:
+            for i in self.__response:
+                lbl = Label(text=i, font=self.__txtbox_font)
+                lbl.place(x=50, y=posy)
+                Button(text="Study", font=self.__txtbox_font, command=partial(self.study, lbl.cget("text"))).place(x=500, y=posy)
+                Button(text="Unenroll", font=self.__txtbox_font, command=partial(self.unenroll, lbl.cget("text"))).place(x=570, y=posy)
+                posy += 50
         self.__mycourse.mainloop()
 
     def get_enrolled_course(self):

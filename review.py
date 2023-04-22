@@ -1,5 +1,6 @@
 class Review:
-    def __init__(self, write_review, write_comment): 
+    def __init__(self, user, write_review, write_comment):
+        self.__user = user
         self.__write_review = write_review
         self.__write_comment = write_comment
         
