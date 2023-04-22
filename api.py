@@ -38,17 +38,17 @@ course8 = Courses("SCI001", "Cellular Respiration", "Learn Cellular Respiration"
 course9 = Courses("SCI002", "Photosynthesis", "Learn Photosynthesis", "teach1", "Science", "All Ages",
                   "To understand photosynthesis", "10", "10", datetime.now(), "teacher1@gmail.com")
 course10 = Courses("MATH004", "Linear Algebra", "Learn Linear Algebra", "teach1", "Math", "All Ages",
-                   "To understanding Linear Algebra", "10", "10", datetime.now(), "teacher1@gmail.com")
+                   "To understand Linear Algebra", "10", "10", datetime.now(), "teacher1@gmail.com")
 course11 = Courses("LAN001", "English for Communication", "Learn English for Communication", "teach1", "Language",
-                   "All Ages", "To understanding everyday English conversation", "10", "10", datetime.now(), "teacher1@gmail.com")
+                   "All Ages", "To understand everyday English conversation", "10", "10", datetime.now(), "teacher1@gmail.com")
 course12 = Courses("LAN002", "English for Business", "Learn English for Business", "teach1", "Language", "All Ages",
-                   "To understanding Basic Business in English", "10", "10", datetime.now(), "teacher1@gmail.com")
+                   "To understand Basic Business in English", "10", "10", datetime.now(), "teacher1@gmail.com")
 course13 = Courses("LAN003", "Fundamental Chinese", "Learn Fundamental Chinese", "teach1", "Language", "All Ages",
-                   "To understanding Basic Chinese", "10", "10", datetime.now(), "teacher1@gmail.com")
+                   "To understand Basic Chinese", "10", "10", datetime.now(), "teacher1@gmail.com")
 course14 = Courses("LAN004", "Fundamental Korean", "Learn Fundamental Korean", "teach1", "Language", "All Ages",
-                   "To understanding Basic Korean", "10", "10", datetime.now(), "teacher1@gmail.com")
+                   "To understand Basic Korean", "10", "10", datetime.now(), "teacher1@gmail.com")
 course15 = Courses("LAN005", "English for Marketing", "Learn English for Marketing", "teach1", "Language", "All Ages",
-                   "To understanding Basic Marketing in English", "10", "10", datetime.now(), "teacher1@gmail.com")
+                   "To understand Basic Marketing in English", "10", "10", datetime.now(), "teacher1@gmail.com")
 
 # --- Build Test --- #
 course_system.create_course(course)
