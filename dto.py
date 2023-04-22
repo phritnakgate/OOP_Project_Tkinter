@@ -16,7 +16,8 @@ class EditExamDTO(BaseModel) :
     answer: str    
 
 class AddReviewDTO(BaseModel):
-    score : int 
+    user : str
+    score : int
     comment : str
     refcode : str
 

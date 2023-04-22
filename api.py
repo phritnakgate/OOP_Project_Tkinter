@@ -8,7 +8,7 @@ from dto import *
 
 # --- Creation Test --- #
 teacher1 = Teacher("teach1", "123456", "teacher1@gmail.com", "tea", "cher", "Male", datetime(2003, 12, 4), "D.Eng",
-                  "Bangkok", "Thailand", "KMITL")
+                   "Bangkok", "Thailand", "KMITL")
 admin = Admin("admin", "admin1234", "admin1@gmail.com", "ad", "min", "Male", datetime(2003, 12, 4), "",
               "Bangkok", "Thailand")
 student = Student("ffwatcharin", "firstbigdick", "ffwatcharin@gmail.com", "Watcharin", "Humthong", "Male",
@@ -156,9 +156,19 @@ async def delete_user(username: str):
 
 
 # check create users
-@app.get("/check_users", tags=["User API"])
+@app.get("/all_users", tags=["User API"])
 async def read_users():
     return course_system.get_user_db()
+
+
+@app.get("/users/{username}", tags=["User API"])
+async def get_user(username):
+    return course_system.search_user(username)
+
+
+@app.put("/users/{username}/modify", tags=["User API"])
+async def modify_user(username):
+    pass
 
 
 @app.get("/enrolled", tags=["User API"])
@@ -172,8 +182,14 @@ async def enrolled(username: str):
 async def courses():
     return course_system.get_all_course()
 
+
+@app.get("/courses/{refcode}", tags=["Course API"])
+async def get_by_refcode(refcode):
+    return course_system.search_course(refcode)
+
+
 @app.post("/create_course", tags=["Course API"])
-async def create_course(course_info : dict):
+async def create_course(course_info: dict):
     refcode = course_info["refcode"]
     title = course_info["title"]
     desc = course_info["desc"]
@@ -186,19 +202,23 @@ async def create_course(course_info : dict):
     release = datetime.now()
     contact = course_info["contact"]
 
-    ccourse = Courses(refcode=refcode, title=title, desc=desc, teacher=teacher, catg=catg, target=target, 
-                                        objective=objective, hour=hour, recom_hour=recom_hour, release=release, contact=contact)
+    ccourse = Courses(refcode=refcode, title=title, desc=desc, teacher=teacher, catg=catg, target=target,
+                      objective=objective, hour=hour, recom_hour=recom_hour, release=release, contact=contact)
     ccourse.set_exam(CourseExam(title))
     course_system.create_course(ccourse)
-    
 
     return {
-        "message" : "course created"
+        "message": "course created"
     }
 
 
+@app.put("/{refcode}/edit", tags=["Course API"])
+async def edit_course(refcode):
+    pass
+
+
 @app.delete("/delete_course", tags=["Course API"])
-async def delete_course(willdel : str):
+async def delete_course(willdel: str):
     course_system.delete_course(willdel)
 
 
@@ -227,57 +247,58 @@ async def get_chapter(user, refcode, chapter):
     return course_system.get_chapter(user, refcode, chapter)
 
 
-@app.post("/add_review" ,tags=["Course API"])
-async def add_review(data:AddReviewDTO):
-    courses=course_system.search_course(data.refcode)
-    courses.set_review(Review(data.score,data.comment))
-    return {"status":"Add Success"}
+@app.post("/add_review", tags=["Course API"])
+async def add_review(data: AddReviewDTO):
+    courses = course_system.search_course(data.refcode)
+    courses.set_review(Review(data.user, data.score, data.comment))
+    return {"status": "Add Success"}
+
 
 @app.get("/{refcode}/reviews", tags=["Course API"])
 async def get_review(refcode):
-    all_rev = []
-    c = course_system.search_course(refcode)
-    all_rev.append(c.get_review())
-    return {"Review":all_rev}
+    return course_system.search_course(refcode).get_review()
+
 
 # ------------------------------- Exam API --------------------------------#
 @app.post("/exam/question_and_answer", tags=["Exam API"])
-async def add_question(refcode:str ,data: QuestListDTO):  
-    c = course_system.search_course(refcode)  
-    e = c.get_exam()   
-    e.add_question_ans(data) 
+async def add_question(refcode: str, data: QuestListDTO):
+    c = course_system.search_course(refcode)
+    e = c.get_exam()
+    e.add_question_ans(data)
     return {"add successfully"}
 
 
 @app.put("/exam/edit", tags=["Exam API"])
-async def update_exams(refcode:str,question_number: int, body: EditExamDTO):
-    c = course_system.search_course(refcode)  
-    e = c.get_exam() 
+async def update_exams(refcode: str, question_number: int, body: EditExamDTO):
+    c = course_system.search_course(refcode)
+    e = c.get_exam()
     return e.edit_exam(question_number, body.dict())
 
 
 @app.get("/exam", tags=["Exam API"])
-async def get_exam(refcode:str):
-    c = course_system.search_course(refcode)  
-    e = c.get_exam() 
+async def get_exam(refcode: str):
+    c = course_system.search_course(refcode)
+    e = c.get_exam()
     return e.get_exams()
 
 
 @app.post("/courses/{user}/{refcode}/exam/do_exam", tags=["Exam API"])
-async def do_exam(refcode,user,data: list):
-    c = course_system.search_course(refcode)  
-    e = c.get_exam() 
+async def do_exam(refcode, user, data: list):
+    c = course_system.search_course(refcode)
+    e = c.get_exam()
     studoexam = CourseProgression(user, refcode)
     studoexam.set_exam(e.get_exams())
-    studoexam.do_exam(data)    
+    studoexam.do_exam(data)
     u = course_system.search_user(user)
     u.set_progression(studoexam)
-    return {"successfully",f'{studoexam.get_progress()} %'}
+    return {"successfully", f'{studoexam.get_progress()} %'}
+
 
 @app.get("/{user}/get_all_grogression", tags=["Exam API"])
 async def get_all_progression(user):
     u = course_system.search_user(user)
     return u.get_progression()
+
 
 # -------------------------------- Enroll API ----------------------------- #
 @app.get("/cart", tags=["Enrollment"])
