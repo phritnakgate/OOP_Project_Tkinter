@@ -69,5 +69,5 @@ class MyCourseGUI:
         refcode = refcode[:colonindex]
         self.__mycourse.destroy()
         Study(self.__user, refcode)
-
-#MyCourseGUI("ffwatcharin")
+        
+# MyCourseGUI("ffwatcharin")

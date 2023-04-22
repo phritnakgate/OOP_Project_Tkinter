@@ -16,15 +16,15 @@ class ExamEditor:
           self.root.mainloop()
           
      def create_widgets(self):
-        tk.Label(self.root, text="Question Number:",font=self.font1 ,bg="#ffffff", fg="#0066b2").grid(row=0, column=0, padx=20, pady=20, sticky=W)
+        tk.Label(self.root, text="Question Number :",font=self.font1 ,bg="#ffffff", fg="#0066b2").grid(row=0, column=0, padx=20, pady=20, sticky=W)
         self.question_number_entry = ctk.CTkEntry(self.root)
         self.question_number_entry.grid(row=0, column=1, padx=20, pady=20)
 
-        tk.Label(self.root, text="New Question:",font=self.font1, bg="#ffffff", fg="#0066b2").grid(row=1, column=0, padx=20, pady=20, sticky=W)
+        tk.Label(self.root, text="New Question :",font=self.font1, bg="#ffffff", fg="#0066b2").grid(row=1, column=0, padx=20, pady=20, sticky=W)
         self.ques_entry = ctk.CTkEntry(self.root)
         self.ques_entry.grid(row=1, column=1, padx=20, pady=20)
 
-        tk.Label(self.root, text="New Answer:",font=self.font1 ,bg="#ffffff", fg="#0066b2").grid(row=2, column=0, padx=20, pady=20, sticky=W)
+        tk.Label(self.root, text="New Answer :",font=self.font1 ,bg="#ffffff", fg="#0066b2").grid(row=2, column=0, padx=20, pady=20, sticky=W)
         self.ans_entry = ctk.CTkEntry(self.root)
         self.ans_entry.grid(row=2, column=1, padx=20, pady=20)
 

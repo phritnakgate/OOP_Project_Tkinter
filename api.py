@@ -243,41 +243,44 @@ async def get_review(refcode):
 # ------------------------------- Exam API --------------------------------#
 @app.post("/exam/question_and_answer", tags=["Exam API"])
 async def add_question(refcode:str ,data: QuestListDTO):  
-    c = course_system.search_course(refcode)  
-    e = c.get_exam()   
-    e.add_question_ans(data) 
-    return {"add successfully"}
+    course = course_system.search_course(refcode)  
+    if course == None:
+        return {"Refcode not found"}
+    else:
+        exams = course.get_exam()   
+        exams.add_question_ans(data)
+        return {"add successfully"}
 
 
 @app.put("/exam/edit", tags=["Exam API"])
 async def update_exams(refcode:str,question_number: int, body: EditExamDTO):
-    c = course_system.search_course(refcode)  
-    e = c.get_exam() 
-    return e.edit_exam(question_number, body.dict())
+    course = course_system.search_course(refcode)  
+    exams = course.get_exam() 
+    return exams.edit_exam(question_number, body.dict())
 
 
 @app.get("/exam", tags=["Exam API"])
 async def get_exam(refcode:str):
-    c = course_system.search_course(refcode)  
-    e = c.get_exam() 
-    return e.get_exams()
+    course = course_system.search_course(refcode)  
+    exams = course.get_exam() 
+    return exams.get_exams()
 
 
 @app.post("/courses/{user}/{refcode}/exam/do_exam", tags=["Exam API"])
 async def do_exam(refcode,user,data: list):
-    c = course_system.search_course(refcode)  
-    e = c.get_exam() 
+    course = course_system.search_course(refcode)  
+    exams = course.get_exam() 
     studoexam = CourseProgression(user, refcode)
-    studoexam.set_exam(e.get_exams())
+    studoexam.set_exam(exams.get_exams())
     studoexam.do_exam(data)    
-    u = course_system.search_user(user)
-    u.set_progression(studoexam)
+    users = course_system.search_user(user)
+    users.set_progression(studoexam)
     return {"successfully",f'{studoexam.get_progress()} %'}
 
 @app.get("/{user}/get_all_grogression", tags=["Exam API"])
 async def get_all_progression(user):
-    u = course_system.search_user(user)
-    return u.get_progression()
+    users = course_system.search_user(user)
+    return users.get_progression()
 
 # -------------------------------- Enroll API ----------------------------- #
 @app.get("/cart", tags=["Enrollment"])
