@@ -87,4 +87,4 @@ class MyCourseGUI:
         if answer:
             self.__mycourse.destroy()
 
-# MyCourseGUI("ffwatcharin")
+#MyCourseGUI("ffwatcharin")

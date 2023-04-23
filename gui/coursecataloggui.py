@@ -25,7 +25,7 @@ class CourseCatalog:
         self.__user_type = user_type
         self.__all_course = []
         self.__total_course = 0
-        self.__row_base = 2
+        self.__row_base = 4
         self.__txtcolor = "white"
         self.__bgcolor = "#242424"
         # ------ Create GUI ------ #
@@ -73,14 +73,59 @@ class CourseCatalog:
         self.__menuitem.add_cascade(label='About')
         self.__menuitem.add_cascade(label='Exit')
         self.__catalog.config(menu=self.__menuitem)
-        # Catalog #
+
+        # Catalog Header #
         Label(text="Welcome To CE MOOC", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=0, column=1)
         if self.__username == "Guest":
-            self.__row_base = 3
+            self.__row_base = 5
             Label(text="Please Login to Enroll!", font=self.__normal_font, fg="red", bg=self.__bgcolor).grid(row=1, column=1)
             Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=2, column=1)
+            Button(text='Software', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=3, column=0)
+            Button(text='Hardware', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=3, column=1)
+            Button(text='Math', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=3, column=2)
+            Button(text='Science', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=3, column=3)
+            Button(text='English', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=3, column=4)
+            Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=4,column=1)
         else:
             Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=1, column=1)
+            Button(text='Software', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=2, column=0)
+            Button(text='Hardware', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=2, column=1)
+            Button(text='Math', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=2, column=2)
+            Button(text='Science', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=2, column=3)
+            Button(text='English', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=2, column=4)
+            Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=3, column=1)
+
+        # All Courses #
         self.get_all_course()
         if self.__total_course % 3 == 1:
             for i in range(0, self.__total_course - 3, 3):
@@ -137,6 +182,11 @@ class CourseCatalog:
                            command=partial(self.detail, str(self.__all_course[i + j]['_Courses__refcode'])), fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor, activeforeground=self.__txtcolor).grid(
                         row=self.__row_base + 2, column=j)
                 self.__row_base += 3
+        print(self.__row_base)
+
+        # Course Recommendation #
+        Label(text="Recommended", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=self.__row_base, column=0)
+
         self.__catalog.mainloop()
 
     def get_all_course(self):
