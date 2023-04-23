@@ -268,13 +268,13 @@ async def add_question(refcode:str ,data: QuestListDTO):
     else:
         exams = course.get_exam()   
         exams.add_question_ans(data)
-        return {"add successfully"}
+        return {"Add Successfully"}
 
 
-@app.put("/exam/edit", tags=["Exam API"])
+@app.put("/{refcode}/exam/edit", tags=["Exam API"])
 async def update_exams(refcode:str,question_number: int, body: EditExamDTO):
     course = course_system.search_course(refcode)  
-    exams = course.get_exam() 
+    exams = course.get_exam()
     return exams.edit_exam(question_number, body.dict())
 
 
