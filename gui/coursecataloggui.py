@@ -7,11 +7,15 @@ from tkcalendar import DateEntry
 from tkinter.simpledialog import askstring
 import requests
 import json
+import customtkinter
 from functools import partial
 
 from gui.mycoursegui import MyCourseGUI
 from gui.coursedetailgui import CourseDetail
 from gui.cartgui import CartGUI
+
+customtkinter.set_appearance_mode("Dark")
+customtkinter.set_default_color_theme("blue")
 
 
 # ------------------ CourseCatalog ------------------ #
@@ -21,7 +25,9 @@ class CourseCatalog:
         self.__user_type = user_type
         self.__all_course = []
         self.__total_course = 0
-        self.__row_base = 2
+        self.__row_base = 4
+        self.__txtcolor = "white"
+        self.__bgcolor = "#242424"
         # ------ Create GUI ------ #
         self.__catalog = Tk()
         self.__header_font = Font(family="Kanit", weight="bold", size=20)
@@ -29,6 +35,7 @@ class CourseCatalog:
         self.__txtbox_font = Font(family="Kanit", weight="normal", size=12)
         self.__catalog.title("CE MOOC")
         self.__catalog.geometry("1000x1000")
+        self.__catalog.config(bg=self.__bgcolor)
         self.__catalog.resizable(width=False, height=False)
         # Menu #
         self.__guestaccountmenu = Menu()
@@ -66,51 +73,120 @@ class CourseCatalog:
         self.__menuitem.add_cascade(label='About')
         self.__menuitem.add_cascade(label='Exit')
         self.__catalog.config(menu=self.__menuitem)
-        # Catalog #
-        Label(text="Welcome To CE MOOC", font=self.__header_font).grid(row=0, column=1)
+
+        # Catalog Header #
+        Label(text="Welcome To CE MOOC", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=0, column=1)
         if self.__username == "Guest":
-            self.__row_base = 3
-            Label(text="Please Login to Enroll!", font=self.__normal_font).grid(row=1, column=1)
-            Label(text="==========", font=self.__normal_font).grid(row=2, column=1)
+            self.__row_base = 5
+            Label(text="Please Login to Enroll!", font=self.__normal_font, fg="red", bg=self.__bgcolor).grid(row=1, column=1)
+            Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=2, column=1)
+            Button(text='Software', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=3, column=0)
+            Button(text='Hardware', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=3, column=1)
+            Button(text='Math', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=3, column=2)
+            Button(text='Science', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=3, column=3)
+            Button(text='English', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=3, column=4)
+            Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=4,column=1)
         else:
-            Label(text="==========", font=self.__normal_font).grid(row=1, column=1)
+            Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=1, column=1)
+            Button(text='Software', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=2, column=0)
+            Button(text='Hardware', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=2, column=1)
+            Button(text='Math', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=2, column=2)
+            Button(text='Science', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=2, column=3)
+            Button(text='English', font=self.__txtbox_font,
+                   fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                   activeforeground=self.__txtcolor).grid(
+                row=2, column=4)
+            Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=3, column=1)
+
+        # All Courses #
         self.get_all_course()
         if self.__total_course % 3 == 1:
             for i in range(0, self.__total_course - 3, 3):
                 for j in range(3):
-                    Label(text=self.__all_course[i + j]['_Courses__refcode'], font=self.__normal_font).grid(
+                    Label(text=self.__all_course[i + j]['_Courses__refcode'], font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(
                         row=self.__row_base, column=j)
-                    Label(text=self.__all_course[i + j]['_Courses__title'], font=self.__normal_font).grid(
+                    Label(text=self.__all_course[i + j]['_Courses__title'], font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(
                         row=self.__row_base + 1, column=j)
+                    Button(text='Detail', font=self.__txtbox_font,
+                           command=partial(self.detail, str(self.__all_course[i + j]['_Courses__refcode'])),
+                           fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                           activeforeground=self.__txtcolor).grid(
+                        row=self.__row_base + 2, column=j)
                 self.__row_base += 3
-            Label(text=self.__all_course[i + j + 1]['_Courses__refcode'], font=self.__normal_font).grid(
+            Label(text=self.__all_course[i + j + 1]['_Courses__refcode'], font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(
                 row=self.__row_base, column=0)
-            Label(text=self.__all_course[i + j + 1]['_Courses__title'], font=self.__normal_font).grid(
+            Label(text=self.__all_course[i + j + 1]['_Courses__title'], font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(
                 row=self.__row_base + 1, column=0)
+            Button(text='Detail', font=self.__txtbox_font,
+                   command=partial(self.detail, str(self.__all_course[i + j]['_Courses__refcode'])), fg=self.__txtcolor,
+                   bg="#1F6AA5", activebackground=self.__bgcolor, activeforeground=self.__txtcolor).grid(
+                row=self.__row_base + 2, column=0)
         elif self.__total_course % 3 == 2:
             for i in range(0, self.__total_course - 3, 3):
                 for j in range(3):
-                    Label(text=self.__all_course[i + j]['_Courses__refcode'], font=self.__normal_font).grid(
+                    Label(text=self.__all_course[i + j]['_Courses__refcode'], font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(
                         row=self.__row_base, column=j)
-                    Label(text=self.__all_course[i + j]['_Courses__title'], font=self.__normal_font).grid(
+                    Label(text=self.__all_course[i + j]['_Courses__title'], font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(
                         row=self.__row_base + 1, column=j)
+                    Button(text='Detail', font=self.__txtbox_font,
+                           command=partial(self.detail, str(self.__all_course[i + j]['_Courses__refcode'])),
+                           fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                           activeforeground=self.__txtcolor).grid(
+                        row=self.__row_base + 2, column=j)
                 self.__row_base += 3
             for k in range(2):
-                Label(text=self.__all_course[i + j + k + 1]['_Courses__refcode'], font=self.__normal_font).grid(
+                Label(text=self.__all_course[i + j + k + 1]['_Courses__refcode'], font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(
                     row=self.__row_base, column=k)
-                Label(text=self.__all_course[i + j + k + 1]['_Courses__title'], font=self.__normal_font).grid(
+                Label(text=self.__all_course[i + j + k + 1]['_Courses__title'], font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(
                     row=self.__row_base + 1, column=k)
+                Button(text='Detail', font=self.__txtbox_font,
+                       command=partial(self.detail, str(self.__all_course[i + j]['_Courses__refcode'])),
+                       fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
+                       activeforeground=self.__txtcolor).grid(
+                    row=self.__row_base + 2, column=k)
         elif self.__total_course % 3 == 0:
             for i in range(0, self.__total_course, 3):
                 for j in range(3):
-                    Label(text=self.__all_course[i + j]['_Courses__refcode'], font=self.__normal_font).grid(
+                    Label(text=self.__all_course[i + j]['_Courses__refcode'], font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(
                         row=self.__row_base, column=j)
-                    Label(text=self.__all_course[i + j]['_Courses__title'], font=self.__normal_font).grid(
+                    Label(text=self.__all_course[i + j]['_Courses__title'], font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(
                         row=self.__row_base + 1, column=j)
                     Button(text='Detail', font=self.__txtbox_font,
-                           command=partial(self.detail, str(self.__all_course[i + j]['_Courses__refcode']))).grid(
+                           command=partial(self.detail, str(self.__all_course[i + j]['_Courses__refcode'])), fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor, activeforeground=self.__txtcolor).grid(
                         row=self.__row_base + 2, column=j)
                 self.__row_base += 3
+        print(self.__row_base)
+
+        # Course Recommendation #
+        Label(text="Recommended", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=self.__row_base, column=0)
+
         self.__catalog.mainloop()
 
     def get_all_course(self):
@@ -147,21 +223,21 @@ class CourseCatalog:
 # ------------------ Login ------------------ #
 class LoginGUI:
     def __init__(self):
-        self.__login = Tk()
-        self.__header_font = Font(family="Kanit", weight="bold", size=20)
-        self.__normal_font = Font(family="Kanit", weight="normal", size=16)
-        self.__txtbox_font = Font(family="Kanit", weight="normal", size=12)
+        self.__login = customtkinter.CTk()
+        self.__header_font = customtkinter.CTkFont(family="Kanit", weight="bold", size=20)
+        self.__normal_font = customtkinter.CTkFont(family="Kanit", weight="normal", size=16)
+        self.__txtbox_font = customtkinter.CTkFont(family="Kanit", weight="normal", size=12)
         self.__login.title("Login")
         self.__login.geometry("300x300")
         self.__login.resizable(width=False, height=False)
-        Label(text="Login", font=self.__header_font).pack(anchor="center")
-        Label(text="Username:", font=self.__normal_font).place(x=25, y=50)
-        self.__username_entry = Entry(self.__login, font=self.__txtbox_font)
+        customtkinter.CTkLabel(self.__login, text="Login", font=self.__header_font).pack(anchor="center")
+        customtkinter.CTkLabel(self.__login, text="Username:", font=self.__normal_font).place(x=25, y=50)
+        self.__username_entry = customtkinter.CTkEntry(self.__login, font=self.__txtbox_font)
         self.__username_entry.place(x=130, y=50)
-        Label(text="Password:", font=self.__normal_font).place(x=25, y=80)
-        self.__pwd_entry = Entry(self.__login, font=self.__txtbox_font, show="*")
+        customtkinter.CTkLabel(self.__login, text="Password:", font=self.__normal_font).place(x=25, y=80)
+        self.__pwd_entry = customtkinter.CTkEntry(self.__login, font=self.__txtbox_font, show="*")
         self.__pwd_entry.place(x=130, y=80)
-        Button(text="Login", font=self.__normal_font, command=self.login).place(x=110, y=120)
+        customtkinter.CTkButton(self.__login, text="Login", font=self.__normal_font, command=self.login).place(x=110, y=120)
         self.__login.mainloop()
 
     def login(self):
@@ -185,61 +261,66 @@ class LoginGUI:
 # ------------------ Register ------------------ #
 class RegisterGUI:
     def __init__(self):
+        self.__txtcolor = "white"
+        self.__bgcolor = "#242424"
+        self.__entrycolor = "gray20"
+
         self.__register = Tk()
         self.__header_font = Font(family="Kanit", weight="bold", size=20)
         self.__normal_font = Font(family="Kanit", weight="normal", size=16)
         self.__txtbox_font = Font(family="Kanit", weight="normal", size=12)
         self.__register.title("Register")
         self.__register.geometry("400x500")
+        self.__register.config(bg=self.__bgcolor)
         self.__register.resizable(width=False, height=False)
 
-        Label(text="Register", font=self.__header_font).pack()
+        Label(text="Register", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).pack()
 
-        Label(text="Username :", font=self.__normal_font).place(x=25, y=50)
-        self.__username_entry = Entry(self.__register, font=self.__txtbox_font)
+        Label(text="Username :", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).place(x=25, y=50)
+        self.__username_entry = Entry(self.__register, font=self.__txtbox_font, fg=self.__txtcolor, bg=self.__entrycolor)
         self.__username_entry.place(x=140, y=55)
 
-        Label(text="Password :", font=self.__normal_font).place(x=25, y=80)
-        self.__pwd_entry = Entry(self.__register, font=self.__txtbox_font, show="*")
+        Label(text="Password :", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).place(x=25, y=80)
+        self.__pwd_entry = Entry(self.__register, font=self.__txtbox_font, show="*", fg=self.__txtcolor, bg=self.__entrycolor)
         self.__pwd_entry.place(x=140, y=85)
 
-        Label(text="Email :", font=self.__normal_font).place(x=25, y=110)
-        self.__email_entry = Entry(self.__register, font=self.__txtbox_font)
+        Label(text="Email :", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).place(x=25, y=110)
+        self.__email_entry = Entry(self.__register, font=self.__txtbox_font, fg=self.__txtcolor, bg=self.__entrycolor)
         self.__email_entry.place(x=140, y=115)
 
-        Label(text="Name :", font=self.__normal_font).place(x=25, y=140)
-        self.__name_entry = Entry(self.__register, font=self.__txtbox_font)
+        Label(text="Name :", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).place(x=25, y=140)
+        self.__name_entry = Entry(self.__register, font=self.__txtbox_font, fg=self.__txtcolor, bg=self.__entrycolor)
         self.__name_entry.place(x=140, y=145)
 
-        Label(text="Surname :", font=self.__normal_font).place(x=25, y=170)
-        self.__surname_entry = Entry(self.__register, font=self.__txtbox_font)
+        Label(text="Surname :", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).place(x=25, y=170)
+        self.__surname_entry = Entry(self.__register, font=self.__txtbox_font, fg=self.__txtcolor, bg=self.__entrycolor)
         self.__surname_entry.place(x=140, y=175)
 
-        Label(text="Gender :", font=self.__normal_font).place(x=25, y=200)
+        Label(text="Gender :", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).place(x=25, y=200)
         n = StringVar()
         self.__genderChoose = ttk.Combobox(self.__register, width=10, textvariable=n)
         self.__genderChoose['values'] = ('Male', 'Female', 'Other')
         self.__genderChoose.place(x=140, y=210)
         self.__genderChoose.current()
 
-        Label(text="BirthDate :", font=self.__normal_font).place(x=25, y=230)
+        Label(text="BirthDate :", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).place(x=25, y=230)
         self.__cal = DateEntry(self.__register, width=10,
                                background="blue", foreground="skyblue", bd=4)
         self.__cal.place(x=140, y=240)
 
-        Label(text="Education :", font=self.__normal_font).place(x=25, y=260)
-        self.__educate_entry = Entry(self.__register, font=self.__txtbox_font)
+        Label(text="Education :", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).place(x=25, y=260)
+        self.__educate_entry = Entry(self.__register, font=self.__txtbox_font, fg=self.__txtcolor, bg=self.__entrycolor)
         self.__educate_entry.place(x=140, y=265)
 
-        Label(text="Province :", font=self.__normal_font).place(x=25, y=290)
-        self.__prov_entry = Entry(self.__register, font=self.__txtbox_font)
+        Label(text="Province :", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).place(x=25, y=290)
+        self.__prov_entry = Entry(self.__register, font=self.__txtbox_font, fg=self.__txtcolor, bg=self.__entrycolor)
         self.__prov_entry.place(x=140, y=295)
 
-        Label(text="Country :", font=self.__normal_font).place(x=25, y=320)
-        self.__country_entry = Entry(self.__register, font=self.__txtbox_font)
+        Label(text="Country :", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).place(x=25, y=320)
+        self.__country_entry = Entry(self.__register, font=self.__txtbox_font, fg=self.__txtcolor, bg=self.__entrycolor)
         self.__country_entry.place(x=140, y=325)
 
-        Label(text="UserType :", font=self.__normal_font).place(x=25, y=350)
+        Label(text="UserType :", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).place(x=25, y=350)
         i = StringVar()
         self.__userTypeChoose = ttk.Combobox(
             self.__register, width=10, textvariable=i)
@@ -247,7 +328,7 @@ class RegisterGUI:
         self.__userTypeChoose.place(x=140, y=360)
         self.__userTypeChoose.current()
 
-        Button(text="register", font=self.__normal_font, command=self.register).place(x=140, y=390)
+        Button(text="register", font=self.__normal_font, command=self.register, fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor, activeforeground=self.__txtcolor).place(x=140, y=390)
         self.__register.mainloop()
 
     def register(self):
