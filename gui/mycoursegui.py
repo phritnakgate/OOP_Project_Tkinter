@@ -1,10 +1,14 @@
 from tkinter import *
 from tkinter.font import *
 import tkinter.messagebox
+import customtkinter
 import requests
 import json
 from gui.studygui import Study
 from functools import partial
+
+customtkinter.set_appearance_mode("Dark")
+customtkinter.set_default_color_theme("blue")
 
 
 class MyCourseGUI:
@@ -12,32 +16,37 @@ class MyCourseGUI:
         self.__user = username
         self.__response = None
         # --------------------- Create GUI ----------------------- #
-        self.__mycourse = Tk()
-        self.__header_font = Font(family="Kanit", weight="bold", size=20)
-        self.__normal_font = Font(family="Kanit", weight="normal", size=16)
-        self.__txtbox_font = Font(family="Kanit", weight="normal", size=12)
+        self.__mycourse = customtkinter.CTk()
+        self.__header_font = customtkinter.CTkFont(family="Kanit", weight="bold", size=20)
+        self.__normal_font = customtkinter.CTkFont(family="Kanit", weight="normal", size=16)
+        self.__txtbox_font = customtkinter.CTkFont(family="Kanit", weight="normal", size=12)
         self.__mycourse.title("My Course")
         self.__mycourse.geometry("700x700")
         self.__mycourse.resizable(width=False, height=False)
-        
+
         # --- Menu --- #
+        self.__studentaccountmenu = Menu()
+        self.__studentaccountmenu.add_command(label="Logout & Close Program", command=self.logout)
+
         self.__menuitem = Menu()
-        self.__menuitem.add_cascade(label='Your Account: ' + str(self.__user))
+        self.__menuitem.add_cascade(label='Your Account: ' + str(self.__user), menu=self.__studentaccountmenu)
         self.__menuitem.add_cascade(label='About')
         self.__menuitem.add_cascade(label='Exit')
         self.__mycourse.config(menu=self.__menuitem)
-        
-        Label(text="My Course", font=self.__header_font).pack(anchor="center")
+
+        customtkinter.CTkLabel(self.__mycourse, text="My Course", font=self.__header_font).pack(anchor="center")
         posy = 50
         self.get_enrolled_course()
         if self.__response == ['No course enrolled!']:
-            Label(text='No course enrolled!', font=self.__txtbox_font)
+            Label(text='No course enrolled!', font=self.__normal_font)
         else:
             for i in self.__response:
-                lbl = Label(text=i, font=self.__txtbox_font)
+                lbl = customtkinter.CTkLabel(self.__mycourse, text=i, font=self.__normal_font)
                 lbl.place(x=50, y=posy)
-                Button(text="Study", font=self.__txtbox_font, command=partial(self.study, lbl.cget("text"))).place(x=500, y=posy)
-                Button(text="Unenroll", font=self.__txtbox_font, command=partial(self.unenroll, lbl.cget("text"))).place(x=570, y=posy)
+                customtkinter.CTkButton(self.__mycourse, text="Study", font=self.__normal_font, command=partial(self.study, lbl.cget("text"))).place(
+                    x=400, y=posy)
+                customtkinter.CTkButton(self.__mycourse, text="Unenroll", font=self.__normal_font,
+                       command=partial(self.unenroll, lbl.cget("text"))).place(x=550, y=posy)
                 posy += 50
         self.__mycourse.mainloop()
 
@@ -72,5 +81,10 @@ class MyCourseGUI:
         refcode = refcode[:colonindex]
         self.__mycourse.destroy()
         Study(self.__user, refcode)
+
+    def logout(self):
+        answer = tkinter.messagebox.askyesno(title='Confirmation', message='Are you sure that you want to quit?')
+        if answer:
+            self.__mycourse.destroy()
 
 #MyCourseGUI("ffwatcharin")
