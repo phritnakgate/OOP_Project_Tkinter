@@ -294,7 +294,7 @@ async def do_exam(refcode,user,data: list):
     studoexam.do_exam(data)    
     users = course_system.search_user(user)
     users.set_progression(studoexam)
-    return {"successfully",f'{studoexam.get_progress()} %'}
+    return {f'{studoexam.get_progress()} %'}
 
 @app.get("/{user}/get_all_grogression", tags=["Exam API"])
 async def get_all_progression(user):

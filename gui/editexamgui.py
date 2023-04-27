@@ -32,10 +32,10 @@ class ExamEditor:
         submit_button = ctk.CTkButton(self.root, text="Submit", command=self.on_submit, font=self.__normal_font)
         submit_button.grid(row=3, columnspan=2, pady=20)
         
-        self.result = ctk.CTkLabel(self.root, text="Result:", font=self.__normal_font)
+        self.result = ctk.CTkLabel(self.root, text="Result: ", font=self.__normal_font)
         self.result.grid(row=4, columnspan=1, pady=20)
 
-        self.result_label = ctk.CTkLabel(self.root, text="", font=self.__normal_font)
+        self.result_label = ctk.CTkLabel(self.root, text="", font=ctk.CTkFont(family="Kanit", weight="normal", size=18))
         self.result_label.grid(row=4, columnspan=2, pady=20)
 
      def update_exams(self, refcode, question_number,ques, ans):

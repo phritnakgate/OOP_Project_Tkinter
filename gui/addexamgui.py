@@ -5,7 +5,7 @@ import requests
 ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("blue")
 
-class ExamUI:
+class AddingExamUI:
     def __init__(self, refcode):
         self.__refcode = refcode
         self.root = ctk.CTk()
@@ -46,8 +46,8 @@ class ExamUI:
         self.exam_label = ctk.CTkLabel(self.root, text="Exam Questions and Answer :", font=self.__header_font)
         self.exam_label.grid(row=6, column=0, sticky="w", padx=10, pady=10)
 
-        self.exam_questions = ctk.CTkTextbox(self.root, font=self.__normal_font, wrap="word", height=150, width=50)
-        self.exam_questions.grid(row=7, column=0, columnspan=2, sticky="nsew", padx=10, pady=10)
+        self.exam_questions = ctk.CTkTextbox(self.root, font=self.__normal_font, wrap="word", height=150, width=5)
+        self.exam_questions.grid(row=7, column=0, columnspan=2, sticky="nsew", padx=10)
 
         self.get_button = ctk.CTkButton(self.root, text="Get Exam", command=self.get_exam_questions,height=40,font=self.__txtbox_font)
         self.get_button.grid(row=9, column=0, columnspan=2, padx=10, pady=10)
@@ -73,4 +73,4 @@ class ExamUI:
         for q in response.json():
             self.exam_questions.insert(ctk.END, f"Question : {q['_ExamItem__question']}   |   Answer : {q['_ExamItem__answer']}\n")
  
-ExamUI("SOFT001") # เปลี่ยน refcode ตรงนี้ถ้าเอาไปเชื่อมกับระบบอื่น
+AddingExamUI("SOFT001") # เปลี่ยน refcode ตรงนี้ถ้าเอาไปเชื่อมกับระบบอื่น
