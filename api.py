@@ -22,34 +22,33 @@ course = Courses("SOFT001", "Object Oriented Programming", "Learn writing oop", 
 course.set_exam(CourseExam(course.get_refcode()))
 
 course2 = Courses("HARD001", "Basic Arduino", "Learn Basic Arduino", "teach1", "Hardware", "All Ages",
-                  "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
+                  "To understand Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
 course3 = Courses("HARD002", "Circuits and Electronics", "Learn Circuit Electronic", "teach1", "Hardware", "All Ages",
-                  "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
+                  "To understand electronic circuits", "10", "10", datetime.now(), "teacher1@gmail.com")
 course4 = Courses("SOFT002", "Programming Fundamentals", "Learn basic programming", "teach1", "Software", "All Ages",
-                  "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
+                  "To understand Programming Fundamentals", "10", "10", datetime.now(), "teacher1@gmail.com")
 course5 = Courses("MATH001", "Calculus I", "Learn Calculus I", "teach1", "Math", "All Ages",
-                  "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
+                  "To understand Calculus I", "10", "10", datetime.now(), "teacher1@gmail.com")
 course6 = Courses("MATH002", "Calculus II", "Learn Calculus II", "teach1", "Math", "All Ages",
-                  "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
+                  "To understand Calculus II", "10", "10", datetime.now(), "teacher1@gmail.com")
 course7 = Courses("MATH003", "Discrete Structure", "Learn Discrete math", "teach1", "Math", "All Ages",
-                  "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
+                  "To understand discrete math", "10", "10", datetime.now(), "teacher1@gmail.com")
 course8 = Courses("SCI001", "Cellular Respiration", "Learn Cellular Respiration", "teach1", "Science", "All Ages",
-                  "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
+                  "To understand cellular respirarion", "10", "10", datetime.now(), "teacher1@gmail.com")
 course9 = Courses("SCI002", "Photosynthesis", "Learn Photosynthesis", "teach1", "Science", "All Ages",
-                  "To understanding Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
+                  "To understand photosynthesis", "10", "10", datetime.now(), "teacher1@gmail.com")
 course10 = Courses("MATH004", "Linear Algebra", "Learn Linear Algebra", "teach1", "Math", "All Ages",
-                   "To understanding Linear Algebra", "10", "10", datetime.now(), "teacher1@gmail.com")
+                   "To understand Linear Algebra", "10", "10", datetime.now(), "teacher1@gmail.com")
 course11 = Courses("LAN001", "English for Communication", "Learn English for Communication", "teach1", "Language",
-                   "All Ages",
-                   "To understanding everyday English conversation", "10", "10", datetime.now(), "teacher1@gmail.com")
+                   "All Ages", "To understand everyday English conversation", "10", "10", datetime.now(), "teacher1@gmail.com")
 course12 = Courses("LAN002", "English for Business", "Learn English for Business", "teach1", "Language", "All Ages",
-                   "To understanding Basic Business in English", "10", "10", datetime.now(), "teacher1@gmail.com")
+                   "To understand Basic Business in English", "10", "10", datetime.now(), "teacher1@gmail.com")
 course13 = Courses("LAN003", "Fundamental Chinese", "Learn Fundamental Chinese", "teach1", "Language", "All Ages",
-                   "To understanding Basic Chinese", "10", "10", datetime.now(), "teacher1@gmail.com")
+                   "To understand Basic Chinese", "10", "10", datetime.now(), "teacher1@gmail.com")
 course14 = Courses("LAN004", "Fundamental Korean", "Learn Fundamental Korean", "teach1", "Language", "All Ages",
-                   "To understanding Basic Korean", "10", "10", datetime.now(), "teacher1@gmail.com")
+                   "To understand Basic Korean", "10", "10", datetime.now(), "teacher1@gmail.com")
 course15 = Courses("LAN005", "English for Marketing", "Learn English for Marketing", "teach1", "Language", "All Ages",
-                   "To understanding Basic Marketing in English", "10", "10", datetime.now(), "teacher1@gmail.com")
+                   "To understand Basic Marketing in English", "10", "10", datetime.now(), "teacher1@gmail.com")
 
 # --- Build Test --- #
 course_system.create_course(course)
@@ -218,8 +217,8 @@ async def edit_course(refcode):
 
 
 @app.delete("/delete_course", tags=["Course API"])
-async def delete_course(willdel: str):
-    course_system.delete_course(willdel)
+async def delete_course(refcode: str):
+    course_system.delete_course(refcode)
 
 
 @app.get("/courses/search_by_name", tags=["Course API"])
@@ -228,10 +227,12 @@ async def search_name(data: str):
 
 
 # Course Categories API #
-@app.get("/coursescatg", tags=["Course Categories API"])
-async def course_catg(data: str):
-    print(course_system.browse_course(data))
-    return course_system.browse_course(data)
+@app.get("/courses/{catg}", tags=["Course Categories API"])
+async def course_catg(catg):
+    data = course_system.browse_course(catg)
+    print(data)
+    return course_system.browse_course(catg)
+    
 
 
 @app.get("/courses/{user}/{refcode}", tags=["Course API"])
@@ -358,3 +359,4 @@ async def unenroll(unenroll: dict) -> dict:
         return {"Unenroll": "Success"}
     else:
         return {"Unenroll": "Error"}
+    

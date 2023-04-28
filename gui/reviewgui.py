@@ -5,6 +5,8 @@ import requests
 import json
 from tkinter import ttk
 
+customtkinter.set_appearance_mode("Dark")
+customtkinter.set_default_color_theme("blue")
 
 class ReviewGUI:
     def __init__(self, username, refcode):
