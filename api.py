@@ -227,10 +227,12 @@ async def search_name(data: str):
 
 
 # Course Categories API #
-@app.get("/coursescatg", tags=["Course Categories API"])
-async def course_catg(data: str):
-    print(course_system.browse_course(data))
-    return course_system.browse_course(data)
+@app.get("/courses/{catg}", tags=["Course Categories API"])
+async def course_catg(catg):
+    data = course_system.browse_course(catg)
+    print(data)
+    return course_system.browse_course(catg)
+    
 
 
 @app.get("/courses/{user}/{refcode}", tags=["Course API"])
