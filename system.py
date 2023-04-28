@@ -143,9 +143,8 @@ class CourseSystem:
             return False
 
     def browse_course(self, catg):
-        self.__coursecatg_list = []
+        by_catg = []
         for i in self.__course_list:
             if i.get_catg() == catg:
-                self.__coursecatg_list.append(i)
-
-        return self.__coursecatg_list
+                by_catg.append(i)
+        return by_catg
