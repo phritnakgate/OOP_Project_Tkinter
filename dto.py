@@ -11,7 +11,7 @@ class AddQuesDTO(BaseModel):
 class QuestListDTO(BaseModel):
     questions: List[AddQuesDTO] 
     
-class EditExamDTO(BaseModel) :
+class EditExamDTO(BaseModel):
     question: str
     answer: str    
 
