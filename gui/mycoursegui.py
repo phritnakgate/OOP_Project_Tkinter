@@ -66,14 +66,14 @@ class MyCourseGUI:
     def unenroll(self, refcode):
         colonindex = refcode.index(":")
         refcode = refcode[:colonindex]
-        print(refcode)
+        # print(refcode)
         param = {
             "username": str(self.__user),
             "refcode": str(refcode)
         }
         r = requests.post("http://localhost:8000/unenroll", json=param)
         res = r.text
-        print(res)
+        # print(res)
         tkinter.messagebox.showinfo(title="Success", message="Unenroll Success! Please reopen this window")
 
     def study(self, refcode):

@@ -13,6 +13,7 @@ from functools import partial
 from gui.mycoursegui import MyCourseGUI
 from gui.coursedetailgui import CourseDetail
 from gui.cartgui import CartGUI
+from gui.browsebycatg import BrowseCatg
 from gui.teacherdashboard import TeacherDashboard
 
 customtkinter.set_appearance_mode("Dark")
@@ -28,6 +29,7 @@ class CourseCatalog:
         self.__total_course = 0
         self.__row_base = 4
         self.__txtcolor = "white"
+        self.__txtcolor2 = "#1F6AA5"
         self.__bgcolor = "#242424"
         # ------ Create GUI ------ #
         self.__catalog = Tk()
@@ -80,49 +82,51 @@ class CourseCatalog:
         if self.__username == "Guest":
             self.__row_base = 5
             Label(text="Please Login to Enroll!", font=self.__normal_font, fg="red", bg=self.__bgcolor).grid(row=1, column=1)
+            
+            Label(text="Category", font=self.__header_font, fg=self.__txtcolor2, bg=self.__bgcolor).grid(row=2,column=0)
             Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=2, column=1)
             Button(text='Software', font=self.__txtbox_font,
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
-                   activeforeground=self.__txtcolor).grid(
+                   activeforeground=self.__txtcolor, command=partial(self.browse_catg,'Software')).grid(
                 row=3, column=0)
             Button(text='Hardware', font=self.__txtbox_font,
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
-                   activeforeground=self.__txtcolor).grid(
+                   activeforeground=self.__txtcolor, command=partial(self.browse_catg,'Hardware')).grid(
                 row=3, column=1)
             Button(text='Math', font=self.__txtbox_font,
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
-                   activeforeground=self.__txtcolor).grid(
+                   activeforeground=self.__txtcolor, command=partial(self.browse_catg,'Math')).grid(
                 row=3, column=2)
             Button(text='Science', font=self.__txtbox_font,
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
-                   activeforeground=self.__txtcolor).grid(
+                   activeforeground=self.__txtcolor, command=partial(self.browse_catg,'Science')).grid(
                 row=3, column=3)
             Button(text='English', font=self.__txtbox_font,
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
-                   activeforeground=self.__txtcolor).grid(
+                   activeforeground=self.__txtcolor, command=partial(self.browse_catg,'English')).grid(
                 row=3, column=4)
             Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=4,column=1)
         else:
             Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=1, column=1)
             Button(text='Software', font=self.__txtbox_font,
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
-                   activeforeground=self.__txtcolor).grid(
+                   activeforeground=self.__txtcolor,command=partial(self.browse_catg,'Software')).grid(
                 row=2, column=0)
             Button(text='Hardware', font=self.__txtbox_font,
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
-                   activeforeground=self.__txtcolor).grid(
+                   activeforeground=self.__txtcolor, command=partial(self.browse_catg,'Hardware')).grid(
                 row=2, column=1)
             Button(text='Math', font=self.__txtbox_font,
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
-                   activeforeground=self.__txtcolor).grid(
+                   activeforeground=self.__txtcolor, command=partial(self.browse_catg,'Math')).grid(
                 row=2, column=2)
             Button(text='Science', font=self.__txtbox_font,
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
-                   activeforeground=self.__txtcolor).grid(
+                   activeforeground=self.__txtcolor, command=partial(self.browse_catg,'Science')).grid(
                 row=2, column=3)
             Button(text='English', font=self.__txtbox_font,
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
-                   activeforeground=self.__txtcolor).grid(
+                   activeforeground=self.__txtcolor, command=partial(self.browse_catg,'English')).grid(
                 row=2, column=4)
             Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=3, column=1)
 
@@ -183,12 +187,13 @@ class CourseCatalog:
                            command=partial(self.detail, str(self.__all_course[i + j]['_Courses__refcode'])), fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor, activeforeground=self.__txtcolor).grid(
                         row=self.__row_base + 2, column=j)
                 self.__row_base += 3
-        print(self.__row_base)
+        # print(self.__row_base)
 
         # Course Recommendation #
         Label(text="Recommended", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=self.__row_base, column=0)
 
         self.__catalog.mainloop()
+        
 
     def get_all_course(self):
         r = requests.get("http://localhost:8000/courses")
@@ -219,6 +224,9 @@ class CourseCatalog:
 
     def cart(self):
         CartGUI(self.__username)
+    
+    def browse_catg(self, category):
+        BrowseCatg(category, self.__username, self.__user_type)
 
     def aboutbox(self):
         tkinter.messagebox.showinfo(title="About", message="CE MOOC By.. Phrit, Watcharin, Yongsuk and Paramate")
@@ -254,7 +262,7 @@ class LoginGUI:
             print(url)
             r = requests.post(url)
             data = json.loads(r.text)
-            print(data)
+            # print(data)
             if data == {'Status': 'Username/Password Incorrect!!'}:
                 tkinter.messagebox.showerror(title="Error", message="Username/Password is Incorrect!!")
             else:
@@ -360,15 +368,15 @@ class RegisterGUI:
                 self.__show_dept = askstring('Department', 'Enter your Department?')
                 showinfo('Your Department', 'Your Department is {}'.format(self.__show_dept))
                 if self.__show_dept is not None:  # user pressed OK
-                    print(self.__show_dept)
+                    # print(self.__show_dept)
                     data['teacher_dept'] = self.__show_dept
                 else:  # user pressed Cancel
                     print("User cancelled")
                     data['teacher_dept'] = ""
             r = requests.post("http://127.0.0.1:8000/register", json=data)
             res = json.loads(r.text)
-            print(data)
-            print(res)
+            # print(data)
+            # print(res)
             tkinter.messagebox.showinfo(message="Register Success! Please Login!", title="Success!")
             self.__register.destroy()
             LoginGUI()

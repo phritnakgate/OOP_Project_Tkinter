@@ -6,7 +6,6 @@ class CourseSystem:
         self.__course_list = []
         self.__user_list = []
         self.__cart = []
-        self.__coursecatg_list = []
 
     # --------------- User --------------- #
     def add_user(self, user):
@@ -74,6 +73,14 @@ class CourseSystem:
                 result.append(course)
         if result: return result
         else: return {'Course Not Found!!'}
+        
+    def browse_course(self, catg):
+        by_catg = []
+        for i in self.__course_list:
+            if i.get_catg() == catg:
+                by_catg.append(i)
+        print(by_catg)
+        return by_catg
 
     # --- Study --- #
     def get_course(self, user, refcode):
@@ -147,11 +154,3 @@ class CourseSystem:
             return True
         else:
             return False
-
-    def browse_course(self, catg):
-        self.__coursecatg_list = []
-        for i in self.__course_list:
-            if i.get_catg() == catg:
-                self.__coursecatg_list.append(i)
-
-        return self.__coursecatg_list
