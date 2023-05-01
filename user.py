@@ -12,7 +12,6 @@ class User:
         self.__province = province
         self.__country = country
         self.__user_type = user_type
-        
 
     def get_username(self):
         return self.__username
@@ -21,9 +20,7 @@ class User:
         return self.__password
 
     def get_user_type(self):
-        return self.__user_type          
-                
-        
+        return self.__user_type
 
 
 class Admin(User):
@@ -53,16 +50,16 @@ class Student(User):
             self._enrolled_course.append(will_enroll)
         elif request == 'unenroll':
             self._enrolled_course.remove(will_enroll)
-            
-    def set_progression(self, progress):        
+
+    def set_progression(self, progress):
         for p in self.__progression_list:
             if p.get_refcode() != progress.get_refcode():
                 self.__progression_list.append(progress)
             else:
-                 p = progress
-    
+                p = progress
+
     def get_progression(self):
-        return self.__progression_list         
+        return self.__progression_list
 
 
 class Teacher(User):
@@ -75,3 +72,6 @@ class Teacher(User):
 
     def get_username(self):
         return super().get_username()
+
+    def set_email(self, new_email):
+        self.__email = new_email
