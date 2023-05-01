@@ -147,6 +147,36 @@ async def login(username: str, password: str):
         return {"Status": "Username/Password Incorrect!!"}
 
 
+# modify user
+@app.put("/update_user/{username}", tags=["User API"])
+async def update_user(username: str, form_data: dict):
+    user = course_system.search_user(username)
+    if user is None:
+        return {"message": "User not found"}
+
+    if "password" in form_data:
+        user._User__password = form_data["password"]
+    if "email" in form_data:
+        user._User__email = (form_data["email"])
+    if "fname" in form_data:
+        user._User__fname = form_data["fname"]
+    if "lname" in form_data:
+        user._User__lname = form_data["lname"]
+    if "gender" in form_data:
+        user._User__gender = form_data["gender"]
+    if "birth_date" in form_data:
+        user._User__birth_date = form_data["birth_date"]
+    if "education" in form_data:
+        user._User__education = form_data["education"]
+    if "province" in form_data:
+        user._User__province = form_data["province"]
+    if "country" in form_data:
+        user._User__country = form_data["country"]
+    if user.get_user_type() == "Teacher" and "teacher_dept" in form_data:
+        user._Teacher__teacher_dept = form_data["teacher_dept"]
+    return {"message": "User information updated successfully"}
+
+
 # delete user
 @app.delete("/delete_user", tags=["User API"])
 async def delete_user(username: str):
@@ -163,11 +193,6 @@ async def read_users():
 @app.get("/users/{username}", tags=["User API"])
 async def get_user(username):
     return course_system.search_user(username)
-
-
-@app.put("/users/{username}/modify", tags=["User API"])
-async def modify_user(username):
-    pass
 
 
 @app.get("/enrolled", tags=["User API"])
