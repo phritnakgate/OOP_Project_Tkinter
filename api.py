@@ -232,7 +232,7 @@ async def course_catg(catg):
     data = course_system.browse_course(catg)
     print(data)
     return course_system.browse_course(catg)
-    
+
 
 
 @app.get("/courses/{user}/{refcode}", tags=["Course API"])
@@ -246,6 +246,10 @@ async def get_course(user, refcode):
 @app.get("/courses/{user}/{refcode}/{chapter}", tags=["Course API"])
 async def get_chapter(user, refcode, chapter):
     return course_system.get_chapter(user, refcode, chapter)
+
+@app.put("/courses/{refcode}/{chapter}/modify", tags=["Course API"])
+async def modify_chapter(refcode, chapter, newmat: str):
+    return course_system.set_material(refcode, chapter, newmat)
 
 
 @app.post("/add_review", tags=["Course API"])
@@ -359,4 +363,3 @@ async def unenroll(unenroll: dict) -> dict:
         return {"Unenroll": "Success"}
     else:
         return {"Unenroll": "Error"}
-    

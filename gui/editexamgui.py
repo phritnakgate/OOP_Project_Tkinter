@@ -9,7 +9,7 @@ ctk.set_default_color_theme("blue")
 class ExamEditor:
      def __init__(self,refcode):
           self.__refcode = refcode
-          self.root = ctk.CTk()
+          self.root = ctk.CTkToplevel()
           self.root.title("Update Exam")
           self.__header_font = ctk.CTkFont(family="Kanit", weight="bold", size=25)
           self.__normal_font = ctk.CTkFont(family="Kanit", weight="normal", size=15)

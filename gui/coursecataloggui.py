@@ -13,6 +13,7 @@ from functools import partial
 from gui.mycoursegui import MyCourseGUI
 from gui.coursedetailgui import CourseDetail
 from gui.cartgui import CartGUI
+from gui.teacherdashboard import TeacherDashboard
 
 customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue")
@@ -49,7 +50,7 @@ class CourseCatalog:
         self.__studentaccountmenu.add_command(label="Logout & Close Program", command=self.logout)
 
         self.__teacheraccountmenu = Menu()
-        self.__teacheraccountmenu.add_command(label="My Teached Courses")
+        self.__teacheraccountmenu.add_command(label="My Teached Courses", command=self.tdashboard)
         self.__teacheraccountmenu.add_command(label="Edit Profile")
         self.__teacheraccountmenu.add_command(label="Logout & Close Program", command=self.logout)
 
@@ -70,8 +71,8 @@ class CourseCatalog:
                                             menu=self.__teacheraccountmenu)
             elif self.__user_type == "Admin":
                 self.__menuitem.add_cascade(label='Your Account: ' + str(self.__username), menu=self.__adminaccountmenu)
-        self.__menuitem.add_cascade(label='About')
-        self.__menuitem.add_cascade(label='Exit')
+        self.__menuitem.add_cascade(label='About', command=self.aboutbox)
+        self.__menuitem.add_cascade(label='Exit', command=self.logout)
         self.__catalog.config(menu=self.__menuitem)
 
         # Catalog Header #
@@ -219,6 +220,12 @@ class CourseCatalog:
     def cart(self):
         CartGUI(self.__username)
 
+    def aboutbox(self):
+        tkinter.messagebox.showinfo(title="About", message="CE MOOC By.. Phrit, Watcharin, Yongsuk and Paramate")
+
+    def tdashboard(self):
+        self.__catalog.destroy()
+        TeacherDashboard(self.__username)
 
 # ------------------ Login ------------------ #
 class LoginGUI:
