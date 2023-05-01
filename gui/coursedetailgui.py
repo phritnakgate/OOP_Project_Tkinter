@@ -6,6 +6,7 @@ import json
 
 from gui.cartgui import CartGUI
 from gui.reviewgui import ReviewGUI
+
 customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue")
 
@@ -42,7 +43,7 @@ class CourseDetail:
             if not self.check_enrolled():
                 customtkinter.CTkButton(self.__cdetail, text="Enroll", font=self.__normal_font, command=self.add_cart).pack()
             else:
-                customtkinter.CTkLabel(self.__cdetail, text="You have enrolled!", font=self.__normal_font, text_color="red").pack()
+                customtkinter.CTkLabel(self.__cdetail, text="You have enrolled!", font=self.__normal_font, text_color="green").pack()
         else:
             customtkinter.CTkLabel(self.__cdetail, text="You cannot enrolled!", font=self.__normal_font, text_color="red").pack()
         for i, (key, value) in enumerate(self.__labels.items()):
@@ -70,8 +71,9 @@ class CourseDetail:
         url = "http://localhost:8000/courses/"+self.__refcode
         r = requests.get(url)
         data = json.loads(r.text)
-        print(data)
+        # print(data)
         return data
+    
     def check_enrolled(self):
         url = "http://localhost:8000/enrolled?username="+self.__username
         r = requests.get(url)
@@ -88,7 +90,7 @@ class CourseDetail:
         }
         r = requests.post("http://localhost:8000/addcart", json=add_cart)
         res = json.loads(r.text)
-        print(res)
+        # print(res)
         if res == {"Cart": "Success"}:
             tkinter.messagebox.showinfo(title="Success", message="Added to Cart!")
             self.__cdetail.destroy()
@@ -105,4 +107,4 @@ class CourseDetail:
         self.__cdetail.destroy()
         ReviewGUI(self.__username, self.__refcode)
 
-#CourseDetail("ffwatcharin","HARD001","Student")
+# CourseDetail("ffwatcharin","HARD001","Student")

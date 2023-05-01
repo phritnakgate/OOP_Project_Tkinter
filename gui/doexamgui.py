@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import requests
 
-ctk.set_appearance_mode("System")
+ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
 
 class DoingExamUI:   
@@ -11,7 +11,7 @@ class DoingExamUI:
         self.__user = user
         self.__root = ctk.CTk()
         self.__root.title("Doing Exam")
-        self.__root.geometry("600x400")
+        self.screen(600,400)
         self.__root.resizable(width=False, height=False)
         self.__header_font = ctk.CTkFont(family="Kanit", weight="bold", size=25)
         self.__normal_font = ctk.CTkFont(family="Kanit", weight="normal", size=15)
@@ -24,6 +24,13 @@ class DoingExamUI:
             self.create_widgets()
         
         self.__root.mainloop()
+    
+    def screen(self, width, height):
+        self.screen_width = self.__root.winfo_screenwidth()
+        self.screen_height = self.__root.winfo_screenheight()             
+        self.x = (self.screen_width // 2) - (width // 2)
+        self.y = (self.screen_height // 2) - (height // 2)
+        self.__root.geometry(f"{width}x{height}+{self.x}+{self.y}")
         
     def get_exam_questions(self):
         response = requests.get("http://127.0.0.1:8000/exam?refcode=" + str(self.__refcode))

@@ -2,21 +2,28 @@ import customtkinter as ctk
 from tkinter import *
 import requests
 
-ctk.set_appearance_mode("System")
+ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
 
 class AddingExamUI:
     def __init__(self, refcode):
         self.__refcode = refcode
-        self.root = ctk.CTk()
+        self.root = ctk.CTkToplevel()
         self.root.title("Exam Management")
-        self.root.geometry("600x400")
+        self.screen(600, 400)
         self.root.resizable(width=False, height=False)
         self.__header_font = ctk.CTkFont(family="Kanit", weight="bold", size=25)
         self.__normal_font = ctk.CTkFont(family="Kanit", weight="normal", size=15)
         self.__txtbox_font = ctk.CTkFont(family="Kanit", weight="normal", size=13)
         self.create_widgets()
         self.root.mainloop()
+        
+    def screen(self, width, height):
+        self.screen_width = self.root.winfo_screenwidth()
+        self.screen_height = self.root.winfo_screenheight()             
+        self.x = (self.screen_width // 2) - (width // 2)
+        self.y = (self.screen_height // 2) - (height // 2)
+        self.root.geometry(f"{width}x{height}+{self.x}+{self.y}")
     
     def create_widgets(self):       
         # Configure rows and columns for resizing
@@ -51,8 +58,6 @@ class AddingExamUI:
 
         self.get_button = ctk.CTkButton(self.root, text="Get Exam", command=self.get_exam_questions,height=40,font=self.__txtbox_font)
         self.get_button.grid(row=9, column=0, columnspan=2, padx=10, pady=10)
-
-
 
     def add_question(self):
         data = {  
