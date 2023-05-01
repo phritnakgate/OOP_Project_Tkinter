@@ -9,7 +9,7 @@ class DoingExamUI:
         self.__refcode = refcode
         self.__data = self.get_exam_questions()
         self.__user = user
-        self.__root = ctk.CTk()
+        self.__root = ctk.CTkToplevel()
         self.__root.title("Doing Exam")
         self.screen(600,400)
         self.__root.resizable(width=False, height=False)
@@ -129,4 +129,4 @@ class DoingExamUI:
                                    command=self.__root.destroy)
 
              
-DoingExamUI("ffwatcharin","SOFT001") # เปลี่ยน user,refcode ตรงนี้ถ้าเอาไปเชื่อมกับระบบอื่น
+#DoingExamUI("ffwatcharin", "SOFT001") # เปลี่ยน user,refcode ตรงนี้ถ้าเอาไปเชื่อมกับระบบอื่น

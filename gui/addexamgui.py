@@ -5,6 +5,7 @@ import requests
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
 
+
 class AddingExamUI:
     def __init__(self, refcode):
         self.__refcode = refcode
@@ -77,5 +78,6 @@ class AddingExamUI:
         self.exam_questions.delete(1.0, ctk.END)
         for q in response.json():
             self.exam_questions.insert(ctk.END, f"Question : {q['_ExamItem__question']}   |   Answer : {q['_ExamItem__answer']}\n")
- 
+
+
 AddingExamUI("SOFT001") # เปลี่ยน refcode ตรงนี้ถ้าเอาไปเชื่อมกับระบบอื่น

@@ -7,6 +7,8 @@ import requests
 import json
 from functools import partial
 
+from gui.doexamgui import DoingExamUI
+
 customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue")
 
@@ -32,6 +34,7 @@ class Study:
             self.__chapter_label.append(lbl)
             self.__posy += 50
         print(self.__chapter_label)
+        customtkinter.CTkLabel(self.__study, text="Exam", font=self.__normal_font).place(x=50, y=self.__posy)
         self.__posy = 50
         self.__chapter_button = []
         for j in range(len(self.__chapter_label)):
@@ -41,6 +44,7 @@ class Study:
             btn.place(x=300, y=self.__posy)
             self.__chapter_button.append(btn)
             self.__posy += 50
+        customtkinter.CTkButton(self.__study, text="Take Exam", font=self.__txtbox_font, command=self.take_exam).place(x=300, y=self.__posy)
         self.__study.mainloop()
 
     def request_url(self):
@@ -95,3 +99,6 @@ class Study:
             txtbox.delete("1.0", "end-1c")
             txtbox.insert(INSERT, str(mat))
             txtbox.configure(state="disabled")
+
+    def take_exam(self):
+        DoingExamUI(self.__user, self.__refcode)

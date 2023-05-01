@@ -6,7 +6,6 @@ class CourseSystem:
         self.__course_list = []
         self.__user_list = []
         self.__cart = []
-        self.__coursecatg_list = []
 
     # --------------- User --------------- #
     def add_user(self, user):
@@ -115,6 +114,12 @@ class CourseSystem:
         c = self.search_course(refcode)
         c.get_chapter()[int(chapter)].get_material().append(material)
 
+    def set_material(self, refcode, chapter, new):
+        c = self.search_course(refcode)
+        c.get_chapter()[int(chapter)].get_material()[0].edit_material(new)
+        return c.get_chapter()[int(chapter)].get_material()
+
+
     # --- Enroll --- #
     def get_cart(self):
         return self.__cart
@@ -149,5 +154,3 @@ class CourseSystem:
             return True
         else:
             return False
-
-    

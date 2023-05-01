@@ -88,3 +88,6 @@ class CourseChapter:
 class CourseMaterial:
     def __init__(self, material):
         self.__material = material
+
+    def edit_material(self, new):
+        self.__material = new
