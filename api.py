@@ -13,6 +13,8 @@ admin = Admin("admin", "admin1234", "admin1@gmail.com", "ad", "min", "Male", dat
               "Bangkok", "Thailand")
 student = Student("ffwatcharin", "firstbigdick", "ffwatcharin@gmail.com", "Watcharin", "Humthong", "Male",
                   datetime(2004, 1, 16), "Undergraduated", "Nonthaburi", "Thailand")
+testdel = Student("del", "del", "eiei@gmail.com", "d", "d", "Male",
+                  datetime(2003, 12, 4), "Undergraduated", "Nonthaburi", "Thailand")
 
 # --- Build Test --- #
 
@@ -79,6 +81,7 @@ course_system.create_course(course15)
 
 course_system.add_user(teacher1)
 course_system.add_user(student)
+course_system.add_user(testdel)
 course_system.add_user(admin)
 print(course_system.get_user_db())
 

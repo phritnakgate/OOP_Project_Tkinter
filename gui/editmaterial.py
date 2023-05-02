@@ -51,7 +51,7 @@ class EditMaterial:
                 self.__ent.insert("0.0", i['_CourseChapter__material'][0]['_CourseMaterial__material'])
     def save(self, chap, newmat):
         url = "http://127.0.0.1:8000/courses/"+self.__refcode+"/"+str(chap)+"/modify?newmat="+newmat
-        r = requests.put(url)
-        print(json.loads(r.text))
+        requests.put(url)
+        #print(json.loads(r.text))
 
 #EditMaterial("SOFT001")
