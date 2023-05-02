@@ -3,18 +3,26 @@ from tkinter import *
 from tkinter.font import Font
 import customtkinter as ctk
 
-ctk.set_appearance_mode("System")
+ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
 
 class ExamEditor:
      def __init__(self,refcode):
           self.__refcode = refcode
-          self.root = ctk.CTk()
+          self.root = ctk.CTkToplevel()
           self.root.title("Update Exam")
+          self.screen(450,400)
           self.__header_font = ctk.CTkFont(family="Kanit", weight="bold", size=25)
           self.__normal_font = ctk.CTkFont(family="Kanit", weight="normal", size=15)
           self.create_widgets()
           self.root.mainloop()
+          
+     def screen(self, width, height):
+        self.screen_width = self.root.winfo_screenwidth()
+        self.screen_height = self.root.winfo_screenheight()             
+        self.x = (self.screen_width // 2) - (width // 2)
+        self.y = (self.screen_height // 2) - (height // 2)
+        self.root.geometry(f"{width}x{height}+{self.x}+{self.y}")
           
      def create_widgets(self):
         ctk.CTkLabel(self.root, text="Question Number :",font=self.__header_font).grid(row=0, column=0, padx=20, pady=20, sticky=W)

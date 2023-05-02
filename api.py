@@ -23,14 +23,24 @@ course.set_exam(CourseExam(course.get_refcode()))
 
 course2 = Courses("HARD001", "Basic Arduino", "Learn Basic Arduino", "teach1", "Hardware", "All Ages",
                   "To understand Arduino", "10", "10", datetime.now(), "teacher1@gmail.com")
+course2.set_exam(CourseExam(course2.get_refcode()))
+
 course3 = Courses("HARD002", "Circuits and Electronics", "Learn Circuit Electronic", "teach1", "Hardware", "All Ages",
                   "To understand electronic circuits", "10", "10", datetime.now(), "teacher1@gmail.com")
+course3.set_exam(CourseExam(course3.get_refcode()))
+
 course4 = Courses("SOFT002", "Programming Fundamentals", "Learn basic programming", "teach1", "Software", "All Ages",
                   "To understand Programming Fundamentals", "10", "10", datetime.now(), "teacher1@gmail.com")
+course4.set_exam(CourseExam(course4.get_refcode()))
+
 course5 = Courses("MATH001", "Calculus I", "Learn Calculus I", "teach1", "Math", "All Ages",
                   "To understand Calculus I", "10", "10", datetime.now(), "teacher1@gmail.com")
+course5.set_exam(CourseExam(course5.get_refcode()))
+
 course6 = Courses("MATH002", "Calculus II", "Learn Calculus II", "teach1", "Math", "All Ages",
                   "To understand Calculus II", "10", "10", datetime.now(), "teacher1@gmail.com")
+course6.set_exam(CourseExam(course6.get_refcode()))
+
 course7 = Courses("MATH003", "Discrete Structure", "Learn Discrete math", "teach1", "Math", "All Ages",
                   "To understand discrete math", "10", "10", datetime.now(), "teacher1@gmail.com")
 course8 = Courses("SCI001", "Cellular Respiration", "Learn Cellular Respiration", "teach1", "Science", "All Ages",
@@ -92,11 +102,9 @@ course_system.add_material('SOFT001', 2, chap3_mat)
 # ------------------------------- API -----------------------------------#
 app = FastAPI()
 
-
 @app.get("/", tags=['root'])
 async def root():
     return {"Welcome": "Hello OOP"}
-
 
 # -------------------------------------------- User API -------------------------------------------- #
 # register
@@ -235,7 +243,6 @@ async def create_course(course_info: dict):
         "message": "course created"
     }
 
-
 @app.put("/{refcode}/edit", tags=["Course API"])
 async def edit_course(refcode):
     pass
@@ -252,13 +259,10 @@ async def search_name(data: str):
 
 
 # Course Categories API #
-@app.get("/courses/{catg}", tags=["Course Categories API"])
+@app.get("/courses/category/{catg}", tags=["Course Categories API"])
 async def course_catg(catg):
     data = course_system.browse_course(catg)
-    print(data)
-    return course_system.browse_course(catg)
-    
-
+    return data
 
 @app.get("/courses/{user}/{refcode}", tags=["Course API"])
 async def get_course(user, refcode):
@@ -271,6 +275,10 @@ async def get_course(user, refcode):
 @app.get("/courses/{user}/{refcode}/{chapter}", tags=["Course API"])
 async def get_chapter(user, refcode, chapter):
     return course_system.get_chapter(user, refcode, chapter)
+
+@app.put("/courses/{refcode}/{chapter}/modify", tags=["Course API"])
+async def modify_chapter(refcode, chapter, newmat: str):
+    return course_system.set_material(refcode, chapter, newmat)
 
 
 @app.post("/add_review", tags=["Course API"])
@@ -384,4 +392,3 @@ async def unenroll(unenroll: dict) -> dict:
         return {"Unenroll": "Success"}
     else:
         return {"Unenroll": "Error"}
-    

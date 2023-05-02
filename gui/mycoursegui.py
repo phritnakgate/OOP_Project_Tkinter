@@ -30,8 +30,8 @@ class MyCourseGUI:
 
         self.__menuitem = Menu()
         self.__menuitem.add_cascade(label='Your Account: ' + str(self.__user), menu=self.__studentaccountmenu)
-        self.__menuitem.add_cascade(label='About')
-        self.__menuitem.add_cascade(label='Exit')
+        self.__menuitem.add_cascade(label='About', command=self.aboutbox)
+        self.__menuitem.add_cascade(label='Exit', command=self.logout)
         self.__mycourse.config(menu=self.__menuitem)
 
         customtkinter.CTkLabel(self.__mycourse, text="My Course", font=self.__header_font).pack(anchor="center")
@@ -66,14 +66,14 @@ class MyCourseGUI:
     def unenroll(self, refcode):
         colonindex = refcode.index(":")
         refcode = refcode[:colonindex]
-        print(refcode)
+        # print(refcode)
         param = {
             "username": str(self.__user),
             "refcode": str(refcode)
         }
         r = requests.post("http://localhost:8000/unenroll", json=param)
         res = r.text
-        print(res)
+        # print(res)
         tkinter.messagebox.showinfo(title="Success", message="Unenroll Success! Please reopen this window")
 
     def study(self, refcode):
@@ -87,4 +87,6 @@ class MyCourseGUI:
         if answer:
             self.__mycourse.destroy()
 
+    def aboutbox(self):
+        tkinter.messagebox.showinfo(title="About", message="CE MOOC By.. Phrit, Watcharin, Yongsuk and Paramate")
 #MyCourseGUI("ffwatcharin")
