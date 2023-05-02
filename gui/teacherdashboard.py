@@ -55,4 +55,4 @@ class TeacherDashboard:
         # print(refcode)
         ExamEditor(refcode)
 
-# TeacherDashboard("teach1")
+#TeacherDashboard("teach1")

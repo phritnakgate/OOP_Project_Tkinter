@@ -30,9 +30,11 @@ class EditProfile:
 
         # Buttons
         customtkinter.CTkButton(self.__edit_profile, text="Save", font=self.__normal_font,
-                                command=self.save_profile).pack(side=BOTTOM)
+                                command=self.save_profile).place(x=70, y=430)
+        customtkinter.CTkButton(self.__edit_profile, text="DeleteAccount", font=self.__normal_font, fg_color="red",
+                                command=self.delete_user).place(x=220, y=430)
         # Labels
-        customtkinter.CTkLabel(self.__edit_profile, text="My Profile", font=self.__header_font).pack(anchor="center")
+        customtkinter.CTkLabel(self.__edit_profile, text="My Profile", font=self.__header_font).place(x=80, y=30)
 
         customtkinter.CTkLabel(self.__edit_profile, text="Password :", font=self.__normal_font).place(x=80, y=55)
         self.__change_pass = customtkinter.CTkEntry(self.__edit_profile)
@@ -86,6 +88,7 @@ class EditProfile:
             self.__change_dept.insert(0, self.__old_profiledata['_Teacher__teacher_dept'])
             self.__change_dept.place(x=180, y=325)
 
+        self.__edit_profile.mainloop()
     def get_OldProfile(self):
         url = "http://localhost:8000/users/" + self.__username
         r = requests.get(url)
@@ -98,7 +101,7 @@ class EditProfile:
                   "password": self.__change_pass.get(),
                   "email": self.__change_email.get(),
                   "fname": self.__change_name.get(),
-                  "lname": self.__change_lanme.get(),
+                  "lname": self.__change_lname.get(),
                   "gender": self.__n.get(),
                   "birth_date": self.__change_birthdate.get(),
                   "education": self.__change_educate.get(),
@@ -111,3 +114,15 @@ class EditProfile:
 
         r = requests.put(url, json=data)
         print(json.loads(r.text))
+
+    def delete_user(self):
+        answer = tkinter.messagebox.askyesno(title="Confirmation", message="Confirm?")
+        if answer:
+            url = "http://localhost:8000/delete_user?username="+str(self.__username)
+            requests.delete(url)
+            # check_del = "http://localhost:8000/all_users"
+            # r = requests.get(check_del)
+            # print(json.loads(r.text))
+            quit()
+
+#EditProfile("del", "Student")
