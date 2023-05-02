@@ -347,14 +347,14 @@ async def add_cart(cart_item: dict) -> dict:
     username = cart_item["username"]
     refcode = cart_item["refcode"]
 
-    print(username)
-    print(refcode)
+    # print(username)
+    # print(refcode)
 
     u = course_system.search_user(username)
     c = course_system.search_course(refcode)
 
-    print(u)
-    print(c)
+    # print(u)
+    # print(c)
     if not course_system.add_cart(c, u.get_enrolled_course()):
         return {"Error": "Already enrolled! / Already in cart!"}
     else:

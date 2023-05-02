@@ -44,14 +44,15 @@ class TeacherDashboard:
                 self.__teached_title.append(i['_Courses__title'])
 
     def modify_course_detail(self, refcode):
-        print(refcode)
+        pass
+        # print(refcode)
 
     def modify_course_material(self, refcode):
-        print(refcode)
+        # print(refcode)
         EditMaterial(refcode)
 
     def modify_course_exam(self, refcode):
-        print(refcode)
+        # print(refcode)
         ExamEditor(refcode)
 
-TeacherDashboard("teach1")
+# TeacherDashboard("teach1")
