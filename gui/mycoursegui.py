@@ -16,7 +16,7 @@ class MyCourseGUI:
         self.__user = username
         self.__response = None
         # --------------------- Create GUI ----------------------- #
-        self.__mycourse = customtkinter.CTk()
+        self.__mycourse = customtkinter.CTkToplevel()
         self.__header_font = customtkinter.CTkFont(family="Kanit", weight="bold", size=20)
         self.__normal_font = customtkinter.CTkFont(family="Kanit", weight="normal", size=16)
         self.__txtbox_font = customtkinter.CTkFont(family="Kanit", weight="normal", size=12)
@@ -79,7 +79,6 @@ class MyCourseGUI:
     def study(self, refcode):
         colonindex = refcode.index(":")
         refcode = refcode[:colonindex]
-        self.__mycourse.destroy()
         Study(self.__user, refcode)
 
     def logout(self):

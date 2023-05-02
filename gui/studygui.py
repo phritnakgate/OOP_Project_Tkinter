@@ -19,7 +19,7 @@ class Study:
         self.__refcode = refcode
         self.__posy = 50
         # --------------------- Create GUI ----------------------- #
-        self.__study = customtkinter.CTk()
+        self.__study = customtkinter.CTkToplevel()
         self.__header_font = customtkinter.CTkFont(family="Kanit", weight="bold", size=20)
         self.__normal_font = customtkinter.CTkFont(family="Kanit", weight="normal", size=16)
         self.__txtbox_font = customtkinter.CTkFont(family="Kanit", weight="normal", size=12)

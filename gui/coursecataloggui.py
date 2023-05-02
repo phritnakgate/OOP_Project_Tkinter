@@ -15,6 +15,8 @@ from gui.coursedetailgui import CourseDetail
 from gui.cartgui import CartGUI
 from gui.browsebycatg import BrowseCatg
 from gui.teacherdashboard import TeacherDashboard
+from gui.admindashboard import AdminDashboard
+from gui.editprofile import EditProfile
 
 customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue")
@@ -46,7 +48,7 @@ class CourseCatalog:
         self.__studentaccountmenu = Menu()
         self.__studentaccountmenu.add_command(label="My Courses", command=self.my_course)
         self.__studentaccountmenu.add_command(label="My Cart", command=self.cart)
-        self.__studentaccountmenu.add_command(label="Edit Profile")
+        self.__studentaccountmenu.add_command(label="Edit Profile", command=self.edit_profile)
         self.__studentaccountmenu.add_command(label="Logout & Close Program", command=self.logout)
 
         self.__teacheraccountmenu = Menu()
@@ -55,8 +57,7 @@ class CourseCatalog:
         self.__teacheraccountmenu.add_command(label="Logout & Close Program", command=self.logout)
 
         self.__adminaccountmenu = Menu()
-        self.__adminaccountmenu.add_command(label="Course CRUD")
-        self.__adminaccountmenu.add_command(label="User CRUD")
+        self.__adminaccountmenu.add_command(label="Admin Portal", command=self.adashboard)
         self.__adminaccountmenu.add_command(label="Logout & Close Program", command=self.logout)
 
         self.__menuitem = Menu()
@@ -220,7 +221,7 @@ class CourseCatalog:
             self.__catalog.destroy()
 
     def my_course(self):
-        self.__catalog.destroy()
+        #self.__catalog.destroy()
         MyCourseGUI(self.__username)
 
     def detail(self, ref):
@@ -238,6 +239,13 @@ class CourseCatalog:
     def tdashboard(self):
         self.__catalog.destroy()
         TeacherDashboard(self.__username)
+
+    def adashboard(self):
+        self.__catalog.destroy()
+        AdminDashboard()
+
+    def edit_profile(self):
+        EditProfile(self.__username, self.__user_type)
 
 # ------------------ Login ------------------ #
 class LoginGUI:
