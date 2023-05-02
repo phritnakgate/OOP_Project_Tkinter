@@ -19,7 +19,6 @@ from gui.teacherdashboard import TeacherDashboard
 customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue")
 
-
 # ------------------ CourseCatalog ------------------ #
 class CourseCatalog:
     def __init__(self, username, user_type):
@@ -29,7 +28,6 @@ class CourseCatalog:
         self.__total_course = 0
         self.__row_base = 4
         self.__txtcolor = "white"
-        self.__txtcolor2 = "#1F6AA5"
         self.__bgcolor = "#242424"
         # ------ Create GUI ------ #
         self.__catalog = Tk()
@@ -37,9 +35,9 @@ class CourseCatalog:
         self.__normal_font = Font(family="Kanit", weight="normal", size=16)
         self.__txtbox_font = Font(family="Kanit", weight="normal", size=12)
         self.__catalog.title("CE MOOC")
-        self.__catalog.geometry("1000x1000")
+        self.screen(1100,1000)
         self.__catalog.config(bg=self.__bgcolor)
-        self.__catalog.resizable(width=False, height=False)
+        # self.__catalog.resizable(width=False, height=False)
         # Menu #
         self.__guestaccountmenu = Menu()
         self.__guestaccountmenu.add_command(label="Register", command=self.register_gui)
@@ -69,8 +67,7 @@ class CourseCatalog:
                 self.__menuitem.add_cascade(label='Your Account: ' + str(self.__username),
                                             menu=self.__studentaccountmenu)
             elif self.__user_type == "Teacher":
-                self.__menuitem.add_cascade(label='Your Account: ' + str(self.__username),
-                                            menu=self.__teacheraccountmenu)
+                self.__menuitem.add_cascade(label='Your Account: ' + str(self.__username),menu=self.__teacheraccountmenu)
             elif self.__user_type == "Admin":
                 self.__menuitem.add_cascade(label='Your Account: ' + str(self.__username), menu=self.__adminaccountmenu)
         self.__menuitem.add_cascade(label='About', command=self.aboutbox)
@@ -83,8 +80,8 @@ class CourseCatalog:
             self.__row_base = 5
             Label(text="Please Login to Enroll!", font=self.__normal_font, fg="red", bg=self.__bgcolor).grid(row=1, column=1)
             
-            Label(text="Category", font=self.__header_font, fg=self.__txtcolor2, bg=self.__bgcolor).grid(row=2,column=0)
-            Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=2, column=1)
+            Label(text="========== Category ==========", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=2,column=1)
+            # Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=2, column=1)
             Button(text='Software', font=self.__txtbox_font,
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
                    activeforeground=self.__txtcolor, command=partial(self.browse_catg,'Software')).grid(
@@ -105,9 +102,10 @@ class CourseCatalog:
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
                    activeforeground=self.__txtcolor, command=partial(self.browse_catg,'English')).grid(
                 row=3, column=4)
-            Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=4,column=1)
+            Label(text="==============================", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=4,column=1)
         else:
-            Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=1, column=1)
+            Label(text="========== Category ==========", font=self.__header_font, fg=self.__txtcolor2, bg=self.__bgcolor).grid(row=2,column=1)
+            # Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=1, column=1)
             Button(text='Software', font=self.__txtbox_font,
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
                    activeforeground=self.__txtcolor,command=partial(self.browse_catg,'Software')).grid(
@@ -128,7 +126,7 @@ class CourseCatalog:
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
                    activeforeground=self.__txtcolor, command=partial(self.browse_catg,'English')).grid(
                 row=2, column=4)
-            Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=3, column=1)
+            Label(text="==============================", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=3, column=1)
 
         # All Courses #
         self.get_all_course()
@@ -190,10 +188,16 @@ class CourseCatalog:
         # print(self.__row_base)
 
         # Course Recommendation #
-        Label(text="Recommended", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=self.__row_base, column=0)
+        Label(text="========== Recommended ==========", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=self.__row_base, column=1)
 
         self.__catalog.mainloop()
         
+    def screen(self, width, height):
+        self.screen_width = self.__catalog.winfo_screenwidth()
+        self.screen_height = self.__catalog.winfo_screenheight()             
+        self.x = (self.screen_width // 2) - (width // 2)
+        self.y = (self.screen_height // 2) - (height // 2)
+        self.__catalog.geometry(f"{width}x{height}+{self.x}+{self.y}")
 
     def get_all_course(self):
         r = requests.get("http://localhost:8000/courses")

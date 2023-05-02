@@ -30,23 +30,34 @@ class BrowseCatg:
             
     def create_course_list_window(self, category):
         courses = self.browse_courses(category)
-        num_columns = 3
+        max_courses_per_row = 3
+        window_width = 600
         
         self.courses_label = ctk.CTkLabel(self.__root, text=f'Category : "{category}"', font=self.__title_font)
-        self.courses_label.grid(row=0, column=0, columnspan=3, pady=10, sticky='EW')
-        
-        for index,course in enumerate(courses):
-            row, col = divmod(index, num_columns)            
-            course_frame = ctk.CTkFrame(self.__root)
-            course_frame.grid(row=row * 3+1, column=col, padx=10, pady=5)
-            course_frame.grid_propagate(0)
-            
-            refcode_label = ctk.CTkLabel(course_frame, text=course["_Courses__refcode"],font=self.__header_font).pack()
-            title_label = ctk.CTkLabel(course_frame, text=course["_Courses__title"],font=self.__header_font).pack()
+        self.courses_label.pack(side=ctk.TOP, padx=10, pady=10)
+
+        course_rows = []
+        row_frame = ctk.CTkFrame(self.__root, width=window_width)
+        row_frame.pack(side=ctk.TOP, padx=10, pady=5, fill=ctk.X)
+        course_rows.append(row_frame)
+
+        for index, course in enumerate(courses):
+            if index % max_courses_per_row == 0 and index != 0:
+                row_frame = ctk.CTkFrame(self.__root, width=window_width)
+                row_frame.pack(side=ctk.TOP, padx=10, pady=5, fill=ctk.X)
+                course_rows.append(row_frame)
+
+            course_frame = ctk.CTkFrame(row_frame)
+            course_frame.pack(side=ctk.LEFT, padx=10, pady=5, expand=True)
+
+            refcode_label = ctk.CTkLabel(course_frame, text=course["_Courses__refcode"], font=self.__header_font).pack()
+            title_label = ctk.CTkLabel(course_frame, text=course["_Courses__title"], font=self.__header_font).pack()
             button = ctk.CTkButton(course_frame,
-                                   text="Detail",
-                                   command=lambda course_refcode=course["_Courses__refcode"]: self.detail(course_refcode))
+                                text="Detail",
+                                command=lambda course_refcode=course["_Courses__refcode"]: self.detail(course_refcode))
             button.pack()
             
     def detail(self, ref):
         CourseDetail(self.__username, ref, self.__user_type)
+        
+# BrowseCatg("Math","ffwatcharin","Student")
