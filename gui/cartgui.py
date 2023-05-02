@@ -68,7 +68,7 @@ class CartGUI:
 
     def refresh(self):
         self.update_cart()
-        print(self.__response)
+        # print(self.__response)
         self.__txtbox.configure(state="normal")
         self.__txtbox.delete("1.0", "end-1c")
         for j in self.__response:
@@ -77,7 +77,7 @@ class CartGUI:
 
     def remove_cart(self):
         ref = self.__ent.get()
-        print(ref)
+        # print(ref)
         if ref != "" and self.__response != ['No course in cart']:
             req = {"refcode": str(ref)}
             r = requests.post("http://localhost:8000/removecart", json=req)

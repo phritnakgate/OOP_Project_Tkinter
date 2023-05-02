@@ -1,12 +1,10 @@
 from courses import *
 
-
 class CourseSystem:
     def __init__(self):
         self.__course_list = []
         self.__user_list = []
         self.__cart = []
-        self.__coursecatg_list = []
 
     # --------------- User --------------- #
     def add_user(self, user):
@@ -74,6 +72,13 @@ class CourseSystem:
                 result.append(course)
         if result: return result
         else: return {'Course Not Found!!'}
+        
+    def browse_course(self, catg):
+        self.__coursecatg_list = []
+        for i in self.__course_list:
+            if i.get_catg() == catg:
+                self.__coursecatg_list.append(i)
+        return self.__coursecatg_list
 
     # --- Study --- #
     def get_course(self, user, refcode):
@@ -106,6 +111,12 @@ class CourseSystem:
     def add_material(self, refcode, chapter, material):
         c = self.search_course(refcode)
         c.get_chapter()[int(chapter)].get_material().append(material)
+
+    def set_material(self, refcode, chapter, new):
+        c = self.search_course(refcode)
+        c.get_chapter()[int(chapter)].get_material()[0].edit_material(new)
+        return c.get_chapter()[int(chapter)].get_material()
+
 
     # --- Enroll --- #
     def get_cart(self):
@@ -141,10 +152,3 @@ class CourseSystem:
             return True
         else:
             return False
-
-    def browse_course(self, catg):
-        by_catg = []
-        for i in self.__course_list:
-            if i.get_catg() == catg:
-                by_catg.append(i)
-        return by_catg

@@ -73,11 +73,6 @@ class Courses:
         self.__review.append(review)
         self.__review_score = sum([i.get_write_review () for i in self.__review])/len(self.__review)
 
-
-class CourseCatg:
-    pass
-
-
 # --- Course Material --- #
 class CourseChapter:
     def __init__(self, title):
@@ -93,3 +88,6 @@ class CourseChapter:
 class CourseMaterial:
     def __init__(self, material):
         self.__material = material
+
+    def edit_material(self, new):
+        self.__material = new
