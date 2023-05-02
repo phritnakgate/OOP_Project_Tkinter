@@ -30,7 +30,10 @@ class EditProfile:
 
         # Buttons
         customtkinter.CTkButton(self.__edit_profile, text="Save", font=self.__normal_font,
-                                command=self.save_profile).pack(side=BOTTOM)
+                                command=self.save_profile).place(x=70, y=430)
+        customtkinter.CTkButton(self.__edit_profile, text="DeleteAccount", font=self.__normal_font, fg_color="red",
+                                command=None).place(x=220, y=430)
+
         # Labels
         customtkinter.CTkLabel(self.__edit_profile, text="My Profile", font=self.__header_font).pack(anchor="center")
 
@@ -111,3 +114,6 @@ class EditProfile:
 
         r = requests.put(url, json=data)
         print(json.loads(r.text))
+
+    def delete_user(self):
+        pass
