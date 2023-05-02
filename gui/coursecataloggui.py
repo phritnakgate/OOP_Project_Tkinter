@@ -35,7 +35,7 @@ class CourseCatalog:
         self.__normal_font = Font(family="Kanit", weight="normal", size=16)
         self.__txtbox_font = Font(family="Kanit", weight="normal", size=12)
         self.__catalog.title("CE MOOC")
-        self.screen(1100,1000)
+        self.screen(1000,800)
         self.__catalog.config(bg=self.__bgcolor)
         # self.__catalog.resizable(width=False, height=False)
         # Menu #
@@ -104,7 +104,7 @@ class CourseCatalog:
                 row=3, column=4)
             Label(text="==============================", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=4,column=1)
         else:
-            Label(text="========== Category ==========", font=self.__header_font, fg=self.__txtcolor2, bg=self.__bgcolor).grid(row=2,column=1)
+            Label(text="========== Category ==========", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=1,column=1)
             # Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=1, column=1)
             Button(text='Software', font=self.__txtbox_font,
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
