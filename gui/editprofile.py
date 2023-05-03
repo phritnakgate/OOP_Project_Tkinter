@@ -17,7 +17,7 @@ class EditProfile:
         self.__username = username
         self.__user_type = user_type
         self.__old_profiledata = self.get_OldProfile()
-        print(self.__old_profiledata)
+        # print(self.__old_profiledata)
 
         # --------------------- Create GUI ----------------------- #
         self.__edit_profile = customtkinter.CTkToplevel()
@@ -113,7 +113,7 @@ class EditProfile:
             data["teacher_dept"] = self.__change_dept.get()
 
         r = requests.put(url, json=data)
-        print(json.loads(r.text))
+        # print(json.loads(r.text))
 
     def delete_user(self):
         answer = tkinter.messagebox.askyesno(title="Confirmation", message="Confirm?")

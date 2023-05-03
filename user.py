@@ -52,11 +52,21 @@ class Student(User):
             self._enrolled_course.remove(will_enroll)
 
     def set_progression(self, progress):
+        found = False
         for p in self.__progression_list:
-            if p.get_refcode() != progress.get_refcode():
-                self.__progression_list.append(progress)
-            else:
-                p = progress
+            if p.get_refcode() == progress.get_refcode():
+                found = True
+                # Update progression value
+                p._CourseProgression__progression = progress._CourseProgression__progression
+
+                # Append the new exam item
+                new_exam_item = progress._CourseProgression__exam[-1]
+                p._CourseProgression__exam.append(new_exam_item)
+                break
+        # If the refcode was not found, append the new progression object to the list
+        if not found:
+            self.__progression_list.append(progress)
+
 
     def get_progression(self):
         return self.__progression_list
