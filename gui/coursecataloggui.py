@@ -38,7 +38,7 @@ class CourseCatalog:
         self.__normal_font = Font(family="Kanit", weight="normal", size=16)
         self.__txtbox_font = Font(family="Kanit", weight="normal", size=12)
         self.__catalog.title("CE MOOC")
-        self.screen(1100,1000)
+        self.screen(1000,800)
         self.__catalog.config(bg=self.__bgcolor)
         self.__catalog.resizable(width=False, height=False)
         # Menu #
