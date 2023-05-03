@@ -20,4 +20,3 @@ class AddReviewDTO(BaseModel):
     score : int
     comment : str
     refcode : str
-

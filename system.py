@@ -46,9 +46,6 @@ class CourseSystem:
     def get_all_course(self):
         return self.__course_list
 
-    def modify_course(self):
-        pass
-
     def delete_course(self, refcode):
         ref_l = []
         for i in self.__course_list:
