@@ -40,10 +40,13 @@ class CourseDetail:
         customtkinter.CTkLabel(self.__cdetail, text=self.__refcode, font=self.__header_font).pack()
         customtkinter.CTkLabel(self.__cdetail, text=self.__cdata['_Courses__title'], font=self.__header_font).pack()
         if self.__user_type not in ["Guest", "Admin"]:
-            if not self.check_enrolled():
-                customtkinter.CTkButton(self.__cdetail, text="Enroll", font=self.__normal_font, command=self.add_cart).pack()
+            if self.__user_type == "Student":
+                if not self.check_enrolled():
+                    customtkinter.CTkButton(self.__cdetail, text="Enroll", font=self.__normal_font, command=self.add_cart).pack()
+                else:
+                    customtkinter.CTkLabel(self.__cdetail, text="You have enrolled!", font=self.__normal_font, text_color="green").pack()
             else:
-                customtkinter.CTkLabel(self.__cdetail, text="You have enrolled!", font=self.__normal_font, text_color="green").pack()
+                customtkinter.CTkLabel(self.__cdetail, text="You are Teacher!", font=self.__normal_font,text_color="red").pack()
         else:
             customtkinter.CTkLabel(self.__cdetail, text="You cannot enrolled!", font=self.__normal_font, text_color="red").pack()
         for i, (key, value) in enumerate(self.__labels.items()):
@@ -61,10 +64,14 @@ class CourseDetail:
             for i in self.__cdata['_Courses__review']:
                 text += "Score: "+str(i["_Review__write_review"])+"\nComment: "+i["_Review__write_comment"]+"\n"
             self.__reviewbox.insert("0.0", text)
-        if not self.check_review() or not self.check_enrolled():
-            customtkinter.CTkLabel(self.__cdetail, text="Cannot Review!/ Already Reviewed", font=self.__header_font, text_color="red").place(x=25, y=650)
+        if user_type == "Student":
+            if not self.check_review() or not self.check_enrolled():
+                customtkinter.CTkLabel(self.__cdetail, text="Cannot Review!/ Already Reviewed", font=self.__header_font, text_color="red").place(x=25, y=650)
+            else:
+                customtkinter.CTkButton(self.__cdetail, text="Review", font=self.__normal_font, command=self.review).place(x=25, y=650)
         else:
-            customtkinter.CTkButton(self.__cdetail, text="Review", font=self.__normal_font, command=self.review).place(x=25, y=650)
+            customtkinter.CTkLabel(self.__cdetail, text="Cannot Review!/ Already Reviewed", font=self.__header_font,
+                                   text_color="red").place(x=25, y=650)
         self.__cdetail.mainloop()
 
     def get_course(self):
@@ -75,7 +82,7 @@ class CourseDetail:
         return data
     
     def check_enrolled(self):
-        url = "http://localhost:8000/enrolled?username="+self.__username
+        url = "http://localhost:8000/enrolled?username="+ self.__username
         r = requests.get(url)
         data = json.loads(r.text)
         for i in data:
