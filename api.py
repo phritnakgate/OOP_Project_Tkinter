@@ -283,6 +283,15 @@ async def get_chapter(user, refcode, chapter):
 async def modify_chapter(refcode, chapter, newmat: str):
     return course_system.set_material(refcode, chapter, newmat)
 
+@app.post("/courses/{refcode}/create_chapter", tags=["Course API"])
+async def create_chapter(refcode, titles:list, materials:list):
+    courses = course_system.search_course(refcode)    
+    for i in range(len(titles)):
+        title = titles[i]
+        material = materials[i]
+        chapter = CourseChapter(title)
+        chapter.set_material(CourseMaterial(material))
+        courses.set_chapter(chapter)
 
 @app.post("/add_review", tags=["Course API"])
 async def add_review(data: AddReviewDTO):
@@ -336,8 +345,8 @@ async def do_exam(refcode,user,data: list):
 @app.get("/{user}/get_all_grogression", tags=["Exam API"])
 async def get_all_progression(user):
     users = course_system.search_user(user)
+    print(users)
     return users.get_progression()
-
 
 # -------------------------------- Enroll API ----------------------------- #
 @app.get("/cart", tags=["Enrollment"])

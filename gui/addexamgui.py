@@ -80,4 +80,4 @@ class AddingExamUI:
             self.exam_questions.insert(ctk.END, f"Question : {q['_ExamItem__question']}   |   Answer : {q['_ExamItem__answer']}\n")
 
 
-AddingExamUI("SOFT001") # เปลี่ยน refcode ตรงนี้ถ้าเอาไปเชื่อมกับระบบอื่น
+# AddingExamUI("SOFT001") # เปลี่ยน refcode ตรงนี้ถ้าเอาไปเชื่อมกับระบบอื่น

@@ -75,7 +75,7 @@ class CourseDetail:
         return data
     
     def check_enrolled(self):
-        url = "http://localhost:8000/enrolled?username="+self.__username
+        url = "http://localhost:8000/enrolled?username="+ self.__username
         r = requests.get(url)
         data = json.loads(r.text)
         for i in data:

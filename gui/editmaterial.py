@@ -39,10 +39,10 @@ class EditMaterial:
         data = self.load_data()
         for i in data['_Courses__chapter']:
             self.__chapter.append(i['_CourseChapter__title'])
-        print(self.__chapter)
+        # print(self.__chapter)
 
     def get_material(self, ch):
-        print(ch)
+        # print(ch)
         data = self.load_data()
         for i in data['_Courses__chapter']:
             if i['_CourseChapter__title'] == ch:
