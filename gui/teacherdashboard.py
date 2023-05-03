@@ -5,6 +5,8 @@ from functools import partial
 
 from gui.editexamgui import ExamEditor
 from gui.editmaterial import EditMaterial
+from gui.createcoursegui import CourseGUI
+from gui.addexamgui import AddingExamUI
 
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
@@ -20,9 +22,9 @@ class TeacherDashboard:
         self.__normal_font = ctk.CTkFont(family="Kanit", weight="normal", size=16)
         self.__txtbox_font = ctk.CTkFont(family="Kanit", weight="normal", size=12)
         self.__tdash.title("Teacher Dashboard")
-        self.__tdash.geometry("900x900")
+        self.__tdash.geometry("1000x900")
         ctk.CTkLabel(self.__tdash, text="Teacher Dashboard", font=self.__header_font).pack()
-        ctk.CTkButton(self.__tdash, text="Teach New Course", font=self.__txtbox_font).pack()
+        ctk.CTkButton(self.__tdash, text="Teach New Course", font=self.__txtbox_font, command=self.create_course).pack()
         self.check_teached_course()
         for i in range(len(self.__teached_refcode)):
             ctk.CTkLabel(self.__tdash, text=self.__teached_refcode[i]+":"+self.__teached_title[i], font=self.__normal_font).place(x=50, y=self.__posy)
@@ -30,8 +32,10 @@ class TeacherDashboard:
                           command=partial(self.modify_course_detail, self.__teached_refcode[i])).place(x=400, y=self.__posy)
             ctk.CTkButton(self.__tdash, text="Modify Material", font=self.__txtbox_font,
                           command=partial(self.modify_course_material, self.__teached_refcode[i])).place(x=550, y=self.__posy)
+            ctk.CTkButton(self.__tdash, text="Add Exam", font=self.__txtbox_font,
+                          command=partial(self.add_exam, self.__teached_refcode[i])).place(x=700, y=self.__posy)
             ctk.CTkButton(self.__tdash, text="Modify Exam", font=self.__txtbox_font,
-                          command=partial(self.modify_course_exam, self.__teached_refcode[i])).place(x=700, y=self.__posy)
+                          command=partial(self.modify_course_exam, self.__teached_refcode[i])).place(x=850, y=self.__posy)
             self.__posy += 50
         self.__tdash.mainloop()
 
@@ -54,5 +58,11 @@ class TeacherDashboard:
     def modify_course_exam(self, refcode):
         # print(refcode)
         ExamEditor(refcode)
+        
+    def create_course(self):
+        CourseGUI()
+        
+    def add_exam(self,refcode):
+        AddingExamUI(refcode)
 
 # TeacherDashboard("teach1")

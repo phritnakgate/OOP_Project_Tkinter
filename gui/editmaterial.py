@@ -39,10 +39,10 @@ class EditMaterial:
         data = self.load_data()
         for i in data['_Courses__chapter']:
             self.__chapter.append(i['_CourseChapter__title'])
-        print(self.__chapter)
+        # print(self.__chapter)
 
     def get_material(self, ch):
-        print(ch)
+        # print(ch)
         data = self.load_data()
         for i in data['_Courses__chapter']:
             if i['_CourseChapter__title'] == ch:
@@ -51,7 +51,7 @@ class EditMaterial:
                 self.__ent.insert("0.0", i['_CourseChapter__material'][0]['_CourseMaterial__material'])
     def save(self, chap, newmat):
         url = "http://127.0.0.1:8000/courses/"+self.__refcode+"/"+str(chap)+"/modify?newmat="+newmat
-        r = requests.put(url)
-        print(json.loads(r.text))
+        requests.put(url)
+        #print(json.loads(r.text))
 
 #EditMaterial("SOFT001")

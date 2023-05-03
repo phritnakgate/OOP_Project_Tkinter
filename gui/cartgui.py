@@ -82,7 +82,7 @@ class CartGUI:
             req = {"refcode": str(ref)}
             r = requests.post("http://localhost:8000/removecart", json=req)
             res = r.text
-            print(res)
+            # print(res)
             if res == "{\"Success\":\"Remove complete\"}":
                 self.__ent.delete(0, END)
                 self.update_cart()

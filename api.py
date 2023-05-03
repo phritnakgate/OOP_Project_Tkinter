@@ -13,6 +13,8 @@ admin = Admin("admin", "admin1234", "admin1@gmail.com", "ad", "min", "Male", dat
               "Bangkok", "Thailand")
 student = Student("ffwatcharin", "firstbigdick", "ffwatcharin@gmail.com", "Watcharin", "Humthong", "Male",
                   datetime(2004, 1, 16), "Undergraduated", "Nonthaburi", "Thailand")
+testdel = Student("del", "del", "eiei@gmail.com", "d", "d", "Male",
+                  datetime(2003, 12, 4), "Undergraduated", "Nonthaburi", "Thailand")
 
 # --- Build Test --- #
 
@@ -79,6 +81,7 @@ course_system.create_course(course15)
 
 course_system.add_user(teacher1)
 course_system.add_user(student)
+course_system.add_user(testdel)
 course_system.add_user(admin)
 print(course_system.get_user_db())
 
@@ -243,11 +246,6 @@ async def create_course(course_info: dict):
         "message": "course created"
     }
 
-@app.put("/{refcode}/edit", tags=["Course API"])
-async def edit_course(refcode):
-    pass
-
-
 @app.delete("/delete_course", tags=["Course API"])
 async def delete_course(refcode: str):
     course_system.delete_course(refcode)
@@ -280,6 +278,15 @@ async def get_chapter(user, refcode, chapter):
 async def modify_chapter(refcode, chapter, newmat: str):
     return course_system.set_material(refcode, chapter, newmat)
 
+@app.post("/courses/{refcode}/create_chapter", tags=["Course API"])
+async def create_chapter(refcode, titles:list, materials:list):
+    courses = course_system.search_course(refcode)    
+    for i in range(len(titles)):
+        title = titles[i]
+        material = materials[i]
+        chapter = CourseChapter(title)
+        chapter.set_material(CourseMaterial(material))
+        courses.set_chapter(chapter)
 
 @app.post("/add_review", tags=["Course API"])
 async def add_review(data: AddReviewDTO):
@@ -333,8 +340,8 @@ async def do_exam(refcode,user,data: list):
 @app.get("/{user}/get_all_grogression", tags=["Exam API"])
 async def get_all_progression(user):
     users = course_system.search_user(user)
+    print(users)
     return users.get_progression()
-
 
 # -------------------------------- Enroll API ----------------------------- #
 @app.get("/cart", tags=["Enrollment"])

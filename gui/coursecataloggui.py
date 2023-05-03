@@ -15,6 +15,9 @@ from gui.coursedetailgui import CourseDetail
 from gui.cartgui import CartGUI
 from gui.browsebycatg import BrowseCatg
 from gui.teacherdashboard import TeacherDashboard
+from gui.admindashboard import AdminDashboard
+from gui.editprofile import EditProfile
+from gui.getallprogressiongui import AllProgression
 
 customtkinter.set_appearance_mode("Dark")
 customtkinter.set_default_color_theme("blue")
@@ -35,9 +38,9 @@ class CourseCatalog:
         self.__normal_font = Font(family="Kanit", weight="normal", size=16)
         self.__txtbox_font = Font(family="Kanit", weight="normal", size=12)
         self.__catalog.title("CE MOOC")
-        self.screen(1100,1000)
+        self.screen(1000,800)
         self.__catalog.config(bg=self.__bgcolor)
-        # self.__catalog.resizable(width=False, height=False)
+        self.__catalog.resizable(width=False, height=False)
         # Menu #
         self.__guestaccountmenu = Menu()
         self.__guestaccountmenu.add_command(label="Register", command=self.register_gui)
@@ -46,7 +49,8 @@ class CourseCatalog:
         self.__studentaccountmenu = Menu()
         self.__studentaccountmenu.add_command(label="My Courses", command=self.my_course)
         self.__studentaccountmenu.add_command(label="My Cart", command=self.cart)
-        self.__studentaccountmenu.add_command(label="Edit Profile")
+        self.__studentaccountmenu.add_command(label="See All Progression", command=self.see_progression)
+        self.__studentaccountmenu.add_command(label="Edit Profile", command=self.edit_profile)
         self.__studentaccountmenu.add_command(label="Logout & Close Program", command=self.logout)
 
         self.__teacheraccountmenu = Menu()
@@ -55,8 +59,7 @@ class CourseCatalog:
         self.__teacheraccountmenu.add_command(label="Logout & Close Program", command=self.logout)
 
         self.__adminaccountmenu = Menu()
-        self.__adminaccountmenu.add_command(label="Course CRUD")
-        self.__adminaccountmenu.add_command(label="User CRUD")
+        self.__adminaccountmenu.add_command(label="Admin Portal", command=self.adashboard)
         self.__adminaccountmenu.add_command(label="Logout & Close Program", command=self.logout)
 
         self.__menuitem = Menu()
@@ -104,7 +107,7 @@ class CourseCatalog:
                 row=3, column=4)
             Label(text="==============================", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=4,column=1)
         else:
-            Label(text="========== Category ==========", font=self.__header_font, fg=self.__txtcolor2, bg=self.__bgcolor).grid(row=2,column=1)
+            Label(text="========== Category ==========", font=self.__header_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=1,column=1)
             # Label(text="==========", font=self.__normal_font, fg=self.__txtcolor, bg=self.__bgcolor).grid(row=1, column=1)
             Button(text='Software', font=self.__txtbox_font,
                    fg=self.__txtcolor, bg="#1F6AA5", activebackground=self.__bgcolor,
@@ -220,7 +223,7 @@ class CourseCatalog:
             self.__catalog.destroy()
 
     def my_course(self):
-        self.__catalog.destroy()
+        #self.__catalog.destroy()
         MyCourseGUI(self.__username)
 
     def detail(self, ref):
@@ -239,6 +242,16 @@ class CourseCatalog:
         self.__catalog.destroy()
         TeacherDashboard(self.__username)
 
+    def adashboard(self):
+        self.__catalog.destroy()
+        AdminDashboard()
+
+    def edit_profile(self):
+        EditProfile(self.__username, self.__user_type)
+        
+    def see_progression(self):
+        AllProgression(self.__username)
+
 # ------------------ Login ------------------ #
 class LoginGUI:
     def __init__(self):
@@ -247,7 +260,7 @@ class LoginGUI:
         self.__normal_font = customtkinter.CTkFont(family="Kanit", weight="normal", size=16)
         self.__txtbox_font = customtkinter.CTkFont(family="Kanit", weight="normal", size=12)
         self.__login.title("Login")
-        self.__login.geometry("300x300")
+        self.screen(300,300)
         self.__login.resizable(width=False, height=False)
         customtkinter.CTkLabel(self.__login, text="Login", font=self.__header_font).pack(anchor="center")
         customtkinter.CTkLabel(self.__login, text="Username:", font=self.__normal_font).place(x=25, y=50)
@@ -258,6 +271,13 @@ class LoginGUI:
         self.__pwd_entry.place(x=130, y=80)
         customtkinter.CTkButton(self.__login, text="Login", font=self.__normal_font, command=self.login).place(x=110, y=120)
         self.__login.mainloop()
+        
+    def screen(self, width, height):
+        self.screen_width = self.__login.winfo_screenwidth()
+        self.screen_height = self.__login.winfo_screenheight()             
+        self.x = (self.screen_width // 2) - (width // 2)
+        self.y = (self.screen_height // 2) - (height // 2)
+        self.__login.geometry(f"{width}x{height}+{self.x}+{self.y}")
 
     def login(self):
         if self.__username_entry.get() != "" and self.__pwd_entry.get() != "":

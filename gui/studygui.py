@@ -19,7 +19,7 @@ class Study:
         self.__refcode = refcode
         self.__posy = 50
         # --------------------- Create GUI ----------------------- #
-        self.__study = customtkinter.CTk()
+        self.__study = customtkinter.CTkToplevel()
         self.__header_font = customtkinter.CTkFont(family="Kanit", weight="bold", size=20)
         self.__normal_font = customtkinter.CTkFont(family="Kanit", weight="normal", size=16)
         self.__txtbox_font = customtkinter.CTkFont(family="Kanit", weight="normal", size=12)
@@ -33,7 +33,7 @@ class Study:
             lbl.place(x=50, y=self.__posy)
             self.__chapter_label.append(lbl)
             self.__posy += 50
-        print(self.__chapter_label)
+        # print(self.__chapter_label)
         customtkinter.CTkLabel(self.__study, text="Exam", font=self.__normal_font).place(x=50, y=self.__posy)
         self.__posy = 50
         self.__chapter_button = []
@@ -55,7 +55,7 @@ class Study:
 
     def get_name(self):
         data = self.request_url()
-        print(data)
+        # print(data)
         name = data['_Courses__refcode'] + ":" + data['_Courses__title']
         return name
 
@@ -65,15 +65,15 @@ class Study:
         title = []
         for i in chapter:
             title.append(i["_CourseChapter__title"])
-        print(title)
+        # print(title)
         return title
 
     def get_material(self, chapter):
         title = self.get_all_chapter()
-        print(chapter)
+        # print(chapter)
         chapterno = title.index(chapter)
         url = "http://localhost:8000/courses/" + str(self.__user) + "/" + str(self.__refcode) + "/" + str(chapterno)
-        print(url)
+        # print(url)
         r = requests.get(url)
         data = json.loads(r.text)
         material = data["_CourseChapter__material"][0]["_CourseMaterial__material"]
@@ -84,11 +84,11 @@ class Study:
         btn_pos = []
         for i in self.__chapter_button:
             btn_pos.append(i.winfo_y())
-        print(btn_pos)
+        # print(btn_pos)
         chapter = btn_pos.index(pos)
-        print(chapter)
+        # print(chapter)
         mat = self.get_material(title[chapter])
-        print(mat)
+        # print(mat)
         txtbox = customtkinter.CTkTextbox(self.__study, font=self.__txtbox_font, width=500, height=250)
         txtbox.place(x=100, y=400)
         if txtbox.get("1.0", "end-1c") == "":
