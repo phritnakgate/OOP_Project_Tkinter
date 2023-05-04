@@ -38,7 +38,7 @@ class CourseCatalog:
         self.__normal_font = Font(family="Kanit", weight="normal", size=16)
         self.__txtbox_font = Font(family="Kanit", weight="normal", size=12)
         self.__catalog.title("CE MOOC")
-        self.screen(1100,1000)
+        self.screen(1000,800)
         self.__catalog.config(bg=self.__bgcolor)
 
         # Menu #
@@ -239,11 +239,11 @@ class CourseCatalog:
         tkinter.messagebox.showinfo(title="About", message="CE MOOC By.. Phrit, Watcharin, Yongsuk and Paramate")
 
     def tdashboard(self):
-        self.__catalog.destroy()
+        # self.__catalog.destroy()
         TeacherDashboard(self.__username)
 
     def adashboard(self):
-        self.__catalog.destroy()
+        # self.__catalog.destroy()
         AdminDashboard()
 
     def edit_profile(self):
