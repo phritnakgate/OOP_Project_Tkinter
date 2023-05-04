@@ -39,6 +39,7 @@ class Study:
         self.__chapter_button = []
         for j in range(len(self.__chapter_label)):
             pos = self.__posy
+            print(pos)
             btn = customtkinter.CTkButton(self.__study, text="Start", font=self.__txtbox_font,
                                           command=partial(self.press_start, pos))
             btn.place(x=300, y=self.__posy)
@@ -84,11 +85,11 @@ class Study:
         btn_pos = []
         for i in self.__chapter_button:
             btn_pos.append(i.winfo_y())
-        # print(f"--------------{btn_pos}")
+        print(btn_pos)
         chapter = btn_pos.index(pos)
-        # print(chapter)
+        print(chapter)
         mat = self.get_material(title[chapter])
-        # print(mat)
+        print(mat)
         txtbox = customtkinter.CTkTextbox(self.__study, font=self.__txtbox_font, width=500, height=250)
         txtbox.place(x=100, y=400)
         if txtbox.get("1.0", "end-1c") == "":
@@ -102,3 +103,5 @@ class Study:
 
     def take_exam(self):
         DoingExamUI(self.__user, self.__refcode)
+
+#Study("ffwatcharin","SOFT001")
