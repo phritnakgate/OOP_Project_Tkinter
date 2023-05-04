@@ -40,7 +40,7 @@ class CourseCatalog:
         self.__catalog.title("CE MOOC")
         self.screen(1100,1000)
         self.__catalog.config(bg=self.__bgcolor)
-        self.__catalog.resizable(width=False, height=False)
+
         # Menu #
         self.__guestaccountmenu = Menu()
         self.__guestaccountmenu.add_command(label="Register", command=self.register_gui)
@@ -55,7 +55,7 @@ class CourseCatalog:
 
         self.__teacheraccountmenu = Menu()
         self.__teacheraccountmenu.add_command(label="My Teached Courses", command=self.tdashboard)
-        self.__teacheraccountmenu.add_command(label="Edit Profile")
+        self.__teacheraccountmenu.add_command(label="Edit Profile", command=self.edit_profile)
         self.__teacheraccountmenu.add_command(label="Logout & Close Program", command=self.logout)
 
         self.__adminaccountmenu = Menu()

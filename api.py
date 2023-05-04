@@ -247,8 +247,31 @@ async def create_course(course_info: dict):
     }
 
 @app.put("/{refcode}/edit", tags=["Course API"])
-async def edit_course(refcode):
-    pass
+async def edit_course_datail(refcode: str, form_data: dict):
+    c = course_system.search_course(refcode)
+    if c is None:
+        return {"message": "User not found"}
+    if "refcode" in form_data:
+        c._Courses__refcode = form_data["refcode"]
+    if "title" in form_data:
+        c._Courses__title = (form_data["title"])
+    if "desc" in form_data:
+        c._Courses__desc = form_data["desc"]
+    if "teacher" in form_data:
+        c._Courses__teacher = form_data["teacher"]
+    if "catg" in form_data:
+        c._Courses__catg = form_data["catg"]
+    if "target" in form_data:
+        c._Courses__target = form_data["target"]
+    if "objective" in form_data:
+        c._Courses__objective = form_data["objective"]
+    if "hour" in form_data:
+        c._Courses__hour = form_data["hour"]
+    if "recom_hour" in form_data:
+        c._Courses__recom_hour = form_data["recom_hour"]
+    if "contact" in form_data:
+        c._Courses__contact = form_data['contact']
+    return {"message": "User information updated successfully"}
 
 
 @app.delete("/delete_course", tags=["Course API"])

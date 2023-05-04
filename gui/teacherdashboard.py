@@ -7,6 +7,7 @@ from gui.editexamgui import ExamEditor
 from gui.editmaterial import EditMaterial
 from gui.createcoursegui import CourseGUI
 from gui.addexamgui import AddingExamUI
+from gui.editcoursedetail import EditCourseDetailGUI
 
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
@@ -48,7 +49,7 @@ class TeacherDashboard:
                 self.__teached_title.append(i['_Courses__title'])
 
     def modify_course_detail(self, refcode):
-        pass
+        EditCourseDetailGUI(refcode)
         # print(refcode)
 
     def modify_course_material(self, refcode):
@@ -64,5 +65,6 @@ class TeacherDashboard:
         
     def add_exam(self,refcode):
         AddingExamUI(refcode)
+
 
 # TeacherDashboard("teach1")
