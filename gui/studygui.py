@@ -25,7 +25,7 @@ class Study:
         self.__txtbox_font = customtkinter.CTkFont(family="Kanit", weight="normal", size=12)
         self.__study.title("My Course")
         self.__study.geometry("700x700")
-        self.__study.resizable(width=False, height=False)
+        # self.__study.resizable(width=False, height=False)
         customtkinter.CTkLabel(self.__study, text=self.get_name(), font=self.__header_font).pack(anchor="center")
         self.__chapter_label = []
         for i in self.get_all_chapter():
@@ -84,7 +84,7 @@ class Study:
         btn_pos = []
         for i in self.__chapter_button:
             btn_pos.append(i.winfo_y())
-        # print(btn_pos)
+        # print(f"--------------{btn_pos}")
         chapter = btn_pos.index(pos)
         # print(chapter)
         mat = self.get_material(title[chapter])
