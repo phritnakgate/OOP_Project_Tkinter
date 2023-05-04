@@ -14,6 +14,9 @@ from tkinter import messagebox
 from gui.editprofile import EditProfile
 from gui.editexamgui import ExamEditor
 from gui.editmaterial import EditMaterial
+from gui.addexamgui import AddingExamUI
+from gui.createcoursegui import CourseGUI
+from gui.editcoursedetail import EditCourseDetailGUI
 
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
@@ -47,7 +50,7 @@ class AdminDashboard:
         ctk.CTkLabel(self.__adash, text="=" * 20, font=self.__header_font).grid(row=6, column=1)
 
         ctk.CTkLabel(self.__adash, text="Course Zone", font=self.__header_font).grid(row=7, column=0)
-        ctk.CTkButton(self.__adash, text="Create Course", font=self.__txtbox_font).grid(row=8, column=0)
+        ctk.CTkButton(self.__adash, text="Create Course", font=self.__txtbox_font, command=self.create_course).grid(row=8, column=0)
         ctk.CTkButton(self.__adash, text="Modify Course", font=self.__txtbox_font, command=self.modify_c).grid(row=8, column=1)
         ctk.CTkButton(self.__adash, text="Delete Course", font=self.__txtbox_font, command=self.delete_c).grid(row=8, column=2)
         ctk.CTkLabel(self.__adash, text="Course data", font=self.__normal_font).grid(row=9, column=0)
@@ -104,6 +107,8 @@ class AdminDashboard:
     def modify_c(self):
         ModifyCourse()
 
+    def create_course(self):
+        CourseGUI()
 class RegisterGUI:
     def __init__(self):
         self.__txtcolor = "white"
@@ -231,8 +236,10 @@ class ModifyCourse:
                           command=partial(self.modify_course_detail, self.__refcode[i])).place(x=400, y=self.__posy)
             ctk.CTkButton(self.__tdash, text="Modify Material", font=self.__txtbox_font,
                           command=partial(self.modify_course_material, self.__refcode[i])).place(x=550, y=self.__posy)
+            ctk.CTkButton(self.__tdash, text="Add Exam", font=self.__txtbox_font,
+                          command=partial(self.add_exam, self.__refcode[i])).place(x=700, y=self.__posy)
             ctk.CTkButton(self.__tdash, text="Modify Exam", font=self.__txtbox_font,
-                          command=partial(self.modify_course_exam, self.__refcode[i])).place(x=700, y=self.__posy)
+                          command=partial(self.modify_course_exam, self.__refcode[i])).place(x=850, y=self.__posy)
             self.__posy += 50
         self.__tdash.mainloop()
 
@@ -244,7 +251,7 @@ class ModifyCourse:
             self.__title.append(i['_Courses__title'])
 
     def modify_course_detail(self, refcode):
-        pass
+        EditCourseDetailGUI(refcode)
         # print(refcode)
 
     def modify_course_material(self, refcode):
@@ -254,4 +261,9 @@ class ModifyCourse:
     def modify_course_exam(self, refcode):
         # print(refcode)
         ExamEditor(refcode)
+
+    def add_exam(self,refcode):
+        AddingExamUI(refcode)
+
+
 #AdminDashboard()
